@@ -1,6 +1,110 @@
-# react-native-mapview
+# react-native-maps
 
-React Native MapView component for iOS + Android
+React Native Map components for iOS + Android
+
+## Installation
+
+See [Installation Instructions](docs/installation.md).
+
+## General Usage
+
+```js
+import MapView from 'react-native-maps';
+```
+or
+
+```js
+var MapView = require('react-native-maps');
+```
+
+This MapView component is built so that features on the map (such as Markers, Polygons, etc.) are
+specified as children of the MapView itself. This provides an intuitive and react-like API for
+declaratively controlling features on the map.
+
+### Rendering a Map with an initial region
+
+```jsx
+  <MapView 
+    initialRegion={{
+      latitude: 37.78825,
+      longitude: -122.4324,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+    }}
+  />
+```
+
+### Using a MapView while controlling the region as state
+
+```jsx
+getInitialState() {
+  return {
+    latitude: 37.78825,
+    longitude: -122.4324,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+  };
+}
+
+onRegionChange(region) {
+  this.setState({ region });
+}
+
+render() {
+  return (
+    <MapView 
+      region={this.state.region}
+      onRegionChange={this.onRegionChange}
+    />
+  );
+}
+```
+
+### Rendering a list of markers on a map
+
+```jsx
+<MapView 
+  region={this.state.region}
+  onRegionChange={this.onRegionChange}
+>
+  {this.state.markers.map(marker => (
+    <MapView.Marker 
+      coordinate={marker.latlng}
+      title={marker.title}
+      description={marker.description}
+    />
+  ))}
+</MapView>
+```
+
+### Rendering a Marker with a custom view
+
+```jsx
+<MapView.Marker coordinate={marker.latlng}>
+  <MyCustomMarkerView {...marker} />
+</MapView.Marker>
+```
+
+### Rendering a Marker with a custom image
+
+```jsx
+<MapView.Marker 
+  coordinate={marker.latlng}
+  image={require('../assets/pin.png')}
+/>
+```
+
+### Rendering a custom Marker with a custom Callout
+
+```jsx
+<MapView.Marker coordinate={marker.latlng}>
+  <MyCustomMarkerView {...marker} />
+  <MapView.Callout>
+    <MyCustomCalloutView {...marker} />
+  </MapView.Callout>
+</MapView.Marker>
+```
+
 
 ## Examples
 
@@ -49,6 +153,10 @@ Further, Marker views can use the animated API to enhance the effect.
 Issue: Since android needs to render its marker views as a bitmap, the animations APIs may not be 
 compatible with the Marker views. Not sure if this can be worked around yet or not.
 
+Markers' coordinates can also be animated, as shown in this example:
+
+![](http://i.giphy.com/xTcnTelp1OwGPu1Wh2.gif) ![](http://i.giphy.com/xTcnT6WVpwlCiQnFW8.gif)
+
 
 
 ### Polygon Creator
@@ -94,23 +202,87 @@ default bubble.
 
 Markers can be customized by just using images, and specified using the `image` prop.
 
-NOTE: this isn't implemented properly yet.
-
-
-
+![](http://i.imgur.com/mzrOjTR.png)
 
 
 ## Component API
+
+[`<MapView />` Component API](docs/mapview.md)
+
+[`<MapView.Marker />` Component API](docs/marker.md)
+
+[`<MapView.Callout />` Component API](docs/callout.md)
+
+[`<MapView.Polygon />` Component API](docs/polygon.md)
+
+[`<MapView.Polyline />` Component API](docs/polyline.md)
+
+[`<MapView.Circle />` Component API](docs/circle.md)
 
 
 
 ## Using with the Animated API
 
+The API of this Map has been built with the intention of it being able to utilize the [Animated API](https://facebook.github.io/react-native/docs/animated.html).
 
-## Remaining Issues
+In order to get this to work, you will need to modify the `AnimatedImplementation.js` file in the
+source of react-native with [this one](https://gist.github.com/lelandrichardson/c0d938e02301f9294465).
 
+Ideally this will be possible in the near future without this modification.
 
-## Discussion Points
+### Animated Region
+
+The MapView can accept an `Animated.Region` value as its `region` prop. This allows you to utilize
+the Animated API to control the map's center and zoom.
+
+```jsx
+getInitialState() {
+  return {
+    region: new Animated.Region({
+      latitude: LATITUDE,
+      longitude: LONGITUDE,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA,
+    }),
+  };
+}
+
+onRegionChange(region) {
+  this.state.region.setValue(region);
+}
+
+render() {
+  return (
+    <MapView.Animated
+      region={this.state.region}
+      onRegionChange={this.onRegionChange}
+    />
+  );
+}
+```
+
+### Animated Marker Position
+
+Markers can also accept an `Animated.Region` value as a coordinate.
+
+```jsx
+getInitialState() {
+  return {
+    coordinate: new Animated.Region({
+      latitude: LATITUDE,
+      longitude: LONGITUDE,
+    }),
+  };
+}
+
+render() {
+  return (
+    <MapView initialRegion={...}>
+      <MapView.Marker.Animated coordinate={this.state.coordinate} />
+    </MapView>
+  );
+}
+```
 
 
 
