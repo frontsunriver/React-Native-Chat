@@ -9,20 +9,12 @@ var {
   PropTypes,
   Platform,
   NativeModules,
-  Animated,
 } = React;
 
 var resolveAssetSource = require('react-native/Libraries/Image/resolveAssetSource');
 
 var MapMarker = React.createClass({
   mixins: [NativeMethodsMixin],
-
-  viewConfig: {
-    uiViewClassName: 'AIRMapMarker',
-    validAttributes: {
-      coordinate: true,
-    },
-  },
 
   propTypes: {
     ...View.propTypes,
@@ -220,7 +212,7 @@ var MapMarker = React.createClass({
   },
 
   render: function() {
-    var image = undefined;
+    var image = null;
     if (this.props.image) {
       image = resolveAssetSource(this.props.image) || {};
       image = image.uri;
@@ -246,7 +238,5 @@ var styles = StyleSheet.create({
 });
 
 var AIRMapMarker = requireNativeComponent('AIRMapMarker', MapMarker);
-
-MapMarker.Animated = Animated.createAnimatedComponent(MapMarker);
 
 module.exports = MapMarker;
