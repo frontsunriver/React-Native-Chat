@@ -239,7 +239,6 @@ public class AirMapMarker extends AirMapFeature {
     @Override
     public void removeFromMap(GoogleMap map) {
         marker.remove();
-        marker = null;
     }
 
     private BitmapDescriptor getIcon() {
