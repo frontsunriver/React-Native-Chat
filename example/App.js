@@ -55,15 +55,14 @@ var App = React.createClass({
         {Component && <Component />}
         {Component && this.renderBackButton()}
         {!Component && (
-          <ScrollView
-            contentContainerStyle={styles.scrollview}
-            showsVerticalScrollIndicator={false}>
+          <ScrollView contentContainerStyle={styles.scrollview}>
             {examples.map(this.renderExample)}
           </ScrollView>
         )}
       </View>
     );
   },
+
 
   render() {
     return this.renderExamples([
@@ -79,6 +78,16 @@ var App = React.createClass({
       [Overlays, 'Circles, Polygons, and Polylines'],
       [DefaultMarkers, 'Default Markers'],
     ]);
+    //return <DisplayLatLng />;
+    //return <ViewsAsMarkers />;
+    //return <EventListener />;
+    //return <MarkerTypes />;
+    //return <DraggableMarkers />;
+    //return <PolygonCreator />;
+    //return <AnimatedViews />;
+    //return <Callouts />;
+    //return <Overlays />;
+    //return <DefaultMarkers />;
   },
 });
 
@@ -94,7 +103,7 @@ var styles = StyleSheet.create({
   },
   scrollview: {
     alignItems: 'center',
-    paddingVertical: 40,
+    marginTop: 60,
   },
   button: {
     flex: 1,
