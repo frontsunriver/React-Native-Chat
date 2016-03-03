@@ -77,6 +77,13 @@ public class AirMapManager extends ViewGroupManager<AirMapView> {
 
         return view;
     }
+    
+    @Override
+    public void onDropViewInstance(AirMapView view) {
+        view.onPause();
+        view.doDestroy();
+        super.onDropViewInstance(view);
+    }    
 
     private void emitMapError (String message, String type) {
         WritableMap error = Arguments.createMap();
