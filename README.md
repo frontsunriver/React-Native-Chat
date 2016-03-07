@@ -6,6 +6,14 @@ React Native Map components for iOS + Android
 
 See [Installation Instructions](docs/installation.md).
 
+## Compatibility
+
+Due to the rapid changes being made in the React Native ecosystem, we are not officially going to 
+support this module on anything but the latest version of React Native. With that said, we will do 
+our best to stay compatible with older versions as much that is practical, and the peer dependency 
+of this requirement is set to `"react-native": "*"` explicitly for this reason. If you are using 
+an older version of React Native with this module though, some features may be buggy.
+
 ## General Usage
 
 ```js
@@ -23,8 +31,26 @@ declaratively controlling features on the map.
 
 ### Rendering a Map with an initial region
 
+When you render a MapView, this one need to be in absolute position with the top, left, right and bottom props set.
+If not you gonna have a blank view.
+
+## Styles
+```jsx
+const styles = StyleSheet.create({
+  map: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+});
+```
+
+## MapView
 ```jsx
   <MapView 
+    style={ styles.map }
     initialRegion={{
       latitude: 37.78825,
       longitude: -122.4324,
