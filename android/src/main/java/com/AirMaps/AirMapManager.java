@@ -35,8 +35,7 @@ public class AirMapManager extends ViewGroupManager<AirMapView> {
     private Map<String, Integer> MAP_TYPES = MapBuilder.of(
         "standard", GoogleMap.MAP_TYPE_NORMAL,
         "satellite", GoogleMap.MAP_TYPE_SATELLITE,
-        "hybrid", GoogleMap.MAP_TYPE_HYBRID,
-        "terrain", GoogleMap.MAP_TYPE_TERRAIN
+        "hybrid", GoogleMap.MAP_TYPE_HYBRID
     );
 
     private ReactContext reactContext;
