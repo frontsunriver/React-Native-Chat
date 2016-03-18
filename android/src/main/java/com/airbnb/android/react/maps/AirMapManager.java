@@ -16,6 +16,7 @@ import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -36,15 +37,19 @@ public class AirMapManager extends ViewGroupManager<AirMapView> {
             "standard", GoogleMap.MAP_TYPE_NORMAL,
             "satellite", GoogleMap.MAP_TYPE_SATELLITE,
             "hybrid", GoogleMap.MAP_TYPE_HYBRID,
-            "terrain", GoogleMap.MAP_TYPE_TERRAIN
+            "terrain", GoogleMap.MAP_TYPE_TERRAIN,
+            "none", GoogleMap.MAP_TYPE_NONE
     );
 
     private ReactContext reactContext;
 
     private final ReactApplicationContext appContext;
 
+    protected GoogleMapOptions googleMapOptions;
+
     public AirMapManager(ReactApplicationContext context) {
         this.appContext = context;
+        this.googleMapOptions = new GoogleMapOptions();
     }
 
     @Override
@@ -63,7 +68,7 @@ public class AirMapManager extends ViewGroupManager<AirMapView> {
             emitMapError("Map initialize error", "map_init_error");
         }
 
-        return new AirMapView(context, this.appContext, this);
+        return new AirMapView(context, this.appContext, this, this.googleMapOptions);
     }
 
     @Override

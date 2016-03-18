@@ -6,6 +6,7 @@ import {
   Animated,
   requireNativeComponent,
   NativeModules,
+<<<<<<< 70a6c8a927b90df86e7092acc6e026df1a58331c
   ColorPropType,
   findNodeHandle,
 } from 'react-native';
@@ -14,6 +15,7 @@ import MapPolyline from './MapPolyline';
 import MapPolygon from './MapPolygon';
 import MapCircle from './MapCircle';
 import MapCallout from './MapCallout';
+import MapUrlTile './MapUrlTile';
 
 const viewConfig = {
   uiViewClassName: 'AIRMap',
@@ -176,6 +178,7 @@ const propTypes = {
     'satellite',
     'hybrid',
     'terrain',
+    'none',
   ]),
 
   /**
@@ -221,6 +224,14 @@ const propTypes = {
     latitudeDelta: PropTypes.number.isRequired,
     longitudeDelta: PropTypes.number.isRequired,
   }),
+
+  /**
+   * A Boolean indicating whether to use liteMode for android
+   * Default value is `false`
+   *
+   * @platform android
+   */
+  liteMode: PropTypes.bool,
 
   /**
    * Maximum size of area that can be displayed.
@@ -457,6 +468,15 @@ class MapView extends React.Component {
       };
     }
 
+    if (Platform.OS === 'android' && this.props.liteMode) {
+      return (
+        <AIRMapLite
+          ref={ref => { this.map = ref; }}
+          {...props}
+        />
+      );
+    }
+
     return (
       <AIRMap
         ref={ref => { this.map = ref; }}
@@ -477,10 +497,19 @@ const AIRMap = requireNativeComponent('AIRMap', MapView, {
   },
 });
 
+const AIRMapLite = requireNativeComponent('AIRMapLite', MapView, {
+  nativeOnly: {
+    onChange: true,
+    onMapReady: true,
+    handlePanDrag: true,
+  },
+});
+
 MapView.Marker = MapMarker;
 MapView.Polyline = MapPolyline;
 MapView.Polygon = MapPolygon;
 MapView.Circle = MapCircle;
+MapView.UrlTile = MapUrlTile;
 MapView.Callout = MapCallout;
 
 MapView.Animated = Animated.createAnimatedComponent(MapView);
