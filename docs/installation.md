@@ -16,6 +16,12 @@ or do it manually as described below:
 
 ## iOS
 
+### Cocoapods
+To install using Cocoapods, simply insert the following line into your `Podfile` and run `pod install`
+
+`pod 'react-native-maps', :path => '../node_modules/react-native-maps'`
+
+### Manually
 1. Open your project in XCode, right click on `Libraries` and click `Add
    Files to "Your Project Name"` Look under `node_modules/react-native-maps/ios` and add `AIRMaps.xcodeproj`.
 2. Add `libAIRMaps.a` to `Build Phases -> Link Binary With Libraries.
@@ -37,13 +43,11 @@ or do it manually as described below:
      project(':react-native-maps').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-maps/android')
    ```
 
-2. in `android/app/build.gradle` add the following lines. If your project requires a different version of the play services API, you may need to, for example, downgrade to 8.3.0.
+2. in `android/app/build.gradle` add:
    ```
    dependencies {
        ...
        compile project(':react-native-maps')
-       compile 'com.google.android.gms:play-services-base:8.4.0'
-       compile 'com.google.android.gms:play-services-maps:8.4.0'
    }
    ```
 
