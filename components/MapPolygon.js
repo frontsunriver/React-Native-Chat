@@ -1,15 +1,12 @@
-var React = require('react');
-var {
-  PropTypes,
-} = React;
 
-var ReactNative = require('react-native');
+var React = require('react-native');
 var {
   View,
   NativeMethodsMixin,
   requireNativeComponent,
   StyleSheet,
-} = ReactNative;
+  PropTypes,
+} = React;
 
 var MapPolygon = React.createClass({
   mixins: [NativeMethodsMixin],

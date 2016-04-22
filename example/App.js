@@ -1,12 +1,11 @@
-var React = require('react');
-var ReactNative = require('react-native');
+var React = require('react-native');
 var {
   View,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
   Text,
-} = ReactNative;
+} = React;
 var DisplayLatLng = require('./examples/DisplayLatLng');
 var ViewsAsMarkers = require('./examples/ViewsAsMarkers');
 var EventListener = require('./examples/EventListener');
