@@ -1,6 +1,6 @@
-package com.airbnb.android.react.maps.example;
+package com.airmapsexplorer;
 
-import com.airbnb.android.react.maps.MapsPackage;
+import com.AirMaps.AirPackage;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -34,8 +34,9 @@ public class MainActivity extends ReactActivity {
      */
     @Override
     protected List<ReactPackage> getPackages() {
-        return Arrays.asList(
+        return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
-            new MapsPackage());
+            new AirPackage()
+        );
     }
 }
