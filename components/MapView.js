@@ -14,7 +14,6 @@ var {
   Animated,
   requireNativeComponent,
   NativeModules,
-  ColorPropType,
 } = ReactNative;
 
 var MapMarker = require('./MapMarker');
@@ -88,34 +87,6 @@ var MapView = React.createClass({
      *
      */
     rotateEnabled: PropTypes.bool,
-
-    /**
-     * If `true` the map will be cached to an Image for performance
-     * Default value is `false`.
-     *
-     */
-    cacheEnabled: PropTypes.bool,
-
-    /**
-     * If `true` the map will be showing a loading indicator
-     * Default value is `false`.
-     *
-     */
-    loadingEnabled: PropTypes.bool,
-
-    /**
-     * Loading background color while generating map cache image or loading the map
-     * Default color is light gray.
-     *
-     */
-    loadingBackgroundColor: ColorPropType,
-
-    /**
-     * Loading indicator color while generating map cache image or loading the map
-     * Default color is gray color for iOS, theme color for Android.
-     *
-     */
-    loadingIndicatorColor: ColorPropType,
 
     /**
      * If `false` the user won't be able to change the map region being displayed.

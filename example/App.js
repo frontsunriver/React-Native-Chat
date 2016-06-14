@@ -19,8 +19,6 @@ var AnimatedMarkers = require('./examples/AnimatedMarkers');
 var Callouts = require('./examples/Callouts');
 var Overlays = require('./examples/Overlays');
 var DefaultMarkers = require('./examples/DefaultMarkers');
-var CachedMap = require('./examples/CachedMap');
-var LoadingMap = require('./examples/LoadingMap');
 var TakeSnapshot = require('./examples/TakeSnapshot');
 
 
@@ -85,8 +83,6 @@ var App = React.createClass({
       [Overlays, 'Circles, Polygons, and Polylines'],
       [DefaultMarkers, 'Default Markers'],
       [TakeSnapshot, 'Take Snapshot'],
-      [CachedMap, 'Cached Map'],
-      [LoadingMap, 'Map with loading'],
     ]);
   },
 });
