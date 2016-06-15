@@ -1,7 +1,6 @@
 package com.airbnb.android.react.maps;
 
 import android.view.View;
-import android.app.Activity;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
@@ -41,19 +40,16 @@ public class AirMapManager extends ViewGroupManager<AirMapView> {
 
     private ReactContext reactContext;
 
-    private Activity reactActivity;
     private AirMapMarkerManager markerManager;
     private AirMapPolylineManager polylineManager;
     private AirMapPolygonManager polygonManager;
     private AirMapCircleManager circleManager;
 
     public AirMapManager(
-            Activity activity,
             AirMapMarkerManager markerManager,
             AirMapPolylineManager polylineManager,
             AirMapPolygonManager polygonManager,
             AirMapCircleManager circleManager) {
-        this.reactActivity = activity;
         this.markerManager = markerManager;
         this.polylineManager = polylineManager;
         this.polygonManager = polygonManager;
@@ -68,14 +64,14 @@ public class AirMapManager extends ViewGroupManager<AirMapView> {
     @Override
     protected AirMapView createViewInstance(ThemedReactContext context) {
         reactContext = context;
+        AirMapView view = new AirMapView(context, this);
 
         try {
-            MapsInitializer.initialize(reactActivity);
+            MapsInitializer.initialize(context.getApplicationContext());
         } catch (Exception e) {
             e.printStackTrace();
             emitMapError("Map initialize error", "map_init_error");
         }
-        AirMapView view = new AirMapView(context, reactActivity, this);
 
         return view;
     }
@@ -151,6 +147,26 @@ public class AirMapManager extends ViewGroupManager<AirMapView> {
     @ReactProp(name = "rotateEnabled", defaultBoolean = false)
     public void setRotateEnabled(AirMapView view, boolean rotateEnabled) {
         view.map.getUiSettings().setRotateGesturesEnabled(rotateEnabled);
+    }
+
+    @ReactProp(name="cacheEnabled", defaultBoolean = false)
+    public void setCacheEnabled(AirMapView view, boolean cacheEnabled) {
+        view.setCacheEnabled(cacheEnabled);
+    }
+
+    @ReactProp(name="loadingEnabled", defaultBoolean = false)
+    public void setLoadingEnabled(AirMapView view, boolean loadingEnabled) {
+        view.enableMapLoading(loadingEnabled);
+    }
+
+    @ReactProp(name="loadingBackgroundColor", customType="Color")
+    public void setLoadingBackgroundColor(AirMapView view, @Nullable Integer loadingBackgroundColor) {
+        view.setLoadingBackgroundColor(loadingBackgroundColor);
+    }
+
+    @ReactProp(name="loadingIndicatorColor", customType="Color")
+    public void setLoadingIndicatorColor(AirMapView view, @Nullable Integer loadingIndicatorColor) {
+        view.setLoadingIndicatorColor(loadingIndicatorColor);
     }
 
     @ReactProp(name = "pitchEnabled", defaultBoolean = false)
@@ -262,6 +278,7 @@ public class AirMapManager extends ViewGroupManager<AirMapView> {
     }
 
     public void pushEvent(View view, String name, WritableMap data) {
+        ReactContext reactContext = (ReactContext) view.getContext();
         reactContext.getJSModule(RCTEventEmitter.class)
                 .receiveEvent(view.getId(), name, data);
     }

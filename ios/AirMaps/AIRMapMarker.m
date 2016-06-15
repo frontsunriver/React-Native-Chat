@@ -26,9 +26,7 @@
 
 - (void)reactSetFrame:(CGRect)frame
 {
-    // Make sure we use the image size when available
-    CGSize size = self.image ? self.image.size : frame.size;
-    CGRect bounds = {CGPointZero, size};
+    CGRect bounds = {CGPointZero, frame.size};
 
     // The MapView is basically in charge of figuring out the center position of the marker view. If the view changed in
     // height though, we need to compensate in such a way that the bottom of the marker stays at the same spot on the
