@@ -321,12 +321,6 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
         }
     }
 
-    public void setToolbarEnabled(boolean toolbarEnabled) {
-        if (hasPermissions()) {
-            map.getUiSettings().setMapToolbarEnabled(toolbarEnabled);
-        }
-    }
-
     public void setCacheEnabled(boolean cacheEnabled) {
         this.cacheEnabled = cacheEnabled;
         this.cacheView();

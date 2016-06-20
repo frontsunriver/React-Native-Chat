@@ -112,11 +112,6 @@ public class AirMapManager extends ViewGroupManager<AirMapView> {
         view.setShowsUserLocation(showUserLocation);
     }
 
-    @ReactProp(name = "toolbarEnabled", defaultBoolean = true)
-    public void setToolbarEnabled(AirMapView view, boolean toolbarEnabled) {
-        view.setToolbarEnabled(toolbarEnabled);
-    }
-
     // This is a private prop to improve performance of panDrag by disabling it when the callback is not set
     @ReactProp(name = "handlePanDrag", defaultBoolean = false)
     public void setHandlePanDrag(AirMapView view, boolean handlePanDrag) {

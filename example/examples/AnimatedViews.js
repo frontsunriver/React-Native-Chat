@@ -1,5 +1,4 @@
-var React = require('react');
-var ReactNative = require('react-native');
+var React = require('react-native');
 var {
   StyleSheet,
   PropTypes,
@@ -9,7 +8,7 @@ var {
   TouchableOpacity,
   Animated,
   Platform,
-} = ReactNative;
+} = React;
 
 var MapView = require('react-native-maps');
 var PanController = require('./PanController');

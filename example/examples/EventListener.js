@@ -1,5 +1,4 @@
-var React = require('react');
-var ReactNative = require('react-native');
+var React = require('react-native');
 var {
   StyleSheet,
   PropTypes,
@@ -8,7 +7,7 @@ var {
   Dimensions,
   TouchableOpacity,
   ScrollView,
-} = ReactNative;
+} = React;
 
 var MapView = require('react-native-maps');
 var PriceMarker = require('./PriceMarker');
