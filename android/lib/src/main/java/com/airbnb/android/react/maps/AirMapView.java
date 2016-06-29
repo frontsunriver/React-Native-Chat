@@ -321,6 +321,12 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
         }
     }
 
+    public void setToolbarEnabled(boolean toolbarEnabled) {
+        if (hasPermissions()) {
+            map.getUiSettings().setMapToolbarEnabled(toolbarEnabled);
+        }
+    }
+
     public void setCacheEnabled(boolean cacheEnabled) {
         this.cacheEnabled = cacheEnabled;
         this.cacheView();
@@ -604,7 +610,9 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
             this.mapLoadingProgressBar = new ProgressBar(getContext());
             this.mapLoadingProgressBar.setIndeterminate(true);
         }
-        this.setLoadingIndicatorColor(this.loadingIndicatorColor);
+        if (this.loadingIndicatorColor != null) {
+            this.setLoadingIndicatorColor(this.loadingIndicatorColor);
+        }
         return this.mapLoadingProgressBar;
     }
 
