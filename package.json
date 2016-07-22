@@ -20,17 +20,12 @@
     "google-maps",
     "mapkit"
   ],
-  "peerDependencies": {
-    "react": ">=15.2.0",
-    "react-native": ">=0.30.0"
+  "dependencies": {
+    "react": "15.2.0",
+    "react-native": "^0.29.2"
   },
   "devDependencies": {
     "react": "15.2.0",
     "react-native": "^0.29.2"
-  },
-  "rnpm": {
-    "android": {
-      "sourceDir": "./android/lib"
-    }
   }
 }
