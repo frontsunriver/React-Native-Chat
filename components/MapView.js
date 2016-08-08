@@ -455,7 +455,7 @@ const MapView = React.createClass({
   },
 });
 
-const AIRMap = requireNativeComponent('AIRMap', MapView, {
+let AIRMap = requireNativeComponent('AIRMap', MapView, {
   nativeOnly: {
     onChange: true,
     onMapReady: true,

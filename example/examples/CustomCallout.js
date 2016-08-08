@@ -1,4 +1,4 @@
-const React = require('react');
+let React = require('react');
 const ReactNative = require('react-native');
 let {
   StyleSheet,

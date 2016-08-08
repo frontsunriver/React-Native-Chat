@@ -1,4 +1,4 @@
-const React = require('react');
+let React = require('react');
 const ReactNative = require('react-native');
 let {
   StyleSheet,
@@ -11,9 +11,9 @@ let {
   Platform,
 } = ReactNative;
 
-const MapView = require('react-native-maps');
-const PanController = require('./PanController');
-const PriceMarker = require('./AnimatedPriceMarker');
+let MapView = require('react-native-maps');
+let PanController = require('./PanController');
+let PriceMarker = require('./AnimatedPriceMarker');
 
 const screen = Dimensions.get('window');
 
@@ -26,7 +26,7 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const ITEM_SPACING = 10;
 const ITEM_PREVIEW = 10;
 const ITEM_WIDTH = screen.width - 2 * ITEM_SPACING - 2 * ITEM_PREVIEW;
-const SNAP_WIDTH = ITEM_WIDTH + ITEM_SPACING;
+let SNAP_WIDTH = ITEM_WIDTH + ITEM_SPACING;
 const ITEM_PREVIEW_HEIGHT = 150;
 const SCALE_END = screen.width / ITEM_WIDTH;
 const BREAKPOINT1 = 246;
@@ -375,7 +375,8 @@ const AnimatedViews = React.createClass({
                       { scale },
                     ],
                   }]}
-                />
+                >
+                </Animated.View>
               );
             })}
           </View>

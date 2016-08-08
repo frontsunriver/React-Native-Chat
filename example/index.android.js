@@ -1,10 +1,10 @@
-const React = require('react');
+let React = require('react');
 const ReactNative = require('react-native');
 const {
   AppRegistry,
 } = ReactNative;
 
-const App = require('./App');
+let App = require('./App');
 
 const AirMapsExplorer = React.createClass({
   render() {

@@ -4,7 +4,7 @@
  */
 'use strict';
 
-const React = require('react');
+let React = require('react');
 const ReactNative = require('react-native');
 let {
   AppRegistry,
@@ -15,8 +15,8 @@ let {
   Animated,
   TouchableOpacity,
 } = ReactNative;
-const MapView = require('react-native-maps');
-const PriceMarker = require('./components/PriceMarker');
+let MapView = require('react-native-maps');
+let PriceMarker = require('./components/PriceMarker');
 
 let { width, height } = Dimensions.get('window');
 
