@@ -1,13 +1,18 @@
-import React, { PropTypes } from 'react';
-import {
+
+var React = require('react');
+var {
+  PropTypes,
+} = React;
+
+var ReactNative = require('react-native');
+var {
   View,
   NativeMethodsMixin,
   requireNativeComponent,
   StyleSheet,
-} from 'react-native';
+} = ReactNative;
 
-// eslint-disable-next-line react/prefer-es6-class
-const MapCallout = React.createClass({
+var MapCallout = React.createClass({
   mixins: [NativeMethodsMixin],
 
   propTypes: {
@@ -16,23 +21,25 @@ const MapCallout = React.createClass({
     onPress: PropTypes.func,
   },
 
-  getDefaultProps() {
+  getDefaultProps: function() {
     return {
       tooltip: false,
     };
   },
 
-  render() {
+  render: function() {
     return <AIRMapCallout {...this.props} style={[styles.callout, this.props.style]} />;
   },
 });
 
-const styles = StyleSheet.create({
+var styles = StyleSheet.create({
   callout: {
     position: 'absolute',
+    //flex: 0,
+    //backgroundColor: 'transparent',
   },
 });
 
-const AIRMapCallout = requireNativeComponent('AIRMapCallout', MapCallout);
+var AIRMapCallout = requireNativeComponent('AIRMapCallout', MapCallout);
 
 module.exports = MapCallout;

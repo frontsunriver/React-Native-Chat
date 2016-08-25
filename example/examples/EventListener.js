@@ -1,6 +1,6 @@
-let React = require('react');
-const ReactNative = require('react-native');
-let {
+var React = require('react');
+var ReactNative = require('react-native');
+var {
   StyleSheet,
   PropTypes,
   View,
@@ -10,24 +10,24 @@ let {
   ScrollView,
 } = ReactNative;
 
-let MapView = require('react-native-maps');
-let PriceMarker = require('./PriceMarker');
+var MapView = require('react-native-maps');
+var PriceMarker = require('./PriceMarker');
 
-let { width, height } = Dimensions.get('window');
+var { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / height;
 const LATITUDE = 37.78825;
 const LONGITUDE = -122.4324;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
-let id = 0;
+var id = 0;
 
-let Event = React.createClass({
+var Event = React.createClass({
   shouldComponentUpdate(nextProps) {
     return this.props.event.id !== nextProps.event.id;
   },
   render() {
-    const { event } = this.props;
+    var { event } = this.props;
     return (
       <View style={styles.event}>
         <Text style={styles.eventName}>{event.name}</Text>
@@ -37,7 +37,7 @@ let Event = React.createClass({
   },
 });
 
-const DisplayLatLng = React.createClass({
+var DisplayLatLng = React.createClass({
   getInitialState() {
     return {
       region: {
@@ -53,14 +53,14 @@ const DisplayLatLng = React.createClass({
   makeEvent(e, name) {
     return {
       id: id++,
-      name,
+      name: name,
       data: e.nativeEvent ? e.nativeEvent : e,
     };
   },
 
   recordEvent(name) {
     return e => {
-      const { events } = this.state;
+      var { events } = this.state;
       this.setState({
         events: [
           this.makeEvent(e, name),
@@ -115,7 +115,7 @@ const DisplayLatLng = React.createClass({
   },
 });
 
-let styles = StyleSheet.create({
+var styles = StyleSheet.create({
   container: {
     position: 'absolute',
     top: 0,

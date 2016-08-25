@@ -1,5 +1,12 @@
-import React, { PropTypes } from 'react';
-import {
+'use strict';
+
+var React = require('react');
+var {
+  PropTypes,
+} = React;
+
+var ReactNative = require('react-native');
+var {
   View,
   NativeMethodsMixin,
   requireNativeComponent,
@@ -7,13 +14,11 @@ import {
   Platform,
   NativeModules,
   Animated,
-  findNodeHandle,
-} from 'react-native';
+} = ReactNative;
 
-const resolveAssetSource = require('react-native/Libraries/Image/resolveAssetSource');
+var resolveAssetSource = require('react-native/Libraries/Image/resolveAssetSource');
 
-// eslint-disable-next-line react/prefer-es6-class
-const MapMarker = React.createClass({
+var MapMarker = React.createClass({
   mixins: [NativeMethodsMixin],
 
   viewConfig: {
@@ -203,19 +208,19 @@ const MapMarker = React.createClass({
 
   },
 
-  showCallout() {
+  showCallout: function() {
     this._runCommand('showCallout', []);
   },
 
-  hideCallout() {
+  hideCallout: function() {
     this._runCommand('hideCallout', []);
   },
 
-  _getHandle() {
-    return findNodeHandle(this.refs.marker);
+  _getHandle: function() {
+    return ReactNative.findNodeHandle(this.refs.marker);
   },
 
-  _runCommand(name, args) {
+  _runCommand: function (name, args) {
     switch (Platform.OS) {
       case 'android':
         NativeModules.UIManager.dispatchViewManagerCommand(
@@ -234,14 +239,12 @@ const MapMarker = React.createClass({
     }
   },
 
-  _onPress(e) {
-    if (this.props.onPress) {
-      this.props.onPress(e);
-    }
+  _onPress: function(e) {
+    this.props.onPress && this.props.onPress(e);
   },
 
-  render() {
-    let image;
+  render: function() {
+    var image = undefined;
     if (this.props.image) {
       image = resolveAssetSource(this.props.image) || {};
       image = image.uri;
@@ -259,14 +262,14 @@ const MapMarker = React.createClass({
   },
 });
 
-const styles = StyleSheet.create({
+var styles = StyleSheet.create({
   marker: {
     position: 'absolute',
     backgroundColor: 'transparent',
   },
 });
 
-const AIRMapMarker = requireNativeComponent('AIRMapMarker', MapMarker);
+var AIRMapMarker = requireNativeComponent('AIRMapMarker', MapMarker);
 
 MapMarker.Animated = Animated.createAnimatedComponent(MapMarker);
 

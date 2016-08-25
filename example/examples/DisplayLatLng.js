@@ -1,6 +1,6 @@
-let React = require('react');
-const ReactNative = require('react-native');
-let {
+var React = require('react');
+var ReactNative = require('react-native');
+var {
   StyleSheet,
   PropTypes,
   View,
@@ -9,9 +9,9 @@ let {
   TouchableOpacity,
 } = ReactNative;
 
-let MapView = require('react-native-maps');
+var MapView = require('react-native-maps');
 
-let { width, height } = Dimensions.get('window');
+var { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / height;
 const LATITUDE = 37.78825;
@@ -19,7 +19,7 @@ const LONGITUDE = -122.4324;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-const DisplayLatLng = React.createClass({
+var DisplayLatLng = React.createClass({
   getInitialState() {
     return {
       region: {
@@ -44,7 +44,7 @@ const DisplayLatLng = React.createClass({
   },
 
   randomRegion() {
-    const { region } = this.state;
+    var { region } = this.state;
     return {
       ...this.state.region,
       latitude: region.latitude + (Math.random() - 0.5) * region.latitudeDelta / 2,
@@ -64,7 +64,7 @@ const DisplayLatLng = React.createClass({
         >
         </MapView>
         <View style={[styles.bubble, styles.latlng]}>
-          <Text style={{ textAlign: 'center' }}>
+          <Text style={{ textAlign: 'center'}}>
             {`${this.state.region.latitude.toPrecision(7)}, ${this.state.region.longitude.toPrecision(7)}`}
           </Text>
         </View>
@@ -81,7 +81,7 @@ const DisplayLatLng = React.createClass({
   },
 });
 
-let styles = StyleSheet.create({
+var styles = StyleSheet.create({
   container: {
     position: 'absolute',
     top: 0,

@@ -1,23 +1,29 @@
-import React, { PropTypes } from 'react';
-import {
+'use strict';
+
+var React = require('react');
+var {
+  PropTypes,
+} = React;
+var ReactNative = require('react-native');
+var {
   EdgeInsetsPropType,
   NativeMethodsMixin,
   Platform,
+  ReactNativeViewAttributes,
   View,
   Animated,
   requireNativeComponent,
   NativeModules,
   ColorPropType,
-  findNodeHandle,
-} from 'react-native';
-import MapMarker from './MapMarker';
-import MapPolyline from './MapPolyline';
-import MapPolygon from './MapPolygon';
-import MapCircle from './MapCircle';
-import MapCallout from './MapCallout';
+} = ReactNative;
 
-// eslint-disable-next-line react/prefer-es6-class
-const MapView = React.createClass({
+var MapMarker = require('./MapMarker');
+var MapPolyline = require('./MapPolyline');
+var MapPolygon = require('./MapPolygon');
+var MapCircle = require('./MapCircle');
+var MapCallout = require('./MapCallout');
+
+var MapView = React.createClass({
   mixins: [NativeMethodsMixin],
 
   viewConfig: {
@@ -316,13 +322,13 @@ const MapView = React.createClass({
 
   },
 
-  getInitialState() {
+  getInitialState: function() {
     return {
       isReady: Platform.OS === 'ios',
     };
   },
 
-  componentDidMount() {
+  componentDidMount: function() {
     const { region, initialRegion } = this.props;
     if (region && this.state.isReady) {
       this.refs.map.setNativeProps({ region });
@@ -331,9 +337,9 @@ const MapView = React.createClass({
     }
   },
 
-  componentWillUpdate(nextProps) {
-    const a = this.__lastRegion;
-    const b = nextProps.region;
+  componentWillUpdate: function(nextProps) {
+    var a = this.__lastRegion;
+    var b = nextProps.region;
     if (!a || !b) return;
     if (
       a.latitude !== b.latitude ||
@@ -345,7 +351,7 @@ const MapView = React.createClass({
     }
   },
 
-  _onMapReady() {
+  _onMapReady: function() {
     const { region, initialRegion } = this.props;
     if (region) {
       this.refs.map.setNativeProps({ region });
@@ -355,7 +361,7 @@ const MapView = React.createClass({
     this.setState({ isReady: true });
   },
 
-  _onLayout(e) {
+  _onLayout: function(e) {
     const { region, initialRegion, onLayout } = this.props;
     const { isReady } = this.state;
     if (region && isReady && !this.__layoutCalled) {
@@ -368,7 +374,7 @@ const MapView = React.createClass({
     onLayout && onLayout(e);
   },
 
-  _onChange(event: Event) {
+  _onChange: function(event: Event) {
     this.__lastRegion = event.nativeEvent.region;
     if (event.nativeEvent.continuous) {
       this.props.onRegionChange &&
@@ -379,34 +385,34 @@ const MapView = React.createClass({
     }
   },
 
-  animateToRegion(region, duration) {
+  animateToRegion: function (region, duration) {
     this._runCommand('animateToRegion', [region, duration || 500]);
   },
 
-  animateToCoordinate(latLng, duration) {
+  animateToCoordinate: function (latLng, duration) {
     this._runCommand('animateToCoordinate', [latLng, duration || 500]);
   },
 
-  fitToElements(animated) {
+  fitToElements: function(animated) {
     this._runCommand('fitToElements', [animated]);
   },
 
-  fitToSuppliedMarkers(markers, animated) {
+  fitToSuppliedMarkers: function(markers, animated) {
     this._runCommand('fitToSuppliedMarkers', [markers, animated]);
   },
 
-  takeSnapshot(width, height, region, callback) {
+  takeSnapshot: function (width, height, region, callback) {
     if (!region) {
       region = this.props.region || this.props.initialRegion;
     }
     this._runCommand('takeSnapshot', [width, height, region, callback]);
   },
 
-  _getHandle() {
-    return findNodeHandle(this.refs.map);
+  _getHandle: function() {
+    return ReactNative.findNodeHandle(this.refs.map);
   },
 
-  _runCommand(name, args) {
+  _runCommand: function (name, args) {
     switch (Platform.OS) {
       case 'android':
         NativeModules.UIManager.dispatchViewManagerCommand(
@@ -425,7 +431,7 @@ const MapView = React.createClass({
     }
   },
 
-  render() {
+  render: function() {
     let props;
 
     if (this.state.isReady) {
@@ -458,7 +464,7 @@ const MapView = React.createClass({
   },
 });
 
-let AIRMap = requireNativeComponent('AIRMap', MapView, {
+var AIRMap = requireNativeComponent('AIRMap', MapView, {
   nativeOnly: {
     onChange: true,
     onMapReady: true,

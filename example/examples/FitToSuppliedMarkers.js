@@ -1,6 +1,6 @@
-let React = require('react');
-const ReactNative = require('react-native');
-let {
+var React = require('react');
+var ReactNative = require('react-native');
+var {
   StyleSheet,
   PropTypes,
   View,
@@ -10,10 +10,10 @@ let {
   Image,
 } = ReactNative;
 
-let MapView = require('react-native-maps');
-const PriceMarker = require('./PriceMarker');
+var MapView = require('react-native-maps');
+var PriceMarker = require('./PriceMarker');
 
-let { width, height } = Dimensions.get('window');
+var { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / height;
 const LATITUDE = 37.78825;
@@ -22,11 +22,11 @@ const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const SPACE = 0.01;
 
-const markerIDs = ['Marker1', 'Marker2', 'Marker3', 'Marker4', 'Marker5'];
-const timeout = 4000;
-let animationTimeout;
+var markerIDs = ['Marker1', 'Marker2', 'Marker3', 'Marker4', 'Marker5'];
+var timeout = 4000;
+var animationTimeout;
 
-const FocusOnMarkers = React.createClass({
+var FocusOnMarkers = React.createClass({
   getInitialState() {
     return {
       a: {
@@ -49,17 +49,17 @@ const FocusOnMarkers = React.createClass({
         latitude: LATITUDE - (SPACE * 4),
         longitude: LONGITUDE - (SPACE * 4),
       },
-    };
+    }
   },
   focusMap(markers, animated) {
-    console.log('Markers received to populate map: ' + markers);
+    console.log("Markers received to populate map: " + markers);
     this.refs.map.fitToSuppliedMarkers(markers, animated);
   },
   focus1() {
     animationTimeout = setTimeout(() => {
       this.focusMap([
         markerIDs[1],
-        markerIDs[4],
+        markerIDs[4]
       ], true);
 
       this.focus2();
@@ -69,17 +69,17 @@ const FocusOnMarkers = React.createClass({
     animationTimeout = setTimeout(() => {
       this.focusMap([
         markerIDs[2],
-        markerIDs[3],
+        markerIDs[3]
       ], false);
 
-      this.focus3();
+      this.focus3()
     }, timeout);
   },
   focus3() {
     animationTimeout = setTimeout(() => {
       this.focusMap([
         markerIDs[1],
-        markerIDs[2],
+        markerIDs[2]
       ], false);
 
       this.focus4();
@@ -89,16 +89,16 @@ const FocusOnMarkers = React.createClass({
     animationTimeout = setTimeout(() => {
       this.focusMap([
         markerIDs[0],
-        markerIDs[3],
+        markerIDs[3]
       ], true);
 
       this.focus1();
-    }, timeout);
+    }, timeout)
   },
   componentDidMount() {
     animationTimeout = setTimeout(() => {
       this.focus1();
-    }, timeout);
+    }, timeout)
   },
   componentWillUnmount() {
     if (animationTimeout) {
@@ -144,7 +144,7 @@ const FocusOnMarkers = React.createClass({
   },
 });
 
-let styles = StyleSheet.create({
+var styles = StyleSheet.create({
   container: {
     position: 'absolute',
     top: 0,

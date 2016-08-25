@@ -1,6 +1,6 @@
-let React = require('react');
-const ReactNative = require('react-native');
-let {
+var React = require('react');
+var ReactNative = require('react-native');
+var {
   StyleSheet,
   PropTypes,
   View,
@@ -10,10 +10,10 @@ let {
   Image,
 } = ReactNative;
 
-let MapView = require('react-native-maps');
-let PriceMarker = require('./PriceMarker');
+var MapView = require('react-native-maps');
+var PriceMarker = require('./PriceMarker');
 
-let { width, height } = Dimensions.get('window');
+var { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / height;
 const LATITUDE = 37.78825;
@@ -22,7 +22,7 @@ const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const SPACE = 0.01;
 
-const MarkerTypes = React.createClass({
+var MarkerTypes = React.createClass({
   getInitialState() {
     return {
       a: {
@@ -33,7 +33,7 @@ const MarkerTypes = React.createClass({
         latitude: LATITUDE - SPACE,
         longitude: LONGITUDE - SPACE,
       },
-    };
+    }
   },
   render() {
     return (
@@ -74,7 +74,7 @@ const MarkerTypes = React.createClass({
   },
 });
 
-let styles = StyleSheet.create({
+var styles = StyleSheet.create({
   container: {
     position: 'absolute',
     top: 0,

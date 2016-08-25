@@ -1,3 +1,3 @@
-const MapView = require('./components/MapView');
+var MapView = require('./components/MapView');
 
 module.exports = MapView;

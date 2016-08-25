@@ -1,6 +1,6 @@
-let React = require('react');
-const ReactNative = require('react-native');
-let {
+var React = require('react');
+var ReactNative = require('react-native');
+var {
   StyleSheet,
   PropTypes,
   View,
@@ -10,10 +10,10 @@ let {
   Image,
 } = ReactNative;
 
-let MapView = require('react-native-maps');
-const PriceMarker = require('./PriceMarker');
+var MapView = require('react-native-maps');
+var PriceMarker = require('./PriceMarker');
 
-let { width, height } = Dimensions.get('window');
+var { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / height;
 const LATITUDE = 37.78825;
@@ -22,9 +22,9 @@ const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const SPACE = 0.01;
 
-const MarkerTypes = React.createClass({
+var MarkerTypes = React.createClass({
   getInitialState() {
-    return { mapSnapshot: null };
+    return { mapSnapshot: null }
   },
 
   takeSnapshot() {
@@ -32,10 +32,10 @@ const MarkerTypes = React.createClass({
       latitude: LATITUDE - SPACE,
       longitude: LONGITUDE - SPACE,
       latitudeDelta: 0.01,
-      longitudeDelta: 0.01 * ASPECT_RATIO,
+      longitudeDelta: 0.01 * ASPECT_RATIO
     }, (err, data) => {
-      if (err) console.log(err);
-      this.setState({ mapSnapshot: data });
+      if (err) console.log(err)
+      this.setState({ mapSnapshot: data })
     });
   },
 
@@ -51,7 +51,7 @@ const MarkerTypes = React.createClass({
             latitudeDelta: LATITUDE_DELTA,
             longitudeDelta: LONGITUDE_DELTA,
           }}
-        >
+          >
           <MapView.Marker
             coordinate={{
               latitude: LATITUDE + SPACE,
@@ -60,7 +60,7 @@ const MarkerTypes = React.createClass({
             centerOffset={{ x: -18, y: -60 }}
             anchor={{ x: 0.69, y: 1 }}
             image={require('./assets/flag-blue.png')}
-          />
+            />
           <MapView.Marker
             coordinate={{
               latitude: LATITUDE - SPACE,
@@ -69,7 +69,7 @@ const MarkerTypes = React.createClass({
             centerOffset={{ x: -42, y: -60 }}
             anchor={{ x: 0.84, y: 1 }}
             image={require('./assets/flag-pink.png')}
-          />
+            />
         </MapView>
 
         <View style={styles.buttonContainer}>
@@ -80,12 +80,11 @@ const MarkerTypes = React.createClass({
         {this.state.mapSnapshot
           ? <TouchableOpacity
             style={[styles.container, styles.overlay]}
-            onPress={() => this.setState({ mapSnapshot: null })}
-          >
+            onPress={() => this.setState({ mapSnapshot: null })}>
               <Image
                 source={{ uri: this.state.mapSnapshot.uri }}
                 style={{ width: 300, height: 300 }}
-              />
+                />
             </TouchableOpacity>
             : null}
       </View>
@@ -93,7 +92,7 @@ const MarkerTypes = React.createClass({
   },
 });
 
-let styles = StyleSheet.create({
+var styles = StyleSheet.create({
   container: {
     position: 'absolute',
     top: 0,
@@ -130,7 +129,7 @@ let styles = StyleSheet.create({
   overlay: {
     backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'center',
-  },
+  }
 });
 
 module.exports = MarkerTypes;

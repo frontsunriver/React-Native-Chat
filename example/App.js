@@ -1,30 +1,30 @@
-let React = require('react');
-const ReactNative = require('react-native');
-let {
+var React = require('react');
+var ReactNative = require('react-native');
+var {
   View,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
   Text,
 } = ReactNative;
-const DisplayLatLng = require('./examples/DisplayLatLng');
-const ViewsAsMarkers = require('./examples/ViewsAsMarkers');
-const EventListener = require('./examples/EventListener');
-const MarkerTypes = require('./examples/MarkerTypes');
-const DraggableMarkers = require('./examples/DraggableMarkers');
-const PolygonCreator = require('./examples/PolygonCreator');
-const PolylineCreator = require('./examples/PolylineCreator');
-const AnimatedViews = require('./examples/AnimatedViews');
-const AnimatedMarkers = require('./examples/AnimatedMarkers');
-const Callouts = require('./examples/Callouts');
-const Overlays = require('./examples/Overlays');
-const DefaultMarkers = require('./examples/DefaultMarkers');
-const CachedMap = require('./examples/CachedMap');
-const LoadingMap = require('./examples/LoadingMap');
-const TakeSnapshot = require('./examples/TakeSnapshot');
-const FitToSuppliedMarkers = require('./examples/FitToSuppliedMarkers');
+var DisplayLatLng = require('./examples/DisplayLatLng');
+var ViewsAsMarkers = require('./examples/ViewsAsMarkers');
+var EventListener = require('./examples/EventListener');
+var MarkerTypes = require('./examples/MarkerTypes');
+var DraggableMarkers = require('./examples/DraggableMarkers');
+var PolygonCreator = require('./examples/PolygonCreator');
+var PolylineCreator = require('./examples/PolylineCreator');
+var AnimatedViews = require('./examples/AnimatedViews');
+var AnimatedMarkers = require('./examples/AnimatedMarkers');
+var Callouts = require('./examples/Callouts');
+var Overlays = require('./examples/Overlays');
+var DefaultMarkers = require('./examples/DefaultMarkers');
+var CachedMap = require('./examples/CachedMap');
+var LoadingMap = require('./examples/LoadingMap');
+var TakeSnapshot = require('./examples/TakeSnapshot');
+var FitToSuppliedMarkers = require('./examples/FitToSuppliedMarkers');
 
-const App = React.createClass({
+var App = React.createClass({
 
   getInitialState() {
     return { Component: null };
@@ -54,7 +54,7 @@ const App = React.createClass({
   },
 
   renderExamples(examples) {
-    let { Component } = this.state;
+    var { Component } = this.state;
     return (
       <View style={styles.container}>
         {Component && <Component />}
@@ -62,8 +62,7 @@ const App = React.createClass({
         {!Component && (
           <ScrollView
             contentContainerStyle={styles.scrollview}
-            showsVerticalScrollIndicator={false}
-          >
+            showsVerticalScrollIndicator={false}>
             {examples.map(this.renderExample)}
           </ScrollView>
         )}
@@ -93,7 +92,7 @@ const App = React.createClass({
   },
 });
 
-let styles = StyleSheet.create({
+var styles = StyleSheet.create({
   container: {
     position: 'absolute',
     top: 0,

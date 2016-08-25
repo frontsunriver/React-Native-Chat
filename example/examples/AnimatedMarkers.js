@@ -1,6 +1,6 @@
-let React = require('react');
-const ReactNative = require('react-native');
-let {
+var React = require('react');
+var ReactNative = require('react-native');
+var {
   StyleSheet,
   PropTypes,
   View,
@@ -11,9 +11,9 @@ let {
   Platform,
 } = ReactNative;
 
-let MapView = require('react-native-maps');
+var MapView = require('react-native-maps');
 
-const screen = Dimensions.get('window');
+var screen = Dimensions.get('window');
 
 const ASPECT_RATIO = screen.width / screen.height;
 const LATITUDE = 37.78825;
@@ -21,7 +21,7 @@ const LONGITUDE = -122.4324;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-const AnimatedMarkers = React.createClass({
+var AnimatedMarkers = React.createClass({
   getInitialState() {
     return {
       coordinate: new Animated.Region({
@@ -32,7 +32,7 @@ const AnimatedMarkers = React.createClass({
   },
 
   animate() {
-    const { coordinate } = this.state;
+    var { coordinate } = this.state;
     coordinate.timing({
       latitude: LATITUDE + (Math.random() - 0.5) * LATITUDE_DELTA / 2,
       longitude: LONGITUDE + (Math.random() - 0.5) * LONGITUDE_DELTA / 2,
@@ -66,7 +66,8 @@ const AnimatedMarkers = React.createClass({
 });
 
 
-let styles = StyleSheet.create({
+
+var styles = StyleSheet.create({
   container: {
     position: 'absolute',
     top: 0,
