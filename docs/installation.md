@@ -61,6 +61,8 @@ project(':react-native-maps').projectDir = new File(rootProject.projectDir, '../
 For React Native v0.29.0 or above:
 
 ```java
+import com.airbnb.android.react.maps.MapsPackage;
+
 public class MyApplication extends Application implements ReactApplication {
   private final ReactNativeHost reactNativeHost = new ReactNativeHost(this) {
     @Override protected List<ReactPackage> getPackages() {
@@ -146,22 +148,14 @@ If you have a blank map issue, ([#118](https://github.com/lelandrichardson/react
 ...
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+    ...StyleSheet.absoluteFillObject,
     height: 400,
     width: 400,
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
   map: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+    ...StyleSheet.absoluteFillObject,
   },
 });
 
