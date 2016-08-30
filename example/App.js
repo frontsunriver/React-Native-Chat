@@ -1,4 +1,4 @@
-let React = require('react');
+const React = require('react');
 const ReactNative = require('react-native');
 let {
   View,
@@ -24,23 +24,26 @@ const LoadingMap = require('./examples/LoadingMap');
 const TakeSnapshot = require('./examples/TakeSnapshot');
 const FitToSuppliedMarkers = require('./examples/FitToSuppliedMarkers');
 
-const App = React.createClass({
+class App extends React.Component {
+  constructor(props) {
+    super(props);
 
-  getInitialState() {
-    return { Component: null };
-  },
+    this.state = {
+      Component: null,
+    };
+  }
 
-  renderExample([Component, title], i) {
+  renderExample([Component, title]) {
     return (
       <TouchableOpacity
-        key={i}
+        key={title}
         style={styles.button}
         onPress={() => this.setState({ Component })}
       >
         <Text>{title}</Text>
       </TouchableOpacity>
     );
-  },
+  }
 
   renderBackButton() {
     return (
@@ -51,25 +54,25 @@ const App = React.createClass({
         <Text style={{ fontWeight: 'bold', fontSize: 30 }}>&larr;</Text>
       </TouchableOpacity>
     );
-  },
+  }
 
   renderExamples(examples) {
-    let { Component } = this.state;
+    const { Component } = this.state;
     return (
       <View style={styles.container}>
         {Component && <Component />}
         {Component && this.renderBackButton()}
-        {!Component && (
+        {!Component &&
           <ScrollView
             contentContainerStyle={styles.scrollview}
             showsVerticalScrollIndicator={false}
           >
-            {examples.map(this.renderExample)}
+            {examples.map(example => this.renderExample(example))}
           </ScrollView>
-        )}
+        }
       </View>
     );
-  },
+  }
 
   render() {
     return this.renderExamples([
@@ -90,10 +93,10 @@ const App = React.createClass({
       [LoadingMap, 'Map with loading'],
       [FitToSuppliedMarkers, 'Focus Map On Markers'],
     ]);
-  },
-});
+  }
+}
 
-let styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'flex-end',
