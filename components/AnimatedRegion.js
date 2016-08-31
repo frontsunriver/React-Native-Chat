@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 class AnimatedRegion extends AnimatedWithChildren {
   // latitude: AnimatedValue;
   // longitude: AnimatedValue;

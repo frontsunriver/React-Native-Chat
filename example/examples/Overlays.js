@@ -1,14 +1,18 @@
-import React from 'react';
-import {
+let React = require('react');
+const ReactNative = require('react-native');
+let {
   StyleSheet,
+  PropTypes,
   View,
   Text,
   Dimensions,
-} from 'react-native';
+  TouchableOpacity,
+  Image,
+} = ReactNative;
 
-import MapView from 'react-native-maps';
+let MapView = require('react-native-maps');
 
-const { width, height } = Dimensions.get('window');
+let { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / height;
 const LATITUDE = 37.78825;
@@ -17,11 +21,9 @@ const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const SPACE = 0.01;
 
-class Overlays extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
+const Overlays = React.createClass({
+  getInitialState() {
+    return {
       region: {
         latitude: LATITUDE,
         longitude: LONGITUDE,
@@ -55,20 +57,20 @@ class Overlays extends React.Component {
           longitude: LONGITUDE - SPACE,
         },
         {
-          latitude: LATITUDE - (2 * SPACE),
-          longitude: LONGITUDE + (2 * SPACE),
+          latitude: LATITUDE - 2 * SPACE,
+          longitude: LONGITUDE + 2 * SPACE,
         },
         {
           latitude: LATITUDE - SPACE,
           longitude: LONGITUDE - SPACE,
         },
         {
-          latitude: LATITUDE - (2 * SPACE),
+          latitude: LATITUDE - 2 * SPACE,
           longitude: LONGITUDE - SPACE,
         },
       ],
     };
-  }
+  },
 
   render() {
     const { region, circle, polygon, polyline } = this.state;
@@ -104,10 +106,10 @@ class Overlays extends React.Component {
         </View>
       </View>
     );
-  }
-}
+  },
+});
 
-const styles = StyleSheet.create({
+let styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'flex-end',

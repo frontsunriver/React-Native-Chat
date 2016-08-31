@@ -1,29 +1,27 @@
-import React from 'react';
-import {
+let React = require('react');
+const ReactNative = require('react-native');
+let {
   Text,
   View,
   Dimensions,
   StyleSheet,
   ListView,
   TouchableOpacity,
-} from 'react-native';
+} = ReactNative;
 
-import MapView from 'react-native-maps';
-import flagImg from './assets/flag-blue.png';
+let MapView = require('react-native-maps');
 
 const HORIZONTAL_PADDING = 12;
 const VERTICAL_PADDING = 6;
 
-class CachedMap extends React.Component {
-  constructor(props) {
-    super(props);
-
+const CachedMap = React.createClass({
+  getInitialState() {
     const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-    this.state = {
+    return {
       dataSource: ds.cloneWithRows(COUNTRIES),
       cache: true,
     };
-  }
+  },
 
   toggleCache() {
     // a hack to force listview to reload with the same data
@@ -34,57 +32,55 @@ class CachedMap extends React.Component {
       cache: !this.state.cache,
       dataSource: this.state.dataSource.cloneWithRows(COUNTRIES),
     });
-  }
+  },
 
   render() {
-    const { width } = Dimensions.get('window');
-    const mapSize = width - (HORIZONTAL_PADDING * 2);
+    let { width, height } = Dimensions.get('window');
     return (
       <View style={styles.container}>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            onPress={() => this.toggleCache()}
-            style={[styles.bubble, styles.button]}
-          >
+          <TouchableOpacity onPress={this.toggleCache} style={[styles.bubble, styles.button]}>
             <Text style={styles.buttonText}>{this.state.cache ? 'Cached' : 'Not cached'}</Text>
           </TouchableOpacity>
         </View>
         <ListView
           dataSource={this.state.dataSource}
-          renderRow={(region) =>
-            <View
-              style={styles.item}
-            >
-              <Text>{region.name}</Text>
-              <MapView
-                style={{
-                  width: mapSize,
-                  height: mapSize,
-                }}
-                initialRegion={region}
-                cacheEnabled={this.state.cache}
-                zoomEnabled
-                scrollingEnabled
-                loadingIndicatorColor={"#666666"}
-                loadingBackgroundColor={"#eeeeee"}
+          renderRow={(region) => {
+            return (
+              <View
+                style={styles.item}
               >
-                <MapView.Marker
-                  coordinate={region}
-                  centerOffset={{ x: -18, y: -60 }}
-                  anchor={{ x: 0.69, y: 1 }}
-                  image={flagImg}
-                />
-              </MapView>
-              <View style={styles.divider} />
-            </View>
-          }
+                <Text>{region.name}</Text>
+                <MapView
+                  style={{
+                    width: width - (HORIZONTAL_PADDING * 2),
+                    height: width - (HORIZONTAL_PADDING * 2),
+                  }}
+                  initialRegion={region}
+                  cacheEnabled={this.state.cache}
+                  zoomEnabled
+                  scrollingEnabled
+                  loadingIndicatorColor={"#666666"}
+                  loadingBackgroundColor={"#eeeeee"}
+                >
+                  <MapView.Marker
+                    coordinate={region}
+                    centerOffset={{ x: -18, y: -60 }}
+                    anchor={{ x: 0.69, y: 1 }}
+                    image={require('./assets/flag-blue.png')}
+                  />
+                </MapView>
+                <View style={styles.divider} />
+              </View>
+            );
+          }}
         />
       </View>
     );
-  }
-}
+  },
+});
 
-const styles = StyleSheet.create({
+let styles = StyleSheet.create({
   container: {
     flex: 1,
   },
@@ -1826,5 +1822,6 @@ const COUNTRIES = [
     latitudeDelta: 10.0,
   },
 ];
+
 
 module.exports = CachedMap;

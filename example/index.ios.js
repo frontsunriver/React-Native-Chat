@@ -1,11 +1,15 @@
-import React from 'react';
-import { AppRegistry } from 'react-native';
-import App from './App';
+let React = require('react');
+const ReactNative = require('react-native');
+const {
+  AppRegistry,
+} = ReactNative;
 
-class AirMapsExplorer extends React.Component {
+let App = require('./App');
+
+const AirMapsExplorer = React.createClass({
   render() {
     return <App />;
-  }
-}
+  },
+});
 
 AppRegistry.registerComponent('AirMapsExplorer', () => AirMapsExplorer);

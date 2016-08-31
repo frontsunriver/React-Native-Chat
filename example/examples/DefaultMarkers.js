@@ -1,14 +1,17 @@
-import React from 'react';
-import {
+let React = require('react');
+const ReactNative = require('react-native');
+let {
   StyleSheet,
+  PropTypes,
   View,
   Text,
   Dimensions,
-} from 'react-native';
+  TouchableOpacity,
+} = ReactNative;
 
-import MapView from 'react-native-maps';
+let MapView = require('react-native-maps');
 
-const { width, height } = Dimensions.get('window');
+let { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / height;
 const LATITUDE = 37.78825;
@@ -18,14 +21,12 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 let id = 0;
 
 function randomColor() {
-  return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+  return '#' + Math.floor(Math.random() * 16777215).toString(16);
 }
 
-class DefaultMarkers extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
+const DefaultMarkers = React.createClass({
+  getInitialState() {
+    return {
       region: {
         latitude: LATITUDE,
         longitude: LONGITUDE,
@@ -34,7 +35,7 @@ class DefaultMarkers extends React.Component {
       },
       markers: [],
     };
-  }
+  },
 
   onMapPress(e) {
     this.setState({
@@ -47,7 +48,7 @@ class DefaultMarkers extends React.Component {
         },
       ],
     });
-  }
+  },
 
   render() {
     return (
@@ -55,7 +56,7 @@ class DefaultMarkers extends React.Component {
         <MapView
           style={styles.map}
           initialRegion={this.state.region}
-          onPress={(e) => this.onMapPress(e)}
+          onPress={this.onMapPress}
         >
           {this.state.markers.map(marker => (
             <MapView.Marker
@@ -72,10 +73,10 @@ class DefaultMarkers extends React.Component {
         </View>
       </View>
     );
-  }
-}
+  },
+});
 
-const styles = StyleSheet.create({
+let styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'flex-end',

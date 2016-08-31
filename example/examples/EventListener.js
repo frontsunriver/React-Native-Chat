@@ -1,16 +1,19 @@
-import React, { PropTypes } from 'react';
-import {
+let React = require('react');
+const ReactNative = require('react-native');
+let {
   StyleSheet,
+  PropTypes,
   View,
   Text,
   Dimensions,
+  TouchableOpacity,
   ScrollView,
-} from 'react-native';
+} = ReactNative;
 
-import MapView from 'react-native-maps';
-import PriceMarker from './PriceMarker';
+let MapView = require('react-native-maps');
+let PriceMarker = require('./PriceMarker');
 
-const { width, height } = Dimensions.get('window');
+let { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / height;
 const LATITUDE = 37.78825;
@@ -19,11 +22,10 @@ const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 let id = 0;
 
-class Event extends React.Component {
+let Event = React.createClass({
   shouldComponentUpdate(nextProps) {
     return this.props.event.id !== nextProps.event.id;
-  }
-
+  },
   render() {
     const { event } = this.props;
     return (
@@ -32,20 +34,12 @@ class Event extends React.Component {
         <Text style={styles.eventData}>{JSON.stringify(event.data, null, 2)}</Text>
       </View>
     );
-  }
-}
+  },
+});
 
-Event.propTypes = {
-  event: PropTypes.object,
-};
-
-
-// eslint-disable-next-line react/no-multi-comp
-class DisplayLatLng extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
+const DisplayLatLng = React.createClass({
+  getInitialState() {
+    return {
       region: {
         latitude: LATITUDE,
         longitude: LONGITUDE,
@@ -54,7 +48,7 @@ class DisplayLatLng extends React.Component {
       },
       events: [],
     };
-  }
+  },
 
   makeEvent(e, name) {
     return {
@@ -62,7 +56,7 @@ class DisplayLatLng extends React.Component {
       name,
       data: e.nativeEvent ? e.nativeEvent : e,
     };
-  }
+  },
 
   recordEvent(name) {
     return e => {
@@ -74,12 +68,13 @@ class DisplayLatLng extends React.Component {
         ],
       });
     };
-  }
+  },
 
   render() {
     return (
       <View style={styles.container}>
         <MapView
+          ref="map"
           style={styles.map}
           initialRegion={this.state.region}
           onRegionChange={this.recordEvent('Map::onRegionChange')}
@@ -117,10 +112,10 @@ class DisplayLatLng extends React.Component {
         </View>
       </View>
     );
-  }
-}
+  },
+});
 
-const styles = StyleSheet.create({
+let styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'flex-end',

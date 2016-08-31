@@ -1,11 +1,13 @@
-/* eslint-disable */
-
-import React, { PropTypes } from 'react';
-import {
+let React = require('react');
+const ReactNative = require('react-native');
+const {
+  PropTypes,
+} = React;
+let {
   View,
   Animated,
   PanResponder,
-} from 'react-native';
+} = ReactNative;
 
 const ModePropType = PropTypes.oneOf(['decay', 'snap', 'spring-origin']);
 const OvershootPropType = PropTypes.oneOf(['spring', 'clamp']);

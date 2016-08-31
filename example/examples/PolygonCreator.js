@@ -1,15 +1,18 @@
-import React from 'react';
-import {
+let React = require('react');
+const ReactNative = require('react-native');
+let {
   StyleSheet,
+  PropTypes,
   View,
   Text,
   Dimensions,
   TouchableOpacity,
-} from 'react-native';
+} = ReactNative;
 
-import MapView from 'react-native-maps';
+let MapView = require('react-native-maps');
+const PriceMarker = require('./PriceMarker');
 
-const { width, height } = Dimensions.get('window');
+let { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / height;
 const LATITUDE = 37.78825;
@@ -18,11 +21,9 @@ const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 let id = 0;
 
-class DisplayLatLng extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
+const DisplayLatLng = React.createClass({
+  getInitialState() {
+    return {
       region: {
         latitude: LATITUDE,
         longitude: LONGITUDE,
@@ -32,15 +33,15 @@ class DisplayLatLng extends React.Component {
       polygons: [],
       editing: null,
     };
-  }
+  },
 
   finish() {
-    const { polygons, editing } = this.state;
+    let { polygons, editing } = this.state;
     this.setState({
       polygons: [...polygons, editing],
       editing: null,
     });
-  }
+  },
 
   onPress(e) {
     const { editing } = this.state;
@@ -62,7 +63,7 @@ class DisplayLatLng extends React.Component {
         },
       });
     }
-  }
+  },
 
   render() {
     const mapOptions = {
@@ -71,7 +72,7 @@ class DisplayLatLng extends React.Component {
 
     if (this.state.editing) {
       mapOptions.scrollEnabled = false;
-      mapOptions.onPanDrag = e => this.onPress(e);
+      mapOptions.onPanDrag = this.onPress;
     }
 
     return (
@@ -79,7 +80,7 @@ class DisplayLatLng extends React.Component {
         <MapView
           style={styles.map}
           initialRegion={this.state.region}
-          onPress={e => this.onPress(e)}
+          onPress={this.onPress}
           {...mapOptions}
         >
           {this.state.polygons.map(polygon => (
@@ -102,20 +103,17 @@ class DisplayLatLng extends React.Component {
         </MapView>
         <View style={styles.buttonContainer}>
           {this.state.editing && (
-            <TouchableOpacity
-              onPress={() => this.finish()}
-              style={[styles.bubble, styles.button]}
-            >
+            <TouchableOpacity onPress={this.finish} style={[styles.bubble, styles.button]}>
               <Text>Finish</Text>
             </TouchableOpacity>
           )}
         </View>
       </View>
     );
-  }
-}
+  },
+});
 
-const styles = StyleSheet.create({
+let styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'flex-end',

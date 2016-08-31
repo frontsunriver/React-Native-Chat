@@ -5,24 +5,24 @@ import {
   StyleSheet,
 } from 'react-native';
 
-const propTypes = {
-  ...View.propTypes,
-  tooltip: PropTypes.bool,
-  onPress: PropTypes.func,
-};
+// eslint-disable-next-line react/prefer-es6-class
+const MapCallout = React.createClass({
+  propTypes: {
+    ...View.propTypes,
+    tooltip: PropTypes.bool,
+    onPress: PropTypes.func,
+  },
 
-const defaultProps = {
-  tooltip: false,
-};
+  getDefaultProps() {
+    return {
+      tooltip: false,
+    };
+  },
 
-class MapCallout extends React.Component {
   render() {
     return <AIRMapCallout {...this.props} style={[styles.callout, this.props.style]} />;
-  }
-}
-
-MapCallout.propTypes = propTypes;
-MapCallout.defaultProps = defaultProps;
+  },
+});
 
 const styles = StyleSheet.create({
   callout: {

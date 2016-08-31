@@ -1,14 +1,17 @@
-import React from 'react';
-import {
+let React = require('react');
+const ReactNative = require('react-native');
+let {
   StyleSheet,
+  PropTypes,
   View,
   Text,
   Dimensions,
   TouchableOpacity,
   Animated,
-} from 'react-native';
+  Platform,
+} = ReactNative;
 
-import MapView from 'react-native-maps';
+let MapView = require('react-native-maps');
 
 const screen = Dimensions.get('window');
 
@@ -18,25 +21,23 @@ const LONGITUDE = -122.4324;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-class AnimatedMarkers extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
+const AnimatedMarkers = React.createClass({
+  getInitialState() {
+    return {
       coordinate: new Animated.Region({
         latitude: LATITUDE,
         longitude: LONGITUDE,
       }),
     };
-  }
+  },
 
   animate() {
     const { coordinate } = this.state;
     coordinate.timing({
-      latitude: LATITUDE + ((Math.random() - 0.5) * (LATITUDE_DELTA / 2)),
-      longitude: LONGITUDE + ((Math.random() - 0.5) * (LONGITUDE_DELTA / 2)),
+      latitude: LATITUDE + (Math.random() - 0.5) * LATITUDE_DELTA / 2,
+      longitude: LONGITUDE + (Math.random() - 0.5) * LONGITUDE_DELTA / 2,
     }).start();
-  }
+  },
 
   render() {
     return (
@@ -55,19 +56,17 @@ class AnimatedMarkers extends React.Component {
           />
         </MapView>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            onPress={this.animate}
-            style={[styles.bubble, styles.button]}
-          >
-            <Text>Animate</Text>
-          </TouchableOpacity>
+            <TouchableOpacity onPress={this.animate} style={[styles.bubble, styles.button]}>
+              <Text>Animate</Text>
+            </TouchableOpacity>
         </View>
       </View>
     );
-  }
-}
+  },
+});
 
-const styles = StyleSheet.create({
+
+let styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'flex-end',

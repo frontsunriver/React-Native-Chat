@@ -1,16 +1,18 @@
-import React from 'react';
-import {
+let React = require('react');
+const ReactNative = require('react-native');
+let {
   StyleSheet,
+  PropTypes,
   View,
   Text,
   Dimensions,
   TouchableOpacity,
-} from 'react-native';
+} = ReactNative;
 
-import MapView from 'react-native-maps';
-import PriceMarker from './PriceMarker';
+let MapView = require('react-native-maps');
+let PriceMarker = require('./PriceMarker');
 
-const { width, height } = Dimensions.get('window');
+let { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / height;
 const LATITUDE = 37.78825;
@@ -18,11 +20,9 @@ const LONGITUDE = -122.4324;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-class DisplayLatLng extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
+const DisplayLatLng = React.createClass({
+  getInitialState() {
+    return {
       region: {
         latitude: LATITUDE,
         longitude: LONGITUDE,
@@ -35,15 +35,15 @@ class DisplayLatLng extends React.Component {
       },
       amount: 99,
     };
-  }
+  },
 
   increment() {
     this.setState({ amount: this.state.amount + 1 });
-  }
+  },
 
   decrement() {
     this.setState({ amount: this.state.amount - 1 });
-  }
+  },
 
   render() {
     return (
@@ -57,25 +57,19 @@ class DisplayLatLng extends React.Component {
           </MapView.Marker>
         </MapView>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            onPress={() => this.decrement()}
-            style={[styles.bubble, styles.button]}
-          >
+          <TouchableOpacity onPress={this.decrement} style={[styles.bubble, styles.button]}>
             <Text style={{ fontSize: 20, fontWeight: 'bold' }}>-</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => this.increment()}
-            style={[styles.bubble, styles.button]}
-          >
+          <TouchableOpacity onPress={this.increment} style={[styles.bubble, styles.button]}>
             <Text style={{ fontSize: 20, fontWeight: 'bold' }}>+</Text>
           </TouchableOpacity>
         </View>
       </View>
     );
-  }
-}
+  },
+});
 
-const styles = StyleSheet.create({
+let styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'flex-end',

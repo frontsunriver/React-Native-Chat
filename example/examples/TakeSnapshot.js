@@ -1,18 +1,19 @@
-import React from 'react';
-import {
+let React = require('react');
+const ReactNative = require('react-native');
+let {
   StyleSheet,
+  PropTypes,
   View,
   Text,
   Dimensions,
   TouchableOpacity,
   Image,
-} from 'react-native';
+} = ReactNative;
 
-import MapView from 'react-native-maps';
-import flagBlueImg from './assets/flag-blue.png';
-import flagPinkImg from './assets/flag-pink.png';
+let MapView = require('react-native-maps');
+const PriceMarker = require('./PriceMarker');
 
-const { width, height } = Dimensions.get('window');
+let { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / height;
 const LATITUDE = 37.78825;
@@ -21,16 +22,13 @@ const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const SPACE = 0.01;
 
-class MarkerTypes extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      mapSnapshot: null,
-    };
-  }
+const MarkerTypes = React.createClass({
+  getInitialState() {
+    return { mapSnapshot: null };
+  },
 
   takeSnapshot() {
-    this.map.takeSnapshot(300, 300, {
+    this.refs.map.takeSnapshot(300, 300, {
       latitude: LATITUDE - SPACE,
       longitude: LONGITUDE - SPACE,
       latitudeDelta: 0.01,
@@ -39,13 +37,13 @@ class MarkerTypes extends React.Component {
       if (err) console.log(err);
       this.setState({ mapSnapshot: data });
     });
-  }
+  },
 
   render() {
     return (
       <View style={styles.container}>
         <MapView
-          ref={ref => { this.map = ref; }}
+          ref="map"
           style={styles.map}
           initialRegion={{
             latitude: LATITUDE,
@@ -61,7 +59,7 @@ class MarkerTypes extends React.Component {
             }}
             centerOffset={{ x: -18, y: -60 }}
             anchor={{ x: 0.69, y: 1 }}
-            image={flagBlueImg}
+            image={require('./assets/flag-blue.png')}
           />
           <MapView.Marker
             coordinate={{
@@ -70,35 +68,32 @@ class MarkerTypes extends React.Component {
             }}
             centerOffset={{ x: -42, y: -60 }}
             anchor={{ x: 0.84, y: 1 }}
-            image={flagPinkImg}
+            image={require('./assets/flag-pink.png')}
           />
         </MapView>
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            onPress={() => this.takeSnapshot()}
-            style={[styles.bubble, styles.button]}
-          >
+          <TouchableOpacity onPress={this.takeSnapshot} style={[styles.bubble, styles.button]}>
             <Text>Take snapshot</Text>
           </TouchableOpacity>
         </View>
-        {this.state.mapSnapshot &&
-          <TouchableOpacity
+        {this.state.mapSnapshot
+          ? <TouchableOpacity
             style={[styles.container, styles.overlay]}
             onPress={() => this.setState({ mapSnapshot: null })}
           >
-            <Image
-              source={{ uri: this.state.mapSnapshot.uri }}
-              style={{ width: 300, height: 300 }}
-            />
-          </TouchableOpacity>
-        }
+              <Image
+                source={{ uri: this.state.mapSnapshot.uri }}
+                style={{ width: 300, height: 300 }}
+              />
+            </TouchableOpacity>
+            : null}
       </View>
     );
-  }
-}
+  },
+});
 
-const styles = StyleSheet.create({
+let styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'flex-end',
