@@ -1,3 +1,3 @@
-var MapView = require('./components/MapView');
+import MapView from './components/MapView';
 
 module.exports = MapView;

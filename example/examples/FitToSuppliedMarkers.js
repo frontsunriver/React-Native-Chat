@@ -1,19 +1,13 @@
-var React = require('react');
-var ReactNative = require('react-native');
-var {
+import React from 'react';
+import {
   StyleSheet,
-  PropTypes,
   View,
-  Text,
   Dimensions,
-  TouchableOpacity,
-  Image,
-} = ReactNative;
+} from 'react-native';
 
-var MapView = require('react-native-maps');
-var PriceMarker = require('./PriceMarker');
+import MapView from 'react-native-maps';
 
-var { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / height;
 const LATITUDE = 37.78825;
@@ -22,13 +16,15 @@ const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const SPACE = 0.01;
 
-var markerIDs = ['Marker1', 'Marker2', 'Marker3', 'Marker4', 'Marker5'];
-var timeout = 4000;
-var animationTimeout;
+const markerIDs = ['Marker1', 'Marker2', 'Marker3', 'Marker4', 'Marker5'];
+const timeout = 4000;
+let animationTimeout;
 
-var FocusOnMarkers = React.createClass({
-  getInitialState() {
-    return {
+class FocusOnMarkers extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
       a: {
         latitude: LATITUDE + SPACE,
         longitude: LONGITUDE + SPACE,
@@ -49,67 +45,75 @@ var FocusOnMarkers = React.createClass({
         latitude: LATITUDE - (SPACE * 4),
         longitude: LONGITUDE - (SPACE * 4),
       },
-    }
-  },
-  focusMap(markers, animated) {
-    console.log("Markers received to populate map: " + markers);
-    this.refs.map.fitToSuppliedMarkers(markers, animated);
-  },
-  focus1() {
-    animationTimeout = setTimeout(() => {
-      this.focusMap([
-        markerIDs[1],
-        markerIDs[4]
-      ], true);
+    };
+  }
 
-      this.focus2();
-    }, timeout);
-  },
-  focus2() {
-    animationTimeout = setTimeout(() => {
-      this.focusMap([
-        markerIDs[2],
-        markerIDs[3]
-      ], false);
-
-      this.focus3()
-    }, timeout);
-  },
-  focus3() {
-    animationTimeout = setTimeout(() => {
-      this.focusMap([
-        markerIDs[1],
-        markerIDs[2]
-      ], false);
-
-      this.focus4();
-    }, timeout);
-  },
-  focus4() {
-    animationTimeout = setTimeout(() => {
-      this.focusMap([
-        markerIDs[0],
-        markerIDs[3]
-      ], true);
-
-      this.focus1();
-    }, timeout)
-  },
   componentDidMount() {
     animationTimeout = setTimeout(() => {
       this.focus1();
-    }, timeout)
-  },
+    }, timeout);
+  }
+
   componentWillUnmount() {
     if (animationTimeout) {
       clearTimeout(animationTimeout);
     }
-  },
+  }
+
+  focusMap(markers, animated) {
+    console.log(`Markers received to populate map: ${markers}`);
+    this.map.fitToSuppliedMarkers(markers, animated);
+  }
+
+  focus1() {
+    animationTimeout = setTimeout(() => {
+      this.focusMap([
+        markerIDs[1],
+        markerIDs[4],
+      ], true);
+
+      this.focus2();
+    }, timeout);
+  }
+
+  focus2() {
+    animationTimeout = setTimeout(() => {
+      this.focusMap([
+        markerIDs[2],
+        markerIDs[3],
+      ], false);
+
+      this.focus3();
+    }, timeout);
+  }
+
+  focus3() {
+    animationTimeout = setTimeout(() => {
+      this.focusMap([
+        markerIDs[1],
+        markerIDs[2],
+      ], false);
+
+      this.focus4();
+    }, timeout);
+  }
+
+  focus4() {
+    animationTimeout = setTimeout(() => {
+      this.focusMap([
+        markerIDs[0],
+        markerIDs[3],
+      ], true);
+
+      this.focus1();
+    }, timeout);
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <MapView
-          ref="map"
+          ref={ref => { this.map = ref; }}
           style={styles.map}
           initialRegion={{
             latitude: LATITUDE,
@@ -119,47 +123,39 @@ var FocusOnMarkers = React.createClass({
           }}
         >
           <MapView.Marker
-            identifier={'Marker1'}
+            identifier="Marker1"
             coordinate={this.state.a}
           />
           <MapView.Marker
-            identifier={'Marker2'}
+            identifier="Marker2"
             coordinate={this.state.b}
           />
           <MapView.Marker
-            identifier={'Marker3'}
+            identifier="Marker3"
             coordinate={this.state.c}
           />
           <MapView.Marker
-            identifier={'Marker4'}
+            identifier="Marker4"
             coordinate={this.state.d}
           />
           <MapView.Marker
-            identifier={'Marker5'}
+            identifier="Marker5"
             coordinate={this.state.e}
           />
         </MapView>
       </View>
     );
-  },
-});
+  }
+}
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+    ...StyleSheet.absoluteFillObject,
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
   map: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+    ...StyleSheet.absoluteFillObject,
   },
 });
 

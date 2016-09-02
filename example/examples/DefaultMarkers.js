@@ -1,17 +1,14 @@
-var React = require('react');
-var ReactNative = require('react-native');
-var {
+import React from 'react';
+import {
   StyleSheet,
-  PropTypes,
   View,
   Text,
   Dimensions,
-  TouchableOpacity,
-} = ReactNative;
+} from 'react-native';
 
-var MapView = require('react-native-maps');
+import MapView from 'react-native-maps';
 
-var { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / height;
 const LATITUDE = 37.78825;
@@ -21,12 +18,14 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 let id = 0;
 
 function randomColor() {
-  return '#'+Math.floor(Math.random()*16777215).toString(16);
+  return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
 }
 
-var DefaultMarkers = React.createClass({
-  getInitialState() {
-    return {
+class DefaultMarkers extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
       region: {
         latitude: LATITUDE,
         longitude: LONGITUDE,
@@ -35,7 +34,7 @@ var DefaultMarkers = React.createClass({
       },
       markers: [],
     };
-  },
+  }
 
   onMapPress(e) {
     this.setState({
@@ -48,7 +47,7 @@ var DefaultMarkers = React.createClass({
         },
       ],
     });
-  },
+  }
 
   render() {
     return (
@@ -56,7 +55,7 @@ var DefaultMarkers = React.createClass({
         <MapView
           style={styles.map}
           initialRegion={this.state.region}
-          onPress={this.onMapPress}
+          onPress={(e) => this.onMapPress(e)}
         >
           {this.state.markers.map(marker => (
             <MapView.Marker
@@ -73,25 +72,17 @@ var DefaultMarkers = React.createClass({
         </View>
       </View>
     );
-  },
-});
+  }
+}
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+    ...StyleSheet.absoluteFillObject,
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
   map: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+    ...StyleSheet.absoluteFillObject,
   },
   bubble: {
     backgroundColor: 'rgba(255,255,255,0.7)',

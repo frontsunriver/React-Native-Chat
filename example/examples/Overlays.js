@@ -1,18 +1,14 @@
-var React = require('react');
-var ReactNative = require('react-native');
-var {
+import React from 'react';
+import {
   StyleSheet,
-  PropTypes,
   View,
   Text,
   Dimensions,
-  TouchableOpacity,
-  Image,
-} = ReactNative;
+} from 'react-native';
 
-var MapView = require('react-native-maps');
+import MapView from 'react-native-maps';
 
-var { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / height;
 const LATITUDE = 37.78825;
@@ -21,9 +17,11 @@ const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const SPACE = 0.01;
 
-var Overlays = React.createClass({
-  getInitialState() {
-    return {
+class Overlays extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
       region: {
         latitude: LATITUDE,
         longitude: LONGITUDE,
@@ -57,20 +55,20 @@ var Overlays = React.createClass({
           longitude: LONGITUDE - SPACE,
         },
         {
-          latitude: LATITUDE - 2 * SPACE,
-          longitude: LONGITUDE + 2 * SPACE,
+          latitude: LATITUDE - (2 * SPACE),
+          longitude: LONGITUDE + (2 * SPACE),
         },
         {
           latitude: LATITUDE - SPACE,
           longitude: LONGITUDE - SPACE,
         },
         {
-          latitude: LATITUDE - 2 * SPACE,
+          latitude: LATITUDE - (2 * SPACE),
           longitude: LONGITUDE - SPACE,
         },
       ],
     };
-  },
+  }
 
   render() {
     const { region, circle, polygon, polyline } = this.state;
@@ -106,25 +104,17 @@ var Overlays = React.createClass({
         </View>
       </View>
     );
-  },
-});
+  }
+}
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+    ...StyleSheet.absoluteFillObject,
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
   map: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+    ...StyleSheet.absoluteFillObject,
   },
   bubble: {
     flex: 1,
