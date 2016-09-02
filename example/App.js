@@ -64,6 +64,7 @@ class App extends React.Component {
         {Component && this.renderBackButton()}
         {!Component &&
           <ScrollView
+            style={StyleSheet.absoluteFill}
             contentContainerStyle={styles.scrollview}
             showsVerticalScrollIndicator={false}
           >
