@@ -1,49 +1,46 @@
-import React from 'react';
-import {
+var React = require('react');
+var ReactNative = require('react-native');
+var {
   View,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
   Text,
-} from 'react-native';
+} = ReactNative;
+var DisplayLatLng = require('./examples/DisplayLatLng');
+var ViewsAsMarkers = require('./examples/ViewsAsMarkers');
+var EventListener = require('./examples/EventListener');
+var MarkerTypes = require('./examples/MarkerTypes');
+var DraggableMarkers = require('./examples/DraggableMarkers');
+var PolygonCreator = require('./examples/PolygonCreator');
+var PolylineCreator = require('./examples/PolylineCreator');
+var AnimatedViews = require('./examples/AnimatedViews');
+var AnimatedMarkers = require('./examples/AnimatedMarkers');
+var Callouts = require('./examples/Callouts');
+var Overlays = require('./examples/Overlays');
+var DefaultMarkers = require('./examples/DefaultMarkers');
+var CachedMap = require('./examples/CachedMap');
+var LoadingMap = require('./examples/LoadingMap');
+var TakeSnapshot = require('./examples/TakeSnapshot');
+var FitToSuppliedMarkers = require('./examples/FitToSuppliedMarkers');
 
-import DisplayLatLng from './examples/DisplayLatLng';
-import ViewsAsMarkers from './examples/ViewsAsMarkers';
-import EventListener from './examples/EventListener';
-import MarkerTypes from './examples/MarkerTypes';
-import DraggableMarkers from './examples/DraggableMarkers';
-import PolygonCreator from './examples/PolygonCreator';
-import PolylineCreator from './examples/PolylineCreator';
-import AnimatedViews from './examples/AnimatedViews';
-import AnimatedMarkers from './examples/AnimatedMarkers';
-import Callouts from './examples/Callouts';
-import Overlays from './examples/Overlays';
-import DefaultMarkers from './examples/DefaultMarkers';
-import CachedMap from './examples/CachedMap';
-import LoadingMap from './examples/LoadingMap';
-import TakeSnapshot from './examples/TakeSnapshot';
-import FitToSuppliedMarkers from './examples/FitToSuppliedMarkers';
+var App = React.createClass({
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
+  getInitialState() {
+    return { Component: null };
+  },
 
-    this.state = {
-      Component: null,
-    };
-  }
-
-  renderExample([Component, title]) {
+  renderExample([Component, title], i) {
     return (
       <TouchableOpacity
-        key={title}
+        key={i}
         style={styles.button}
         onPress={() => this.setState({ Component })}
       >
         <Text>{title}</Text>
       </TouchableOpacity>
     );
-  }
+  },
 
   renderBackButton() {
     return (
@@ -54,26 +51,24 @@ class App extends React.Component {
         <Text style={{ fontWeight: 'bold', fontSize: 30 }}>&larr;</Text>
       </TouchableOpacity>
     );
-  }
+  },
 
   renderExamples(examples) {
-    const { Component } = this.state;
+    var { Component } = this.state;
     return (
       <View style={styles.container}>
         {Component && <Component />}
         {Component && this.renderBackButton()}
-        {!Component &&
+        {!Component && (
           <ScrollView
-            style={StyleSheet.absoluteFill}
             contentContainerStyle={styles.scrollview}
-            showsVerticalScrollIndicator={false}
-          >
-            {examples.map(example => this.renderExample(example))}
+            showsVerticalScrollIndicator={false}>
+            {examples.map(this.renderExample)}
           </ScrollView>
-        }
+        )}
       </View>
     );
-  }
+  },
 
   render() {
     return this.renderExamples([
@@ -94,12 +89,16 @@ class App extends React.Component {
       [LoadingMap, 'Map with loading'],
       [FitToSuppliedMarkers, 'Focus Map On Markers'],
     ]);
-  }
-}
+  },
+});
 
-const styles = StyleSheet.create({
+var styles = StyleSheet.create({
   container: {
-    ...StyleSheet.absoluteFillObject,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     justifyContent: 'flex-end',
     alignItems: 'center',
   },

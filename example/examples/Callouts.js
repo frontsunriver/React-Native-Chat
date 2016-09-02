@@ -1,16 +1,20 @@
-import React from 'react';
-import {
+var React = require('react');
+var ReactNative = require('react-native');
+var {
   StyleSheet,
+  PropTypes,
   View,
   Text,
   Dimensions,
   TouchableOpacity,
-} from 'react-native';
+  Image,
+} = ReactNative;
 
-import MapView from 'react-native-maps';
-import CustomCallout from './CustomCallout';
+var MapView = require('react-native-maps');
+var PriceMarker = require('./PriceMarker');
+var CustomCallout = require('./CustomCallout');
 
-const { width, height } = Dimensions.get('window');
+var { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / height;
 const LATITUDE = 37.78825;
@@ -19,11 +23,9 @@ const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const SPACE = 0.01;
 
-class Callouts extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
+var Callouts = React.createClass({
+  getInitialState() {
+    return {
       region: {
         latitude: LATITUDE,
         longitude: LONGITUDE,
@@ -51,15 +53,15 @@ class Callouts extends React.Component {
         },
       ],
     };
-  }
+  },
 
   show() {
-    this.marker1.showCallout();
-  }
+    this.refs.m1.showCallout();
+  },
 
   hide() {
-    this.marker1.hideCallout();
-  }
+    this.refs.m1.hideCallout();
+  },
 
   render() {
     const { region, markers } = this.state;
@@ -70,14 +72,12 @@ class Callouts extends React.Component {
           initialRegion={region}
         >
           <MapView.Marker
-            ref={ref => { this.marker1 = ref; }}
+            ref="m1"
             coordinate={markers[0].coordinate}
             title="This is a title"
             description="This is a description"
           />
-          <MapView.Marker
-            coordinate={markers[1].coordinate}
-          >
+          <MapView.Marker ref="m2" coordinate={markers[1].coordinate}>
             <MapView.Callout>
               <View>
                 <Text>This is a plain view</Text>
@@ -85,6 +85,7 @@ class Callouts extends React.Component {
             </MapView.Callout>
           </MapView.Marker>
           <MapView.Marker
+            ref="m3"
             coordinate={markers[2].coordinate}
             calloutOffset={{ x: -8, y: 28 }}
             calloutAnchor={{ x: 0.5, y: 0.4 }}
@@ -102,26 +103,34 @@ class Callouts extends React.Component {
           </View>
         </View>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={() => this.show()} style={[styles.bubble, styles.button]}>
+          <TouchableOpacity onPress={this.show} style={[styles.bubble, styles.button]}>
             <Text>Show</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => this.hide()} style={[styles.bubble, styles.button]}>
+          <TouchableOpacity onPress={this.hide} style={[styles.bubble, styles.button]}>
             <Text>Hide</Text>
           </TouchableOpacity>
         </View>
       </View>
     );
-  }
-}
+  },
+});
 
-const styles = StyleSheet.create({
+var styles = StyleSheet.create({
   container: {
-    ...StyleSheet.absoluteFillObject,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
   map: {
-    ...StyleSheet.absoluteFillObject,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
   bubble: {
     flex: 1,

@@ -1,16 +1,19 @@
-import React from 'react';
-import {
+var React = require('react');
+var ReactNative = require('react-native');
+var {
   StyleSheet,
+  PropTypes,
   View,
   Text,
   Dimensions,
   TouchableOpacity,
   Animated,
-} from 'react-native';
+  Platform,
+} = ReactNative;
 
-import MapView from 'react-native-maps';
+var MapView = require('react-native-maps');
 
-const screen = Dimensions.get('window');
+var screen = Dimensions.get('window');
 
 const ASPECT_RATIO = screen.width / screen.height;
 const LATITUDE = 37.78825;
@@ -18,25 +21,23 @@ const LONGITUDE = -122.4324;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-class AnimatedMarkers extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
+var AnimatedMarkers = React.createClass({
+  getInitialState() {
+    return {
       coordinate: new Animated.Region({
         latitude: LATITUDE,
         longitude: LONGITUDE,
       }),
     };
-  }
+  },
 
   animate() {
-    const { coordinate } = this.state;
+    var { coordinate } = this.state;
     coordinate.timing({
-      latitude: LATITUDE + ((Math.random() - 0.5) * (LATITUDE_DELTA / 2)),
-      longitude: LONGITUDE + ((Math.random() - 0.5) * (LONGITUDE_DELTA / 2)),
+      latitude: LATITUDE + (Math.random() - 0.5) * LATITUDE_DELTA / 2,
+      longitude: LONGITUDE + (Math.random() - 0.5) * LONGITUDE_DELTA / 2,
     }).start();
-  }
+  },
 
   render() {
     return (
@@ -55,26 +56,33 @@ class AnimatedMarkers extends React.Component {
           />
         </MapView>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            onPress={this.animate}
-            style={[styles.bubble, styles.button]}
-          >
-            <Text>Animate</Text>
-          </TouchableOpacity>
+            <TouchableOpacity onPress={this.animate} style={[styles.bubble, styles.button]}>
+              <Text>Animate</Text>
+            </TouchableOpacity>
         </View>
       </View>
     );
-  }
-}
+  },
+});
 
-const styles = StyleSheet.create({
+
+
+var styles = StyleSheet.create({
   container: {
-    ...StyleSheet.absoluteFillObject,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
   map: {
-    ...StyleSheet.absoluteFillObject,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
   bubble: {
     flex: 1,

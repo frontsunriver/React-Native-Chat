@@ -1,15 +1,15 @@
-import React from 'react';
-import {
+var React = require('react');
+var ReactNative = require('react-native');
+var {
   Text,
   View,
   Dimensions,
   StyleSheet,
-} from 'react-native';
+} = ReactNative;
 
-import MapView from 'react-native-maps';
-import flagImg from './assets/flag-blue.png';
+var MapView = require('react-native-maps');
 
-const { width, height } = Dimensions.get('window');
+var { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / height;
 const LATITUDE = 37.78825;
@@ -18,11 +18,9 @@ const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const SPACE = 0.01;
 
-class LoadingMap extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
+var LoadingMap = React.createClass({
+  getInitialState() {
+    return {
       region: {
         latitude: LATITUDE,
         longitude: LONGITUDE,
@@ -30,7 +28,7 @@ class LoadingMap extends React.Component {
         longitudeDelta: LONGITUDE_DELTA,
       },
     };
-  }
+  },
 
   render() {
     return (
@@ -39,7 +37,7 @@ class LoadingMap extends React.Component {
           style={styles.map}
           initialRegion={this.state.region}
           onPress={this.onMapPress}
-          loadingEnabled
+          loadingEnabled={true}
           loadingIndicatorColor={"#666666"}
           loadingBackgroundColor={"#eeeeee"}
         >
@@ -50,7 +48,7 @@ class LoadingMap extends React.Component {
             }}
             centerOffset={{ x: -18, y: -60 }}
             anchor={{ x: 0.69, y: 1 }}
-            image={flagImg}
+            image={require('./assets/flag-blue.png')}
           />
           <MapView.Marker
             coordinate={{
@@ -74,17 +72,25 @@ class LoadingMap extends React.Component {
         </View>
       </View>
     );
-  }
-}
+  },
+});
 
-const styles = StyleSheet.create({
+var styles = StyleSheet.create({
   container: {
-    ...StyleSheet.absoluteFillObject,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
   map: {
-    ...StyleSheet.absoluteFillObject,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
   bubble: {
     backgroundColor: 'rgba(255,255,255,0.7)',

@@ -6,10 +6,10 @@ First, download the library from npm:
 npm install react-native-maps --save
 ```
 
-Then you must install the native dependencies. You can use `rnpm` (now part of `react-native` core) to
+Then you must install the native dependencies. You can use [`rnpm`](https://github.com/rnpm/rnpm) to
 add native dependencies automatically:
 
-`$ react-native link`
+`$ rnpm link`
 
 Go to step 4 to configure Google Maps API KEY in Android.
 
@@ -40,29 +40,20 @@ To install using Cocoapods, simply insert the following line into your `Podfile`
 
 ## Android
 
-1. in your `android/app/build.gradle` add:
+1. in your `build.gradle` add:
 ```groovy
 ...
 dependencies {
   ...
-  compile project(':react-native-maps')
+  compile 'com.airbnb.android:react-native-maps:0.7.1'
 }
 ```
 
-2. in your `android/settings.gradle` add:
-```groovy
-...
-include ':react-native-maps'
-project(':react-native-maps').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-maps/android')
-```
-
-3. in your application object, add:
-
 For React Native v0.29.0 or above:
 
-```java
-import com.airbnb.android.react.maps.MapsPackage;
+2. in your application object, add:
 
+```java
 public class MyApplication extends Application implements ReactApplication {
   private final ReactNativeHost reactNativeHost = new ReactNativeHost(this) {
     @Override protected List<ReactPackage> getPackages() {
@@ -104,7 +95,7 @@ For older versions of React Native:
 4. Specify your Google Maps API Key:
     > To develop is recommended a ***Browser Key*** without refeer restriction. Go to https://console.developers.google.com/apis/credentials to check your credentials.
 
-Add your **Browser** API key to your manifest file:
+Add your API key to your manifest file:
 
 ```xml
 <application>
@@ -112,18 +103,6 @@ Add your **Browser** API key to your manifest file:
     <meta-data
       android:name="com.google.android.geo.API_KEY"
       android:value="{{Your Google maps API Key Here}}"/>
-</application>
-```
-    > If that doesn't work try using an ***Android Key*** without refeer restriction. Go to https://console.developers.google.com/apis/credentials to check your credentials.
-
-Add your **Android** API key to your manifest file:
-
-```xml
-<application>
-    <!-- You will only need to add this meta-data tag, but make sure it's a child of application -->
-    <meta-data
-        android:name="com.google.android.maps.v2.API_KEY"
-        android:value="{{@string/ANDROID_GOOGLE_MAPS_API_KEY}}"/>
 </application>
 ```
 
@@ -148,38 +127,47 @@ If you have a blank map issue, ([#118](https://github.com/lelandrichardson/react
 ...
 const styles = StyleSheet.create({
   container: {
-    ...StyleSheet.absoluteFillObject,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     height: 400,
     width: 400,
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
   map: {
-    ...StyleSheet.absoluteFillObject,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
 });
 
-module.exports = class MyApp extends React.Component {
-  render() {
-    const { region } = this.props;
-    console.log(region);
+module.exports = React.createClass({
 
-    return (
-      <View style ={styles.container}>
-        <MapView
-          style={styles.map}
-          region={{
-            latitude: 37.78825,
-            longitude: -122.4324,
-            latitudeDelta: 0.015,
-            longitudeDelta: 0.0121,
-          }}
-        >
-        </MapView>
-      </View>
-    );
-  }
-}
+    render: function () {
+        const { region } = this.props;
+        console.log(region);
+
+        return (
+            <View style ={styles.container}>
+                <MapView
+                    style={styles.map}
+                    region={
+                        latitude: 37.78825,
+                        longitude: -122.4324,
+                        latitudeDelta: 0.015,
+                        longitudeDelta: 0.0121,
+                    }
+                    >
+                </MapView>
+            </View>
+        )
+    }
+})
 ```
 2. Run "android" and make sure every packages is updated.
 3.  If not installed yet, you have to install the following packages :

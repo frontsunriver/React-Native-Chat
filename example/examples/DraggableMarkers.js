@@ -1,14 +1,19 @@
-import React from 'react';
-import {
+var React = require('react');
+var ReactNative = require('react-native');
+var {
   StyleSheet,
+  PropTypes,
   View,
+  Text,
   Dimensions,
-} from 'react-native';
+  TouchableOpacity,
+  Image,
+} = ReactNative;
 
-import MapView from 'react-native-maps';
-import PriceMarker from './PriceMarker';
+var MapView = require('react-native-maps');
+var PriceMarker = require('./PriceMarker');
 
-const { width, height } = Dimensions.get('window');
+var { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / height;
 const LATITUDE = 37.78825;
@@ -17,11 +22,9 @@ const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const SPACE = 0.01;
 
-class MarkerTypes extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
+var MarkerTypes = React.createClass({
+  getInitialState() {
+    return {
       a: {
         latitude: LATITUDE + SPACE,
         longitude: LONGITUDE + SPACE,
@@ -30,13 +33,13 @@ class MarkerTypes extends React.Component {
         latitude: LATITUDE - SPACE,
         longitude: LONGITUDE - SPACE,
       },
-    };
-  }
-
+    }
+  },
   render() {
     return (
       <View style={styles.container}>
         <MapView
+          ref="map"
           style={styles.map}
           initialRegion={{
             latitude: LATITUDE,
@@ -68,17 +71,25 @@ class MarkerTypes extends React.Component {
         </MapView>
       </View>
     );
-  }
-}
+  },
+});
 
-const styles = StyleSheet.create({
+var styles = StyleSheet.create({
   container: {
-    ...StyleSheet.absoluteFillObject,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
   map: {
-    ...StyleSheet.absoluteFillObject,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
 });
 

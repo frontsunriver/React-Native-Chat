@@ -1,20 +1,18 @@
-/* eslint-disable */
-
 class AnimatedRegion extends AnimatedWithChildren {
-  // latitude: AnimatedValue;
-  // longitude: AnimatedValue;
-  // latitudeDelta: AnimatedValue;
-  // longitudeDelta: AnimatedValue;
-  // _listeners: {[key: string]: {
+  //latitude: AnimatedValue;
+  //longitude: AnimatedValue;
+  //latitudeDelta: AnimatedValue;
+  //longitudeDelta: AnimatedValue;
+  //_listeners: {[key: string]: {
   //  latitude: string,
   //  longitude: string,
   //  latitudeDelta: string;
   //  longitudeDelta: string,
-  // }};
+  //}};
 
   constructor(valueIn) {
     super();
-    const value = valueIn || { // probably want to come up with better defaults
+    var value = valueIn || { // probably want to come up with better defaults
       latitude: 0,
       longitude: 0,
       latitudeDelta: 0,
@@ -36,10 +34,10 @@ class AnimatedRegion extends AnimatedWithChildren {
   }
 
   setValue(value) {
-    // this.latitude.setValue(value.latitude);
-    // this.longitude.setValue(value.longitude);
-    // this.latitudeDelta.setValue(value.latitudeDelta);
-    // this.longitudeDelta.setValue(value.longitudeDelta);
+    //this.latitude.setValue(value.latitude);
+    //this.longitude.setValue(value.longitude);
+    //this.latitudeDelta.setValue(value.latitudeDelta);
+    //this.longitudeDelta.setValue(value.longitudeDelta);
     this.latitude._value = value.latitude;
     this.longitude._value = value.longitude;
     this.latitudeDelta._value = value.latitudeDelta;
@@ -92,8 +90,8 @@ class AnimatedRegion extends AnimatedWithChildren {
   }
 
   addListener(callback) {
-    const id = String(_uniqueId++);
-    const jointCallback = ({ value: number }) => {
+    var id = String(_uniqueId++);
+    var jointCallback = ({value: number}) => {
       callback(this.__getValue());
     };
     this._listeners[id] = {
@@ -114,7 +112,7 @@ class AnimatedRegion extends AnimatedWithChildren {
   }
 
   spring(config) {
-    const animations = [];
+    var animations = [];
     config.hasOwnProperty('latitude') &&
     animations.push(timing(this.latitude, {
       ...config,
@@ -143,7 +141,7 @@ class AnimatedRegion extends AnimatedWithChildren {
   }
 
   timing(config) {
-    const animations = [];
+    var animations = [];
     config.hasOwnProperty('latitude') &&
     animations.push(timing(this.latitude, {
       ...config,
