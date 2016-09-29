@@ -446,45 +446,8 @@ class MapView extends React.Component {
   }
 
   takeSnapshot(width, height, region, callback) {
-    return new Promise((resolve, reject) => {
-      let options;
-      if (typeof width === 'object') {
-        options = width;
-      } else {
-        options = {
-          width,
-          height,
-          region: region || this.props.region || this.props.initialRegion,
-        };
-      }
-      if (Platform.OS === 'android') {
-        NativeModules.AirMapModule.takeSnapshot(this._getHandle(), options).then((snapshot) => {
-          if (callback) {
-            callback(undefined, {
-              uri: snapshot,
-            });
-          }
-          resolve(snapshot);
-        }, (err) => {
-          if (callback) callback(err);
-          reject(err);
-        });
-      } else {
-        this._runCommand('takeSnapshot', [
-          options.width,
-          options.height,
-          options.region,
-          (err, snapshot) => {
-            if (callback) callback(err, snapshot);
-            if (err) {
-              reject(err);
-            } else {
-              resolve(snapshot.uri);
-            }
-          },
-        ]);
-      }
-    });
+    const finalRegion = region || this.props.region || this.props.initialRegion;
+    this._runCommand('takeSnapshot', [width, height, finalRegion, callback]);
   }
 
   _uiManagerCommand(name) {
