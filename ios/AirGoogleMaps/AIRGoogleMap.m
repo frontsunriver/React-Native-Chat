@@ -12,36 +12,13 @@
 #import "RCTConvert+MapKit.h"
 #import "UIView+React.h"
 
-id regionAsJSON(MKCoordinateRegion region) {
+id cameraPositionAsJSON(GMSCameraPosition *position) {
+  // todo: convert zoom to delta lat/lng
   return @{
-           @"latitude": [NSNumber numberWithDouble:region.center.latitude],
-           @"longitude": [NSNumber numberWithDouble:region.center.longitude],
-           @"latitudeDelta": [NSNumber numberWithDouble:region.span.latitudeDelta],
-           @"longitudeDelta": [NSNumber numberWithDouble:region.span.longitudeDelta],
+           @"latitude": [NSNumber numberWithDouble:position.target.latitude],
+           @"longitude": [NSNumber numberWithDouble:position.target.longitude],
+           @"zoom": [NSNumber numberWithDouble:position.zoom],
            };
-}
-
-MKCoordinateRegion makeMKCoordinateRegionFromGMSCameraPositionOfMap(GMSMapView *map, GMSCameraPosition *position) {
-  // solution from here: http://stackoverflow.com/a/16587735/1102215
-  GMSVisibleRegion visibleRegion = map.projection.visibleRegion;
-  GMSCoordinateBounds *bounds = [[GMSCoordinateBounds alloc] initWithRegion: visibleRegion];
-  CLLocationCoordinate2D center;
-  CLLocationDegrees longitudeDelta;
-  CLLocationDegrees latitudeDelta = bounds.northEast.latitude - bounds.southWest.latitude;
-
-  if(bounds.northEast.longitude >= bounds.southWest.longitude) {
-    //Standard case
-    center = CLLocationCoordinate2DMake((bounds.southWest.latitude + bounds.northEast.latitude) / 2,
-                                        (bounds.southWest.longitude + bounds.northEast.longitude) / 2);
-    longitudeDelta = bounds.northEast.longitude - bounds.southWest.longitude;
-  } else {
-    //Region spans the international dateline
-    center = CLLocationCoordinate2DMake((bounds.southWest.latitude + bounds.northEast.latitude) / 2,
-                                        (bounds.southWest.longitude + bounds.northEast.longitude + 360) / 2);
-    longitudeDelta = bounds.northEast.longitude + 360 - bounds.southWest.longitude;
-  }
-  MKCoordinateSpan span = MKCoordinateSpanMake(latitudeDelta, longitudeDelta);
-  return MKCoordinateRegionMake(center, span);
 }
 
 GMSCameraPosition* makeGMSCameraPositionFromMKCoordinateRegionOfMap(GMSMapView *map, MKCoordinateRegion region) {
@@ -122,13 +99,6 @@ GMSCameraPosition* makeGMSCameraPositionFromMKCoordinateRegionOfMap(GMSMapView *
 }
 #pragma clang diagnostic pop
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wobjc-missing-super-calls"
-- (NSArray<id<RCTComponent>> *)reactSubviews {
-  return _reactSubviews;
-}
-#pragma clang diagnostic pop
-
 - (void)setInitialRegion:(MKCoordinateRegion)initialRegion {
   if (_initialRegionSet) return;
   _initialRegionSet = true;
@@ -167,15 +137,14 @@ GMSCameraPosition* makeGMSCameraPositionFromMKCoordinateRegionOfMap(GMSMapView *
 
 - (void)didChangeCameraPosition:(GMSCameraPosition *)position {
   id event = @{@"continuous": @YES,
-               @"region": regionAsJSON(makeMKCoordinateRegionFromGMSCameraPositionOfMap(self, position)),
+               @"region": cameraPositionAsJSON(position),
                };
-
   if (self.onChange) self.onChange(event);
 }
 
 - (void)idleAtCameraPosition:(GMSCameraPosition *)position {
   id event = @{@"continuous": @NO,
-               @"region": regionAsJSON(makeMKCoordinateRegionFromGMSCameraPositionOfMap(self, position)),
+               @"region": cameraPositionAsJSON(position),
                };
   if (self.onChange) self.onChange(event);  // complete
 }

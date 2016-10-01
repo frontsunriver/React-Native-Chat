@@ -1,40 +1,45 @@
 /* eslint-disable */
-import {Animated} from 'react-native';
 
-const AnimatedWithChildren = Object.getPrototypeOf(Animated.ValueXY);
-if (__DEV__) {
-  if (AnimatedWithChildren.name !== 'AnimatedWithChildren') console.error('AnimatedRegion could not obtain AnimatedWithChildren base class');
-}
-// const __Animated = Object.getPrototypeOf(AnimatedWithChildren);
-// if (__Animated.name !== 'Animated') console.error('AnimatedRegion could not obtain Animated base class');
+class AnimatedRegion extends AnimatedWithChildren {
+  // latitude: AnimatedValue;
+  // longitude: AnimatedValue;
+  // latitudeDelta: AnimatedValue;
+  // longitudeDelta: AnimatedValue;
+  // _listeners: {[key: string]: {
+  //  latitude: string,
+  //  longitude: string,
+  //  latitudeDelta: string;
+  //  longitudeDelta: string,
+  // }};
 
-var _uniqueId = 1;
-
-export default class AnimatedMapRegion extends AnimatedWithChildren {
   constructor(valueIn) {
     super();
-    var value = valueIn || { // probably want to come up with better defaults
+    const value = valueIn || { // probably want to come up with better defaults
       latitude: 0,
       longitude: 0,
       latitudeDelta: 0,
-      longitudeDelta: 0
+      longitudeDelta: 0,
     };
-    this.latitude = value.latitude instanceof Animated.Value
+    this.latitude = value.latitude instanceof Animated
       ? value.latitude
-      : new Animated.Value(value.latitude);
-    this.longitude = value.longitude instanceof Animated.Value
+      : new AnimatedValue(value.latitude);
+    this.longitude = value.longitude instanceof Animated
       ? value.longitude
-      : new Animated.Value(value.longitude);
-    this.latitudeDelta = value.latitudeDelta instanceof Animated.Value
+      : new AnimatedValue(value.longitude);
+    this.latitudeDelta = value.latitudeDelta instanceof Animated
       ? value.latitudeDelta
-      : new Animated.Value(value.latitudeDelta);
-    this.longitudeDelta = value.longitudeDelta instanceof Animated.Value
+      : new AnimatedValue(value.latitudeDelta);
+    this.longitudeDelta = value.longitudeDelta instanceof Animated
       ? value.longitudeDelta
-      : new Animated.Value(value.longitudeDelta);
+      : new AnimatedValue(value.longitudeDelta);
     this._listeners = {};
   }
 
   setValue(value) {
+    // this.latitude.setValue(value.latitude);
+    // this.longitude.setValue(value.longitude);
+    // this.latitudeDelta.setValue(value.latitudeDelta);
+    // this.longitudeDelta.setValue(value.longitudeDelta);
     this.latitude._value = value.latitude;
     this.longitude._value = value.longitude;
     this.latitudeDelta._value = value.latitudeDelta;
@@ -60,7 +65,7 @@ export default class AnimatedMapRegion extends AnimatedWithChildren {
       latitude: this.latitude.__getValue(),
       longitude: this.longitude.__getValue(),
       latitudeDelta: this.latitudeDelta.__getValue(),
-      longitudeDelta: this.longitudeDelta.__getValue()
+      longitudeDelta: this.longitudeDelta.__getValue(),
     };
   }
 
@@ -87,15 +92,15 @@ export default class AnimatedMapRegion extends AnimatedWithChildren {
   }
 
   addListener(callback) {
-    var id = String(_uniqueId++);
-    var jointCallback = (/*{value}*/) => {
+    const id = String(_uniqueId++);
+    const jointCallback = ({ value: number }) => {
       callback(this.__getValue());
     };
     this._listeners[id] = {
       latitude: this.latitude.addListener(jointCallback),
       longitude: this.longitude.addListener(jointCallback),
       latitudeDelta: this.latitudeDelta.addListener(jointCallback),
-      longitudeDelta: this.longitudeDelta.addListener(jointCallback)
+      longitudeDelta: this.longitudeDelta.addListener(jointCallback),
     };
     return id;
   }
@@ -109,60 +114,60 @@ export default class AnimatedMapRegion extends AnimatedWithChildren {
   }
 
   spring(config) {
-    var animations = [];
+    const animations = [];
     config.hasOwnProperty('latitude') &&
-    animations.push(Animated.timing(this.latitude, {
+    animations.push(timing(this.latitude, {
       ...config,
-      toValue: config.latitude
+      toValue: config.latitude,
     }));
 
     config.hasOwnProperty('longitude') &&
-    animations.push(Animated.timing(this.longitude, {
+    animations.push(timing(this.longitude, {
       ...config,
-      toValue: config.longitude
+      toValue: config.longitude,
     }));
 
     config.hasOwnProperty('latitudeDelta') &&
-    animations.push(Animated.timing(this.latitudeDelta, {
+    animations.push(timing(this.latitudeDelta, {
       ...config,
-      toValue: config.latitudeDelta
+      toValue: config.latitudeDelta,
     }));
 
     config.hasOwnProperty('longitudeDelta') &&
-    animations.push(Animated.timing(this.longitudeDelta, {
+    animations.push(timing(this.longitudeDelta, {
       ...config,
-      toValue: config.longitudeDelta
+      toValue: config.longitudeDelta,
     }));
 
-    return Animated.parallel(animations);
+    return parallel(animations);
   }
 
   timing(config) {
-    var animations = [];
+    const animations = [];
     config.hasOwnProperty('latitude') &&
-    animations.push(Animated.timing(this.latitude, {
+    animations.push(timing(this.latitude, {
       ...config,
-      toValue: config.latitude
+      toValue: config.latitude,
     }));
 
     config.hasOwnProperty('longitude') &&
-    animations.push(Animated.timing(this.longitude, {
+    animations.push(timing(this.longitude, {
       ...config,
-      toValue: config.longitude
+      toValue: config.longitude,
     }));
 
     config.hasOwnProperty('latitudeDelta') &&
-    animations.push(Animated.timing(this.latitudeDelta, {
+    animations.push(timing(this.latitudeDelta, {
       ...config,
-      toValue: config.latitudeDelta
+      toValue: config.latitudeDelta,
     }));
 
     config.hasOwnProperty('longitudeDelta') &&
-    animations.push(Animated.timing(this.longitudeDelta, {
+    animations.push(timing(this.longitudeDelta, {
       ...config,
-      toValue: config.longitudeDelta
+      toValue: config.longitudeDelta,
     }));
 
-    return Animated.parallel(animations);
+    return parallel(animations);
   }
 }

@@ -4,7 +4,6 @@ import {
   View,
   Text,
   Dimensions,
-  TouchableOpacity,
 } from 'react-native';
 
 import MapView from 'react-native-maps';
@@ -68,12 +67,9 @@ class DefaultMarkers extends React.Component {
           ))}
         </MapView>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            onPress={() => this.setState({ markers: [] })}
-            style={styles.bubble}
-          >
+          <View style={styles.bubble}>
             <Text>Tap to create a marker of random color</Text>
-          </TouchableOpacity>
+          </View>
         </View>
       </View>
     );
