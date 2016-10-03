@@ -221,13 +221,10 @@ RCT_EXPORT_METHOD(fitToCoordinates:(nonnull NSNumber *)reactTag
 }
 
 RCT_EXPORT_METHOD(takeSnapshot:(nonnull NSNumber *)reactTag
-        width:(nonnull NSNumber *)width
-        height:(nonnull NSNumber *)height
-        region:(MKCoordinateRegion)region
-        format:(nonnull NSString *)format
-        quality:(nonnull NSNumber *)quality
-        result:(nonnull NSString *)result
-        callback:(RCTResponseSenderBlock)callback)
+        withWidth:(nonnull NSNumber *)width
+        withHeight:(nonnull NSNumber *)height
+        withRegion:(MKCoordinateRegion)region
+        withCallback:(RCTResponseSenderBlock)callback)
 {
     [self.bridge.uiManager addUIBlock:^(__unused RCTUIManager *uiManager, NSDictionary<NSNumber *, UIView *> *viewRegistry) {
         id view = viewRegistry[reactTag];
@@ -237,34 +234,25 @@ RCT_EXPORT_METHOD(takeSnapshot:(nonnull NSNumber *)reactTag
             AIRMap *mapView = (AIRMap *)view;
             MKMapSnapshotOptions *options = [[MKMapSnapshotOptions alloc] init];
 
-            options.region = (region.center.latitude && region.center.longitude) ? region : mapView.region;
-            options.size = CGSizeMake(
-              ([width floatValue] == 0) ? mapView.bounds.size.width : [width floatValue],
-              ([height floatValue] == 0) ? mapView.bounds.size.height : [height floatValue]
-            );
+            options.region = region;
+            options.size = CGSizeMake([width floatValue], [height floatValue]);
             options.scale = [[UIScreen mainScreen] scale];
 
             MKMapSnapshotter *snapshotter = [[MKMapSnapshotter alloc] initWithOptions:options];
 
-            [self takeMapSnapshot:mapView
-                snapshotter:snapshotter
-                format:format
-                quality:quality.floatValue
-                result:result
-                callback:callback];
+
+            [self takeMapSnapshot:mapView withSnapshotter:snapshotter withCallback:callback];
+
         }
     }];
 }
 
 #pragma mark Take Snapshot
 - (void)takeMapSnapshot:(AIRMap *)mapView
-        snapshotter:(MKMapSnapshotter *) snapshotter
-        format:(NSString *)format
-        quality:(CGFloat) quality
-        result:(NSString *)result
-        callback:(RCTResponseSenderBlock) callback {
+        withSnapshotter:(MKMapSnapshotter *) snapshotter
+        withCallback:(RCTResponseSenderBlock) callback {
     NSTimeInterval timeStamp = [[NSDate date] timeIntervalSince1970];
-    NSString *pathComponent = [NSString stringWithFormat:@"Documents/snapshot-%.20lf.%@", timeStamp, format];
+    NSString *pathComponent = [NSString stringWithFormat:@"Documents/snapshot-%.20lf.png", timeStamp];
     NSString *filePath = [NSHomeDirectory() stringByAppendingPathComponent: pathComponent];
 
     [snapshotter startWithQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
@@ -306,39 +294,13 @@ RCT_EXPORT_METHOD(takeSnapshot:(nonnull NSNumber *)reactTag
 
                       UIImage *compositeImage = UIGraphicsGetImageFromCurrentImageContext();
 
-                      NSData *data;
-                      if ([format isEqualToString:@"png"]) {                      
-                          data = UIImagePNGRepresentation(compositeImage);
-                      }
-                      else if([format isEqualToString:@"jpg"]) {
-                          data = UIImageJPEGRepresentation(compositeImage, quality);
-                      }
-
-                      if ([result isEqualToString:@"file"]) {
-                          [data writeToFile:filePath atomically:YES];
-                          callback(@[[NSNull null], filePath]);
-                      }
-                      else if ([result isEqualToString:@"base64"]) {
-                          callback(@[[NSNull null], [data base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithCarriageReturn]]);
-                      }
-                      else if ([result isEqualToString:@"legacy"]) {
-
-                          // In the initial (iOS only) implementation of takeSnapshot,
-                          // both the uri and the base64 encoded string were returned.
-                          // Returning both is rarely useful and in fact causes a 
-                          // performance penalty when only the file URI is desired.
-                          // In that case the base64 encoded string was always marshalled
-                          // over the JS-bridge (which is quite slow).
-                          // A new more flexible API was created to cover this.
-                          // This code should be removed in a future release when the
-                          // old API is fully deprecated.
-                          [data writeToFile:filePath atomically:YES];
-                          NSDictionary *snapshotData = @{
-                                                         @"uri": filePath,
-                                                         @"data": [data base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithCarriageReturn]
-                                                         };
-                          callback(@[[NSNull null], snapshotData]);
-                      }
+                      NSData *data = UIImagePNGRepresentation(compositeImage);
+                      [data writeToFile:filePath atomically:YES];
+                      NSDictionary *snapshotData = @{
+                                                     @"uri": filePath,
+                                                     @"data": [data base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithCarriageReturn]
+                                                     };
+                      callback(@[[NSNull null], snapshotData]);
                   }
                   UIGraphicsEndImageContext();
               }];
