@@ -168,14 +168,6 @@ const propTypes = {
   toolbarEnabled: PropTypes.bool,
 
   /**
-   * A Boolean indicating whether on marker press the map will move to the pressed marker
-   * Default value is `true`
-   *
-   * @platform android
-   */
-  moveOnMarkerPress: PropTypes.bool,
-
-  /**
    * A Boolean indicating whether the map shows scale information.
    * Default value is `false`
    *
