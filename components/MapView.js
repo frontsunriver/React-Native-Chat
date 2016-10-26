@@ -32,7 +32,7 @@ const MAP_TYPES = {
   NONE: 'none',
 };
 
-const GOOGLE_MAPS_ONLY_TYPES = [
+const ANDROID_ONLY_MAP_TYPES = [
   MAP_TYPES.TERRAIN,
   MAP_TYPES.NONE,
 ];
@@ -208,8 +208,7 @@ const propTypes = {
    * - standard: standard road map (default)
    * - satellite: satellite view
    * - hybrid: satellite view with roads and points of interest overlayed
-   * - terrain: topographic view
-   * - none: no base map
+   * - terrain: (Android only) topographic view
    */
   mapType: PropTypes.oneOf(Object.values(MAP_TYPES)),
 
@@ -503,9 +502,8 @@ class MapView extends React.Component {
         onMapReady: this._onMapReady,
         onLayout: this._onLayout,
       };
-      if (Platform.OS === 'ios' && props.provider === ProviderConstants.PROVIDER_DEFAULT
-        && GOOGLE_MAPS_ONLY_TYPES.includes(props.mapType)) {
-        props.mapType = MAP_TYPES.standard;
+      if (Platform.OS === 'ios' && ANDROID_ONLY_MAP_TYPES.includes(props.mapType)) {
+        props.mapType = MAP_TYPES.STANDARD;
       }
       props.handlePanDrag = !!props.onPanDrag;
     } else {
