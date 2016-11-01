@@ -15,7 +15,6 @@ import MapPolygon from './MapPolygon';
 import MapCircle from './MapCircle';
 import MapCallout from './MapCallout';
 import MapUrlTile from './MapUrlTile';
-import AnimatedRegion from './AnimatedRegion';
 import {
   contextTypes as childContextTypes,
   getAirMapName,
@@ -32,7 +31,7 @@ const MAP_TYPES = {
   NONE: 'none',
 };
 
-const GOOGLE_MAPS_ONLY_TYPES = [
+const ANDROID_ONLY_MAP_TYPES = [
   MAP_TYPES.TERRAIN,
   MAP_TYPES.NONE,
 ];
@@ -168,14 +167,6 @@ const propTypes = {
   toolbarEnabled: PropTypes.bool,
 
   /**
-   * A Boolean indicating whether on marker press the map will move to the pressed marker
-   * Default value is `true`
-   *
-   * @platform android
-   */
-  moveOnMarkerPress: PropTypes.bool,
-
-  /**
    * A Boolean indicating whether the map shows scale information.
    * Default value is `false`
    *
@@ -208,8 +199,7 @@ const propTypes = {
    * - standard: standard road map (default)
    * - satellite: satellite view
    * - hybrid: satellite view with roads and points of interest overlayed
-   * - terrain: topographic view
-   * - none: no base map
+   * - terrain: (Android only) topographic view
    */
   mapType: PropTypes.oneOf(Object.values(MAP_TYPES)),
 
@@ -455,9 +445,79 @@ class MapView extends React.Component {
     this._runCommand('fitToCoordinates', [coordinates, edgePadding, animated]);
   }
 
-  takeSnapshot(width, height, region, callback) {
-    const finalRegion = region || this.props.region || this.props.initialRegion;
-    this._runCommand('takeSnapshot', [width, height, finalRegion, callback]);
+  /**
+   * Takes a snapshot of the map and saves it to a picture
+   * file or returns the image as a base64 encoded string.
+   *
+   * @param config Configuration options
+   * @param [config.width] Width of the rendered map-view (when omitted actual view width is used).
+   * @param [config.height] Height of the rendered map-view (when omitted actual height is used).
+   * @param [config.region] Region to render (Only supported on iOS).
+   * @param [config.format] Encoding format ('png', 'jpg') (default: 'png').
+   * @param [config.quality] Compression quality (only used for jpg) (default: 1.0).
+   * @param [config.result] Result format ('file', 'base64') (default: 'file').
+   *
+   * @return Promise Promise with either the file-uri or base64 encoded string
+   */
+  takeSnapshot(args) {
+    // For the time being we support the legacy API on iOS.
+    // This will be removed in a future release and only the
+    // new Promise style API shall be supported.
+    if (Platform.OS === 'ios' && (arguments.length === 4)) {
+      console.warn('Old takeSnapshot API has been deprecated; will be removed in the near future'); //eslint-disable-line
+      const width = arguments[0]; // eslint-disable-line
+      const height = arguments[1]; // eslint-disable-line
+      const region = arguments[2]; // eslint-disable-line
+      const callback = arguments[3]; // eslint-disable-line
+      this._runCommand('takeSnapshot', [
+        width || 0,
+        height || 0,
+        region || {},
+        'png',
+        1,
+        'legacy',
+        callback,
+      ]);
+      return undefined;
+    }
+
+    // Sanitize inputs
+    const config = {
+      width: args.width || 0,
+      height: args.height || 0,
+      region: args.region || {},
+      format: args.format || 'png',
+      quality: args.quality || 1.0,
+      result: args.result || 'file',
+    };
+    if ((config.format !== 'png') &&
+        (config.format !== 'jpg')) throw new Error('Invalid format specified');
+    if ((config.result !== 'file') &&
+        (config.result !== 'base64')) throw new Error('Invalid result specified');
+
+    // Call native function
+    if (Platform.OS === 'android') {
+      return NativeModules.AirMapModule.takeSnapshot(this._getHandle(), config);
+    } else if (Platform.OS === 'ios') {
+      return new Promise((resolve, reject) => {
+        this._runCommand('takeSnapshot', [
+          config.width,
+          config.height,
+          config.region,
+          config.format,
+          config.quality,
+          config.result,
+          (err, snapshot) => {
+            if (err) {
+              reject(err);
+            } else {
+              resolve(snapshot);
+            }
+          },
+        ]);
+      });
+    }
+    return Promise.reject('takeSnapshot not supported on this platform');
   }
 
   _uiManagerCommand(name) {
@@ -503,9 +563,8 @@ class MapView extends React.Component {
         onMapReady: this._onMapReady,
         onLayout: this._onLayout,
       };
-      if (Platform.OS === 'ios' && props.provider === ProviderConstants.PROVIDER_DEFAULT
-        && GOOGLE_MAPS_ONLY_TYPES.includes(props.mapType)) {
-        props.mapType = MAP_TYPES.standard;
+      if (Platform.OS === 'ios' && ANDROID_ONLY_MAP_TYPES.includes(props.mapType)) {
+        props.mapType = MAP_TYPES.STANDARD;
       }
       props.handlePanDrag = !!props.onPanDrag;
     } else {
@@ -582,6 +641,5 @@ Object.assign(MapView, ProviderConstants);
 MapView.ProviderPropType = PropTypes.oneOf(Object.values(ProviderConstants));
 
 MapView.Animated = Animated.createAnimatedComponent(MapView);
-MapView.AnimatedRegion = AnimatedRegion;
 
 module.exports = MapView;

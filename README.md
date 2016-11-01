@@ -22,20 +22,6 @@ Since react-native 0.25.0, `React` should be required from `node_modules`.
 React Native versions from 0.18 should be working out of the box, for lower
 versions you should add `react` as a dependency in your `package.json`.
 
-## Component API
-
-[`<MapView />` Component API](docs/mapview.md)
-
-[`<MapView.Marker />` Component API](docs/marker.md)
-
-[`<MapView.Callout />` Component API](docs/callout.md)
-
-[`<MapView.Polygon />` Component API](docs/polygon.md)
-
-[`<MapView.Polyline />` Component API](docs/polyline.md)
-
-[`<MapView.Circle />` Component API](docs/circle.md)
-
 ## General Usage
 
 ```js
@@ -148,30 +134,6 @@ render() {
   />
 </MapView>
 ```
-
-### Using a custom Tile Overlay
-
-```jsx
-<MapView 
-  region={this.state.region}
-  onRegionChange={this.onRegionChange}
->
-  <MapView.UrlTile
-   /**
-   * The url template of the tile server. The patterns {x} {y} {z} will be replaced at runtime
-   * For example, http://c.tile.openstreetmap.org/{z}/{x}/{y}.png
-   */
-    urlTemplate={this.state.urlTemplate}
-  />
-</MapView>
-```
-
-For Android: add the following line in your AndroidManifest.xml
-```xml
-<uses-permission android:name="android.permission.INTERNET" />
-```
-For IOS: configure [App Transport Security](https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW33) in your app
-
 
 
 ## Examples
@@ -286,16 +248,40 @@ Enable lite mode on Android with `liteMode` prop. Ideal when having multiple map
 
 ![](http://i.giphy.com/qZ2lAf18s89na.gif)
 
+## Component API
+
+[`<MapView />` Component API](docs/mapview.md)
+
+[`<MapView.Marker />` Component API](docs/marker.md)
+
+[`<MapView.Callout />` Component API](docs/callout.md)
+
+[`<MapView.Polygon />` Component API](docs/polygon.md)
+
+[`<MapView.Polyline />` Component API](docs/polyline.md)
+
+[`<MapView.Circle />` Component API](docs/circle.md)
+
+
+
+## Using with the Animated API
+
+The API of this Map has been built with the intention of it being able to utilize the [Animated API](https://facebook.github.io/react-native/docs/animated.html).
+
+In order to get this to work, you will need to modify the `AnimatedImplementation.js` file in the
+source of react-native with [this one](https://gist.github.com/lelandrichardson/c0d938e02301f9294465).
+
+Ideally this will be possible in the near future without this modification.
+
 ### Animated Region
 
-The MapView can accept an `MapView.AnimatedRegion` value as its `region` prop. This allows you to utilize the Animated API to control the map's center and zoom.
+The MapView can accept an `Animated.Region` value as its `region` prop. This allows you to utilize
+the Animated API to control the map's center and zoom.
 
 ```jsx
-import MapView from 'react-native-maps';
-
 getInitialState() {
   return {
-    region: new MapView.AnimatedRegion({
+    region: new Animated.Region({
       latitude: LATITUDE,
       longitude: LONGITUDE,
       latitudeDelta: LATITUDE_DELTA,
@@ -320,25 +306,16 @@ render() {
 
 ### Animated Marker Position
 
-Markers can also accept an `AnimatedRegion` value as a coordinate.
+Markers can also accept an `Animated.Region` value as a coordinate.
 
 ```jsx
 getInitialState() {
   return {
-    coordinate: new MapView.AnimatedRegion({
+    coordinate: new Animated.Region({
       latitude: LATITUDE,
       longitude: LONGITUDE,
     }),
   };
-}
-
-componentWillReceiveProps(nextProps) {
-  if (this.props.coordinate !== nextProps.coordinate) {
-    this.state.coordinate.timing({
-      ...nextProps.coordinate,
-      duration: 500
-    }).start();
-  }
 }
 
 render() {
@@ -351,7 +328,6 @@ render() {
 ```
 
 ### Take Snapshot of map
-currently only for ios, android implementation WIP
 
 ```jsx
 getInitialState() {
@@ -364,11 +340,19 @@ getInitialState() {
 }
 
 takeSnapshot () {
-  // arguments to 'takeSnapshot' are width, height, coordinates and callback
-  this.refs.map.takeSnapshot(300, 300, this.state.coordinate, (err, snapshot) => {
-    // snapshot contains image 'uri' - full path to image and 'data' - base64 encoded image
-    this.setState({ mapSnapshot: snapshot })
-  })
+  // 'takeSnapshot' takes a config object with the
+  // following options
+  const snapshot = this.refs.map.takeSnapshot({
+    width: 300,      // optional, when omitted the view-width is used
+    height: 300,     // optional, when omitted the view-height is used
+    region: {..},    // iOS only, optional region to render
+    format: 'png',   // image formats: 'png', 'jpg' (default: 'png')
+    quality: 0.8,    // image quality: 0..1 (only relevant for jpg, default: 1)
+    result: 'file'   // result types: 'file', 'base64' (default: 'file')
+  });
+  snapshot.then((uri) => {
+    this.setState({ mapSnapshot: uri });
+  });
 }
 
 render() {

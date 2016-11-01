@@ -11,7 +11,6 @@
 #import "AIRGoogleMapCallout.h"
 #import "RCTImageLoader.h"
 #import "RCTUtils.h"
-#import "DummyView.h"
 
 CGRect unionRect(CGRect a, CGRect b) {
   return CGRectMake(
@@ -28,7 +27,6 @@ CGRect unionRect(CGRect a, CGRect b) {
 @implementation AIRGoogleMapMarker {
   RCTImageLoaderCancellationBlock _reloadImageCancellationBlock;
   __weak UIImageView *_iconImageView;
-  UIView *_iconView;
 }
 
 - (instancetype)init
@@ -40,28 +38,12 @@ CGRect unionRect(CGRect a, CGRect b) {
   return self;
 }
 
-- (void)layoutSubviews {
-  float width = 0;
-  float height = 0;
-
-  for (UIView *v in [_iconView subviews]) {
-
-    float fw = v.frame.origin.x + v.frame.size.width;
-    float fh = v.frame.origin.y + v.frame.size.height;
-
-    width = MAX(fw, width);
-    height = MAX(fh, height);
-  }
-
-  [_iconView setFrame:CGRectMake(0, 0, width, height)];
-}
-
 - (id)eventFromMarker:(AIRGMSMarker*)marker {
 
   CLLocationCoordinate2D coordinate = marker.position;
   CGPoint position = [self.realMarker.map.projection pointForCoordinate:coordinate];
 
-  return @{
+return @{
          @"id": marker.identifier ?: @"unknown",
          @"position": @{
              @"x": @(position.x),
@@ -74,33 +56,27 @@ CGRect unionRect(CGRect a, CGRect b) {
          };
 }
 
-- (void)iconViewInsertSubview:(UIView*)subview atIndex:(NSInteger)atIndex {
-  if (!_realMarker.iconView) {
-    _iconView = [[UIView alloc] init];
-    _realMarker.iconView = _iconView;
-  }
-  [_iconView insertSubview:subview atIndex:atIndex];
-}
-
 - (void)insertReactSubview:(id<RCTComponent>)subview atIndex:(NSInteger)atIndex {
   if ([subview isKindOfClass:[AIRGoogleMapCallout class]]) {
     self.calloutView = (AIRGoogleMapCallout *)subview;
-  } else { // a child view of the marker
-    [self iconViewInsertSubview:(UIView*)subview atIndex:atIndex+1];
+  } else {
+    // Custom UIView Marker
+    // NOTE: Originally I tried creating a new UIView here to encapsulate subview,
+    //       but it would not sizeToFit properly. Not sure why.
+    [super insertReactSubview:(UIView*)subview atIndex:atIndex];
+    [self sizeToFit];
+
+    // TODO: how to handle this circular reference properly?
+    _realMarker.iconView = self;
   }
-  DummyView *dummySubview = [[DummyView alloc] initWithView:(UIView *)subview];
-  [super insertReactSubview:(UIView*)dummySubview atIndex:atIndex];
 }
 
-- (void)removeReactSubview:(id<RCTComponent>)dummySubview {
-  UIView* subview = ((DummyView*)dummySubview).view;
-
+- (void)removeReactSubview:(id<RCTComponent>)subview {
   if ([subview isKindOfClass:[AIRGoogleMapCallout class]]) {
     self.calloutView = nil;
   } else {
-    [(UIView*)subview removeFromSuperview];
+    [super removeReactSubview:(UIView*)subview];
   }
-  [super removeReactSubview:(UIView*)dummySubview];
 }
 
 - (void)showCalloutView {
@@ -175,6 +151,7 @@ CGRect unionRect(CGRect a, CGRect b) {
 
 - (void)setImageSrc:(NSString *)imageSrc
 {
+
   _imageSrc = imageSrc;
 
   if (_reloadImageCancellationBlock) {
@@ -182,25 +159,12 @@ CGRect unionRect(CGRect a, CGRect b) {
     _reloadImageCancellationBlock = nil;
   }
 
-  if (!_imageSrc) {
-    if (_iconImageView) [_iconImageView removeFromSuperview];
-    return;
-  }
-  
-  if (!_iconImageView) {
-    // prevent glitch with marker (cf. https://github.com/airbnb/react-native-maps/issues/738)
-    UIImageView *empyImageView = [[UIImageView alloc] init];
-    _iconImageView = empyImageView;
-    [self iconViewInsertSubview:_iconImageView atIndex:0];
-  }
-  
   _reloadImageCancellationBlock = [_bridge.imageLoader loadImageWithURLRequest:[RCTConvert NSURLRequest:_imageSrc]
                                                                           size:self.bounds.size
                                                                          scale:RCTScreenScale()
                                                                        clipped:YES
                                                                     resizeMode:RCTResizeModeCenter
                                                                  progressBlock:nil
-                                                              partialLoadBlock:nil
                                                                completionBlock:^(NSError *error, UIImage *image) {
                                                                  if (error) {
                                                                    // TODO(lmr): do something with the error?
@@ -208,14 +172,11 @@ CGRect unionRect(CGRect a, CGRect b) {
                                                                  }
                                                                  dispatch_async(dispatch_get_main_queue(), ^{
 
-                                                                   // TODO(gil): This way allows different image sizes
-                                                                   if (_iconImageView) [_iconImageView removeFromSuperview];
-
-                                                                   // ... but this way is more efficient?
-//                                                                   if (_iconImageView) {
-//                                                                     [_iconImageView setImage:image];
-//                                                                     return;
-//                                                                   }
+                                                                   if (_iconImageView) {
+                                                                     // TODO: doesn't work because image is blank (WHY??)
+                                                                     [_iconImageView setImage:image];
+                                                                     return;
+                                                                   }
 
                                                                    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
 
@@ -236,7 +197,12 @@ CGRect unionRect(CGRect a, CGRect b) {
                                                                    [self setFrame:selfBounds];
 
                                                                    _iconImageView = imageView;
-                                                                   [self iconViewInsertSubview:imageView atIndex:0];
+
+                                                                   [super insertSubview:imageView atIndex:0];
+                                                                   _realMarker.iconView = self;
+
+                                                                   // TODO: This could be a prop
+                                                                   //_realMarker.groundAnchor = CGPointMake(0.75, 1);
                                                                  });
                                                                }];
 }
@@ -260,18 +226,6 @@ CGRect unionRect(CGRect a, CGRect b) {
 - (void)setPinColor:(UIColor *)pinColor {
   _pinColor = pinColor;
   _realMarker.icon = [GMSMarker markerImageWithColor:pinColor];
-}
-
-- (void)setAnchor:(CGPoint)anchor {
-  _anchor = anchor;
-  _realMarker.groundAnchor = anchor;
-}
-
-
-- (void)setZIndex:(NSInteger)zIndex
-{
-  _zIndex = zIndex;
-  _realMarker.zIndex = (int)zIndex;
 }
 
 - (void)setDraggable:(BOOL)draggable {
