@@ -1,5 +1,148 @@
 # Change Log
 
+## 0.11.0 (October 16, 2016)
+
+### Breaking Changes
+
+* Update example app for RN 0.35, fix Gmaps bug for 0.35
+  [#695](https://github.com/airbnb/react-native-maps/pull/695)
+  (@spikebrehm)
+* Upgraded to RN 0.35
+  [#680](https://github.com/airbnb/react-native-maps/pull/680)
+  (@eugenehp)
+
+### Patches
+
+* Update installation.md
+  [#696](https://github.com/airbnb/react-native-maps/pull/696)
+  (@securingsincity)
+* [android] Fixes crash during Activity onPause()
+  [#694](https://github.com/airbnb/react-native-maps/pull/694)
+  (@felipecsl)
+* Included MapUrlTile usage in README.md
+  [#687](https://github.com/airbnb/react-native-maps/pull/687)
+  (@ochanje210)
+* [android] Add parameter to disable the moving on marker press
+  [#676](https://github.com/airbnb/react-native-maps/pull/676)
+  (@mlanter)
+* Add support for setting zIndex on markers
+  [#675](https://github.com/airbnb/react-native-maps/pull/675)
+  (@mlanter)
+
+## 0.10.4 (October 31, 2016)
+
+### Patches
+
+* [iOS] implement fitToSuppliedMarkers and fitToCoordinates for google maps
+  [#750](https://github.com/airbnb/react-native-maps/pull/750)
+  (@gilbox)
+* [android] If we've disabled scrolling within the map, then don't capture the touch events
+  [#664](https://github.com/airbnb/react-native-maps/pull/664)
+  (@mikelambert)
+* [iOS] Fix Anchor point on Google Maps iOS
+  [#734](https://github.com/airbnb/react-native-maps/pull/734)
+  (@btoueg)
+* [iOS] Added showsUserLocation property support for Google Maps
+  [#721](https://github.com/airbnb/react-native-maps/pull/721)
+  (@julien-rodrigues)
+* [iOS][android] Add support for setting zIndex on markers
+  [#675](https://github.com/airbnb/react-native-maps/pull/675)
+  (@mlanter)
+* [android] Add parameter to disable the moving on marker press
+  [#676](https://github.com/airbnb/react-native-maps/pull/676)
+  (@mlanter)
+* NOTE: v0.10.3 was not published
+
+## 0.10.2 (October 19, 2016)
+
+### Patches
+
+* [android] Fixes crash during Activity onPause() (fixes #414)
+  [#694](https://github.com/airbnb/react-native-maps/pull/694)
+  (@felipecsl)
+
+## 0.10.1 (October 10, 2016)
+
+This release fixes issue [#656](https://github.com/airbnb/react-native-maps/issues/656)
+
+### Patches
+
+* [android] fix gradle build setup for explorer, bump to gradle 2.2.0
+  [#666](https://github.com/airbnb/react-native-maps/pull/666)
+  (@gilbox)
+* [android] fix getAirMapName to fix ref-based commands
+  [#665](https://github.com/airbnb/react-native-maps/pull/665)
+  (@gilbox)
+
+## 0.10.0 (October 5, 2016)
+
+### Breaking Changes
+
+* Upgrade to `react-native@0.33.0`
+
+## 0.9.0 (September 28, 2016)
+
+As of this release, this repository has moved from
+`lelandrichardson/react-native-maps` to `airbnb/react-native-maps`.
+
+### Breaking Changes
+
+* [iOS] Support Google Maps on iOS
+  [#548](https://github.com/airbnb/react-native-maps/pull/548)
+  (@gilbox)
+
+### Patches
+
+* Added support for AnimatedRegion without modifying the AnimatedImplementation.js of react-native
+  [#608](https://github.com/airbnb/react-native-maps/pull/608)
+  (@IjzerenHein)
+* [iOS] Remove pod stuff. Fix AirMaps.xcodeproj related to missing pod stuff
+  [#620](https://github.com/airbnb/react-native-maps/pull/620)
+  (@gilbox)
+* [iOS] Fix import of AIRMapSnapshot
+  [#622](https://github.com/airbnb/react-native-maps/pull/622)
+  (@spikebrehm)
+* [iOS] Fix nullability issue
+  [#614](https://github.com/airbnb/react-native-maps/pull/614)
+  (@simonmitchell)
+* [iOS] Added support for drawing polylines on snapshots on iOS
+  [#615](https://github.com/airbnb/react-native-maps/pull/615)
+  (@IjzerenHein)
+* Add `fitToCoordinates` method
+  [#545](https://github.com/airbnb/react-native-maps/pull/545)
+  (@naoufal)
+* [Android] Fix list of examples on Android
+  [#597](https://github.com/airbnb/react-native-maps/pull/597)
+  (@spikebrehm)
+* [Android] Fix overlapping map issue
+  [#589](https://github.com/airbnb/react-native-maps/pull/589)
+  (@fdnhkj)
+* Add tile overlay support
+  [#595](https://github.com/airbnb/react-native-maps/pull/595)
+  (@cascadian, @spikebrehm)
+* [Android] Support Android LiteMode
+  [#546](https://github.com/airbnb/react-native-maps/pull/546)
+  (@rops)
+* s/lelandrichardson/airbnb/
+  [#573](https://github.com/airbnb/react-native-maps/pull/573)
+  (@spikebrehm)
+* [Android] Don't fit to elements if no positions added
+  [#567](https://github.com/airbnb/react-native-maps/pull/567)
+  (@ryankask)
+* [iOS] Add class prefix to EmptyCalloutBackgroundView
+  [#563](https://github.com/airbnb/react-native-maps/pull/563)
+  (@terribleben)
+* [Android] Minor code cleanup
+  [#564](https://github.com/airbnb/react-native-maps/pull/564)
+  (@felipecsl)
+* Documentation updates
+  [#566](https://github.com/airbnb/react-native-maps/pull/566),
+  [#591](https://github.com/airbnb/react-native-maps/pull/591),
+  [#601](https://github.com/airbnb/react-native-maps/pull/601),
+  [#602](https://github.com/airbnb/react-native-maps/pull/602),
+  [#624](https://github.com/airbnb/react-native-maps/pull/624)
+  (@felipecsl, @Alastairm, @Keksike, @bbodenmiller)
+
 ## 0.8.2 (September 8, 2016)
 
 We realized immediately after publishing 0.8.1 that the NPM package contained
@@ -19,7 +162,7 @@ This error is caused by a @providesModule declaration with the same name accross
 
 ## 0.8.1 (September 8, 2016) *[DEPRECATED]*
 
-#### *NOTE: 0.8.1 has been unpublished from NPM beacuse it was faulty. Please use 0.8.2.*
+#### *NOTE: 0.8.1 has been unpublished from NPM because it was faulty. Please use 0.8.2.*
 
 ### Patches
 

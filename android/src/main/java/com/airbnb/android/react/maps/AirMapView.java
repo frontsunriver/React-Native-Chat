@@ -39,7 +39,8 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.TileOverlay;
+import com.google.android.gms.maps.model.Polygon;
+import com.google.android.gms.maps.model.Polyline;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -65,28 +66,29 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
     private boolean isMonitoringRegion = false;
     private boolean isTouchDown = false;
     private boolean handlePanDrag = false;
+    private boolean moveOnMarkerPress = true;
     private boolean cacheEnabled = false;
 
     private static final String[] PERMISSIONS = new String[] {
             "android.permission.ACCESS_FINE_LOCATION", "android.permission.ACCESS_COARSE_LOCATION"};
 
-    // TODO: don't need tileMap at all???
-    private HashMap<TileOverlay, AirMapUrlTile> tileMap = new HashMap<>();
     private final List<AirMapFeature> features = new ArrayList<>();
     private final Map<Marker, AirMapMarker> markerMap = new HashMap<>();
+    private final Map<Polyline, AirMapPolyline> polylineMap = new HashMap<>();
+    private final Map<Polygon, AirMapPolygon> polygonMap = new HashMap<>();
     private final ScaleGestureDetector scaleDetector;
     private final GestureDetectorCompat gestureDetector;
     private final AirMapManager manager;
-    private LifecycleEventListener lifecycleListener;
     private boolean paused = false;
     private final ThemedReactContext context;
     private final EventDispatcher eventDispatcher;
 
-    public AirMapView(ThemedReactContext context, Context appContext, AirMapManager manager, GoogleMapOptions googleMapOptions) {
+    public AirMapView(ThemedReactContext reactContext, Context appContext, AirMapManager manager,
+            GoogleMapOptions googleMapOptions) {
         super(appContext, googleMapOptions);
 
         this.manager = manager;
-        this.context = context;
+        this.context = reactContext;
 
         super.onCreate(null);
         super.onResume();
@@ -94,7 +96,7 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
 
         final AirMapView view = this;
         scaleDetector =
-                new ScaleGestureDetector(context, new ScaleGestureDetector.SimpleOnScaleGestureListener() {
+                new ScaleGestureDetector(reactContext, new ScaleGestureDetector.SimpleOnScaleGestureListener() {
                     @Override
                     public boolean onScaleBegin(ScaleGestureDetector detector) {
                         view.startMonitoringRegion();
@@ -103,7 +105,7 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
         });
 
         gestureDetector =
-                new GestureDetectorCompat(context, new GestureDetector.SimpleOnGestureListener() {
+                new GestureDetectorCompat(reactContext, new GestureDetector.SimpleOnGestureListener() {
                     @Override
                     public boolean onDoubleTap(MotionEvent e) {
                         view.startMonitoringRegion();
@@ -124,13 +126,13 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
         this.addOnLayoutChangeListener(new OnLayoutChangeListener() {
             @Override public void onLayoutChange(View v, int left, int top, int right, int bottom,
                 int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                if (!AirMapView.this.paused) {
+                if (!paused) {
                     AirMapView.this.cacheView();
                 }
             }
         });
 
-        eventDispatcher = context.getNativeModule(UIManagerModule.class).getEventDispatcher();
+        eventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
     }
 
     @Override
@@ -156,7 +158,34 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
                 event.putString("action", "marker-press");
                 manager.pushEvent(markerMap.get(marker), "onPress", event);
 
-                return false; // returning false opens the callout window, if possible
+                // Return false to open the callout info window and center on the marker
+                // https://developers.google.com/android/reference/com/google/android/gms/maps/GoogleMap.OnMarkerClickListener
+                if (view.moveOnMarkerPress) {
+                  return false;
+                } else {
+                  marker.showInfoWindow();
+                  return true;
+                }
+            }
+        });
+
+        map.setOnPolygonClickListener(new GoogleMap.OnPolygonClickListener() {
+            @Override
+            public void onPolygonClick(Polygon polygon) {
+                WritableMap event;
+                event = makeClickEventData(polygon.getPoints().get(0));
+                event.putString("action", "polygon-press");
+                manager.pushEvent(polygonMap.get(polygon), "onPress", event);
+            }
+        });
+
+        map.setOnPolylineClickListener(new GoogleMap.OnPolylineClickListener() {
+            @Override
+            public void onPolylineClick(Polyline polyline) {
+                WritableMap event;
+                event = makeClickEventData(polyline.getPoints().get(0));
+                event.putString("action", "polyline-press");
+                manager.pushEvent(polylineMap.get(polyline), "onPress", event);
             }
         });
 
@@ -224,36 +253,32 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
         // updating location constantly, killing the battery, even though some other location-mgmt
         // module may
         // desire to shut-down location-services.
-        lifecycleListener = new LifecycleEventListener() {
-            @Override
-            public void onHostResume() {
-                if (hasPermissions()) {
-                    //noinspection MissingPermission
-                    map.setMyLocationEnabled(showUserLocation);
-                }
-                synchronized (AirMapView.this) {
-                    AirMapView.this.onResume();
-                    paused = false;
-                }
-            }
+      LifecycleEventListener lifecycleListener = new LifecycleEventListener() {
+        @Override
+        public void onHostResume() {
+          if (hasPermissions()) {
+            //noinspection MissingPermission
+            map.setMyLocationEnabled(showUserLocation);
+          }
+          synchronized (AirMapView.this) {
+            AirMapView.this.onResume();
+            paused = false;
+          }
+        }
 
-            @Override
-            public void onHostPause() {
-                if (hasPermissions()) {
-                    //noinspection MissingPermission
-                    map.setMyLocationEnabled(false);
-                }
-                synchronized (AirMapView.this) {
-                    AirMapView.this.onPause();
-                    paused = true;
-                }
-            }
+        @Override
+        public void onHostPause() {
+          if (hasPermissions()) {
+            //noinspection MissingPermission
+            map.setMyLocationEnabled(false);
+          }
+          paused = true;
+        }
 
-            @Override
-            public void onHostDestroy() {
-                AirMapView.this.doDestroy();
-            }
-        };
+        @Override
+        public void onHostDestroy() {
+        }
+      };
 
         context.addLifecycleEventListener(lifecycleListener);
     }
@@ -261,20 +286,6 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
     private boolean hasPermissions() {
         return checkSelfPermission(getContext(), PERMISSIONS[0]) == PackageManager.PERMISSION_GRANTED ||
                 checkSelfPermission(getContext(), PERMISSIONS[1]) == PackageManager.PERMISSION_GRANTED;
-    }
-
-    /*
-    onDestroy is final method so I can't override it.
-     */
-    public synchronized void doDestroy() {
-        if (lifecycleListener != null) {
-            context.removeLifecycleEventListener(lifecycleListener);
-            lifecycleListener = null;
-        }
-        if (!paused) {
-            onPause();
-        }
-        onDestroy();
     }
 
     public void setRegion(ReadableMap region) {
@@ -330,6 +341,10 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
         if (loadingEnabled && !this.isMapLoaded) {
             this.getMapLoadingLayoutView().setVisibility(View.VISIBLE);
         }
+    }
+
+    public void setMoveOnMarkerPress(boolean moveOnPress) {
+        this.moveOnMarkerPress = moveOnPress;
     }
 
     public void setLoadingBackgroundColor(Integer loadingBackgroundColor) {
@@ -390,10 +405,14 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
             AirMapPolyline polylineView = (AirMapPolyline) child;
             polylineView.addToMap(map);
             features.add(index, polylineView);
+            Polyline polyline = (Polyline) polylineView.getFeature();
+            polylineMap.put(polyline, polylineView);
         } else if (child instanceof AirMapPolygon) {
             AirMapPolygon polygonView = (AirMapPolygon) child;
             polygonView.addToMap(map);
             features.add(index, polygonView);
+            Polygon polygon = (Polygon) polygonView.getFeature();
+            polygonMap.put(polygon, polygonView);
         } else if (child instanceof AirMapCircle) {
             AirMapCircle circleView = (AirMapCircle) child;
             circleView.addToMap(map);
@@ -402,9 +421,6 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
             AirMapUrlTile urlTileView = (AirMapUrlTile) child;
             urlTileView.addToMap(map);
             features.add(index, urlTileView);
-            TileOverlay tile = (TileOverlay)urlTileView.getFeature();
-            // TODO: don't need tileMap at all???
-            tileMap.put(tile, urlTileView);
         } else {
             // TODO(lmr): throw? User shouldn't be adding non-feature children.
         }
@@ -422,9 +438,6 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
         AirMapFeature feature = features.remove(index);
         if (feature instanceof AirMapMarker) {
             markerMap.remove(feature.getFeature());
-        } else if (feature instanceof AirMapUrlTile) {
-            // TODO: don't need tileMap at all???
-            tileMap.remove(feature.getFeature());
         }
         feature.removeFromMap(map);
     }
@@ -586,13 +599,15 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
 
         switch (action) {
             case (MotionEvent.ACTION_DOWN):
-                this.getParent().requestDisallowInterceptTouchEvent(true);
+                this.getParent().requestDisallowInterceptTouchEvent(
+                        map != null && map.getUiSettings().isScrollGesturesEnabled());
                 isTouchDown = true;
                 break;
             case (MotionEvent.ACTION_MOVE):
                 startMonitoringRegion();
                 break;
             case (MotionEvent.ACTION_UP):
+                // Clear this regardless, since isScrollGesturesEnabled() may have been updated
                 this.getParent().requestDisallowInterceptTouchEvent(false);
                 isTouchDown = false;
                 break;
