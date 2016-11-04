@@ -92,7 +92,6 @@ public class AirMapPolyline extends AirMapFeature {
     @Override
     public void addToMap(GoogleMap map) {
         polyline = map.addPolyline(getPolylineOptions());
-        polyline.setClickable(true);
     }
 
     @Override
