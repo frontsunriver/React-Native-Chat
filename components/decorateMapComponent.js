@@ -48,8 +48,8 @@ export default function decorateMapComponent(Component, { componentType, provide
     if (components[provider]) return components[provider];
 
     if (provider === PROVIDER_DEFAULT) {
-      components[PROVIDER_DEFAULT] = getDefaultComponent();
-      return components[PROVIDER_DEFAULT];
+      components.default = getDefaultComponent();
+      return components.default;
     }
 
     const providerInfo = providers[provider];
@@ -62,8 +62,8 @@ export default function decorateMapComponent(Component, { componentType, provide
         components[provider] = requireNativeComponent(componentName, Component);
       }
     } else { // (platformSupport === USES_DEFAULT_IMPLEMENTATION)
-      if (!components[PROVIDER_DEFAULT]) components[PROVIDER_DEFAULT] = getDefaultComponent();
-      components[provider] = components[PROVIDER_DEFAULT];
+      if (!components.default) components.default = getDefaultComponent();
+      components[provider] = components.default;
     }
 
     return components[provider];
