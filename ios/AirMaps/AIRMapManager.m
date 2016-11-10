@@ -352,10 +352,10 @@ RCT_EXPORT_METHOD(takeSnapshot:(nonnull NSNumber *)reactTag
             AIRMapPolyline *polyline = (AIRMapPolyline*) overlay;
             if (polyline.onPress) {
                 float distance = [self distanceOfPoint:MKMapPointForCoordinate(tapCoordinate)
-                                          toPoly:polyline];
+                                          toPoly:overlay];
                 if (distance < nearestDistance) {
                     nearestDistance = distance;
-                    nearestPolyline = polyline;
+                    nearestPolyline = overlay;
                 }
             }
         }
