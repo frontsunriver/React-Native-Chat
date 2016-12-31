@@ -7,19 +7,18 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 
-#import "RCTViewManager.h"
 #import "AIRMapManager.h"
 
-#import "RCTBridge.h"
-#import "RCTUIManager.h"
-#import "RCTConvert+CoreLocation.h"
-#import "RCTConvert+MapKit.h"
-#import "RCTEventDispatcher.h"
+#import <React/RCTBridge.h>
+#import <React/RCTUIManager.h>
+#import <React/RCTConvert.h>
+#import <React/RCTConvert+CoreLocation.h>
+#import <React/RCTConvert+MapKit.h>
+#import <React/RCTEventDispatcher.h>
+#import <React/RCTViewManager.h>
+#import <React/UIView+React.h>
 #import "AIRMap.h"
-#import "UIView+React.h"
 #import "AIRMapMarker.h"
-#import "RCTViewManager.h"
-#import "RCTConvert.h"
 #import "AIRMapPolyline.h"
 #import "AIRMapPolygon.h"
 #import "AIRMapCircle.h"
@@ -158,9 +157,7 @@ RCT_EXPORT_METHOD(fitToElements:(nonnull NSNumber *)reactTag
         } else {
             AIRMap *mapView = (AIRMap *)view;
             // TODO(lmr): we potentially want to include overlays here... and could concat the two arrays together.
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-                [mapView showAnnotations:mapView.annotations animated:animated];
-            });
+            [mapView showAnnotations:mapView.annotations animated:animated];
         }
     }];
 }
@@ -309,7 +306,7 @@ RCT_EXPORT_METHOD(takeSnapshot:(nonnull NSNumber *)reactTag
                       UIImage *compositeImage = UIGraphicsGetImageFromCurrentImageContext();
 
                       NSData *data;
-                      if ([format isEqualToString:@"png"]) {                      
+                      if ([format isEqualToString:@"png"]) {
                           data = UIImagePNGRepresentation(compositeImage);
                       }
                       else if([format isEqualToString:@"jpg"]) {
@@ -327,7 +324,7 @@ RCT_EXPORT_METHOD(takeSnapshot:(nonnull NSNumber *)reactTag
 
                           // In the initial (iOS only) implementation of takeSnapshot,
                           // both the uri and the base64 encoded string were returned.
-                          // Returning both is rarely useful and in fact causes a 
+                          // Returning both is rarely useful and in fact causes a
                           // performance penalty when only the file URI is desired.
                           // In that case the base64 encoded string was always marshalled
                           // over the JS-bridge (which is quite slow).
