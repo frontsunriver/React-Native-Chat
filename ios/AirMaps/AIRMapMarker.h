@@ -48,7 +48,6 @@
 - (BOOL)shouldShowCalloutView;
 - (void)showCalloutView;
 - (void)hideCalloutView;
-- (void)addTapGestureRecognizer;
 
 @end
 
