@@ -140,14 +140,10 @@ const defaultProps = {
 };
 
 class MapPolygon extends React.Component {
-  setNativeProps(props) {
-    this.polygon.setNativeProps(props);
-  }
-
   render() {
     const AIRMapPolygon = this.getAirComponent();
     return (
-      <AIRMapPolygon {...this.props} ref={ref => { this.polygon = ref; }} />
+      <AIRMapPolygon {...this.props} />
     );
   }
 }

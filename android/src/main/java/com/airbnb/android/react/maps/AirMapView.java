@@ -420,10 +420,7 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
             urlTileView.addToMap(map);
             features.add(index, urlTileView);
         } else {
-            ViewGroup children = (ViewGroup) child;
-            for (int i = 0; i < children.getChildCount(); i++) {
-              addFeature(children.getChildAt(i), index);
-            }
+            // TODO(lmr): throw? User shouldn't be adding non-feature children.
         }
     }
 
