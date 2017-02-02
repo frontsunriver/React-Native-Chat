@@ -18,6 +18,7 @@
 | `showsBuildings` | `Boolean` | `true` | A Boolean indicating whether the map displays extruded building information.
 | `showsTraffic` | `Boolean` | `true` | A Boolean value indicating whether the map displays traffic information.
 | `showsIndoors` | `Boolean` | `true` | A Boolean indicating whether indoor maps should be enabled.
+| `showsIndoorLevelPicker` | `Boolean` | `false` | A Boolean indicating whether indoor level picker should be enabled.
 | `zoomEnabled` | `Boolean` | `true` | If `false` the user won't be able to pinch/zoom the map.
 | `rotateEnabled` | `Boolean` | `true` | If `false` the user won't be able to pinch/rotate the map.
 | `scrollEnabled` | `Boolean` | `true` | If `false` the user won't be able to change the map region being displayed.
@@ -55,7 +56,7 @@
 | Method Name | Arguments | Notes
 |---|---|---|
 | `animateToRegion` | `region: Region`, `duration: Number` |
-| `animateToCoordinate` | `coordinate: LatLng`, `duration: Number` |
+| `animateToCoordinate` | `region: Coordinate`, `duration: Number` |
 | `fitToElements` | `animated: Boolean` |
 | `fitToSuppliedMarkers` | `markerIDs: String[]`, `animated: Boolean` | If you need to use this in `ComponentDidMount`, make sure you put it in a timeout or it will cause performance problems.
 | `fitToCoordinates` | `coordinates: Array<LatLng>, options: { edgePadding: EdgePadding, animated: Boolean }` |

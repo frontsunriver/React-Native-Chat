@@ -62,7 +62,6 @@ public class AirMapMarker extends AirMapFeature {
     private boolean flat = false;
     private boolean draggable = false;
     private int zIndex = 0;
-    private float opacity = 1.0f;
 
     private float calloutAnchorX;
     private float calloutAnchorY;
@@ -183,14 +182,6 @@ public class AirMapMarker extends AirMapFeature {
         update();
     }
 
-    public void setOpacity(float opacity) {
-        this.opacity = opacity;
-        if (marker != null) {
-            marker.setAlpha(opacity);
-        }
-        update();
-    }
-
     public void setMarkerHue(float markerHue) {
         this.markerHue = markerHue;
         update();
@@ -307,7 +298,6 @@ public class AirMapMarker extends AirMapFeature {
         options.flat(flat);
         options.draggable(draggable);
         options.zIndex(zIndex);
-        options.alpha(opacity);
         options.icon(getIcon());
         return options;
     }

@@ -33,7 +33,6 @@
 @property (nonatomic, assign) CLLocationCoordinate2D coordinate;
 @property (nonatomic, strong) UIColor *pinColor;
 @property (nonatomic, assign) NSInteger zIndex;
-@property (nonatomic, assign) double opacity;
 
 @property (nonatomic, copy) RCTBubblingEventBlock onPress;
 @property (nonatomic, copy) RCTDirectEventBlock onSelect;
@@ -49,7 +48,6 @@
 - (BOOL)shouldShowCalloutView;
 - (void)showCalloutView;
 - (void)hideCalloutView;
-- (void)addTapGestureRecognizer;
 
 @end
 
