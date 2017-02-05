@@ -38,6 +38,12 @@ const propTypes = {
   onPress: PropTypes.func,
 
   /**
+   * Boolean to allow a polygon to be tappable and use the
+   * onPress function
+   */
+  tappable: PropTypes.bool,
+
+  /**
    * The stroke width to use for the path.
    */
   strokeWidth: PropTypes.number,
@@ -140,10 +146,14 @@ const defaultProps = {
 };
 
 class MapPolygon extends React.Component {
+  setNativeProps(props) {
+    this.polygon.setNativeProps(props);
+  }
+
   render() {
     const AIRMapPolygon = this.getAirComponent();
     return (
-      <AIRMapPolygon {...this.props} />
+      <AIRMapPolygon {...this.props} ref={ref => { this.polygon = ref; }} />
     );
   }
 }
