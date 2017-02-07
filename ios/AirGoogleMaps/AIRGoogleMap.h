@@ -40,7 +40,6 @@
 @property (nonatomic, assign) BOOL showsUserLocation;
 
 - (BOOL)didTapMarker:(GMSMarker *)marker;
-- (void)didTapPolygon:(GMSPolygon *)polygon;
 - (void)didTapAtCoordinate:(CLLocationCoordinate2D)coordinate;
 - (void)didLongPressAtCoordinate:(CLLocationCoordinate2D)coordinate;
 - (void)didChangeCameraPosition:(GMSCameraPosition *)position;

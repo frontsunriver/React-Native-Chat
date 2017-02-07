@@ -38,12 +38,6 @@ const propTypes = {
   onPress: PropTypes.func,
 
   /**
-   * Boolean to allow a polygon to be tappable and use the
-   * onPress function
-   */
-  tappable: PropTypes.bool,
-
-  /**
    * The stroke width to use for the path.
    */
   strokeWidth: PropTypes.number,

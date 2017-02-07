@@ -5,7 +5,6 @@
 //
 
 #import "AIRGoogleMapPolygon.h"
-#import "AIRGMSPolygon.h"
 #import <GoogleMaps/GoogleMaps.h>
 
 @implementation AIRGoogleMapPolygon
@@ -13,7 +12,7 @@
 - (instancetype)init
 {
   if (self = [super init]) {
-    _polygon = [[AIRGMSPolygon alloc] init];
+    _polygon = [[GMSPolygon alloc] init];
   }
 
   return self;
@@ -81,16 +80,6 @@
 {
   _zIndex = zIndex;
   _polygon.zIndex = zIndex;
-}
-
--(void)setTappable:(BOOL)tappable
-{
-  _tappable = tappable;
-  _polygon.tappable = tappable;
-}
-
-- (void)setOnPress:(RCTBubblingEventBlock)onPress {
-  _polygon.onPress = onPress;
 }
 
 @end
