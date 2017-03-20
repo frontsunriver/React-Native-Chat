@@ -7,10 +7,6 @@
 #import <MapKit/MapKit.h>
 #import <React/RCTConvert.h>
 
-@interface RCTConvert (MapKit)
-
-+ (MKCoordinateSpan)MKCoordinateSpan:(id)json;
-+ (MKCoordinateRegion)MKCoordinateRegion:(id)json;
-+ (MKMapType)MKMapType:(id)json;
+@interface RCTConvert (MoreMapKit)
 
 @end

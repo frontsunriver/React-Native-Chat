@@ -3,35 +3,12 @@
 // Copyright (c) 2015 Facebook. All rights reserved.
 //
 
-#import "RCTConvert+MapKit.h"
+#import "RCTConvert+MoreMapKit.h"
 
 #import <React/RCTConvert+CoreLocation.h>
 #import "AIRMapCoordinate.h"
 
-@implementation RCTConvert (MapKit)
-
-+ (MKCoordinateSpan)MKCoordinateSpan:(id)json
-{
-  json = [self NSDictionary:json];
-  return (MKCoordinateSpan){
-    [self CLLocationDegrees:json[@"latitudeDelta"]],
-    [self CLLocationDegrees:json[@"longitudeDelta"]]
-  };
-}
-
-+ (MKCoordinateRegion)MKCoordinateRegion:(id)json
-{
-  return (MKCoordinateRegion){
-    [self CLLocationCoordinate2D:json],
-    [self MKCoordinateSpan:json]
-  };
-}
-
-RCT_ENUM_CONVERTER(MKMapType, (@{
-  @"standard": @(MKMapTypeStandard),
-  @"satellite": @(MKMapTypeSatellite),
-  @"hybrid": @(MKMapTypeHybrid),
-}), MKMapTypeStandard, integerValue)
+@implementation RCTConvert (MoreMapKit)
 
 // NOTE(lmr):
 // This is a bit of a hack, but I'm using this class to simply wrap
