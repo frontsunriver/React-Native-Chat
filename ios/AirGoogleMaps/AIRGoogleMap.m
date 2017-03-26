@@ -13,8 +13,8 @@
 #import "AIRGoogleMapUrlTile.h"
 #import <GoogleMaps/GoogleMaps.h>
 #import <MapKit/MapKit.h>
-#import <React/RCTConvert+MapKit.h>
 #import <React/UIView+React.h>
+#import "RCTConvert+MapKit.h"
 
 id regionAsJSON(MKCoordinateRegion region) {
   return @{
@@ -168,6 +168,16 @@ id regionAsJSON(MKCoordinateRegion region) {
   // TODO: not sure why this is necessary
   [self setSelectedMarker:marker];
   return NO;
+}
+
+- (void)didTapPolygon:(GMSOverlay *)polygon {
+    AIRGMSPolygon *airPolygon = (AIRGMSPolygon *)polygon;
+
+    id event = @{@"action": @"polygon-press",
+                 @"id": airPolygon.identifier ?: @"unknown",
+                 };
+
+    if (airPolygon.onPress) airPolygon.onPress(event);
 }
 
 - (void)didTapAtCoordinate:(CLLocationCoordinate2D)coordinate {
