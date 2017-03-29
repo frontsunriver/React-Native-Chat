@@ -9,7 +9,7 @@
 #import "AIRGoogleMapMarker.h"
 #import <MapKit/MapKit.h>
 #import <React/RCTUIManager.h>
-#import "RCTConvert+AirMap.h"
+#import "RCTConvert+MapKit.h"
 
 @implementation AIRGoogleMapMarkerManager
 

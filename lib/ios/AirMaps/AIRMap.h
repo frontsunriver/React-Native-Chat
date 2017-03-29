@@ -12,7 +12,7 @@
 
 #import <React/RCTComponent.h>
 #import "SMCalloutView.h"
-#import "RCTConvert+AirMap.h"
+#import "RCTConvert+MapKit.h"
 
 extern const CLLocationDegrees AIRMapDefaultSpan;
 extern const NSTimeInterval AIRMapRegionChangeObserveInterval;
