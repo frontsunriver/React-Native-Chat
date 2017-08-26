@@ -70,7 +70,6 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
   private boolean handlePanDrag = false;
   private boolean moveOnMarkerPress = true;
   private boolean cacheEnabled = false;
-  private boolean initialRegionSet = false;
 
   private static final String[] PERMISSIONS = new String[]{
       "android.permission.ACCESS_FINE_LOCATION", "android.permission.ACCESS_COARSE_LOCATION"};
@@ -359,13 +358,6 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
       paused = true;
     }
     onDestroy();
-  }
-
-  public void setInitialRegion(ReadableMap initialRegion) {
-    if (!initialRegionSet && initialRegion != null) {
-      setRegion(initialRegion);
-      initialRegionSet = true;
-    }
   }
 
   public void setRegion(ReadableMap region) {
@@ -741,7 +733,7 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
           eventDispatcher.dispatchEvent(new RegionChangeEvent(getId(), bounds, center, true));
         }
       }
-
+      
       timerHandler.postDelayed(this, 100);
     }
   };
