@@ -1,21 +1,7 @@
 # Change Log
 
-## 0.16.3 (September 2, 2017)
-* iOS: [#1603](https://github.com/airbnb/react-native-maps/pull/1603) Added missing satellite option for iOS Google Maps
-* iOS: [#1579](https://github.com/airbnb/react-native-maps/pull/1579) Set initial region on view
-
-## 0.16.2 (August 17, 2017)
-* Android: [#1563](https://github.com/airbnb/react-native-maps/pull/#1563) Add missing native method for setting initial region
-* iOS: [#1187](https://github.com/airbnb/react-native-maps/pull/1187) Reverted due to build issues
-
-## 0.16.1 (August 15, 2017)
-* Android: [#1428](https://github.com/airbnb/react-native-maps/pull/#1428) Add ability to load marker image from drawable
-* iOS: [#1187](https://github.com/airbnb/react-native-maps/pull/1187) Improve marker performance
-* iOS/Android: [#1458](https://github.com/airbnb/react-native-maps/pull/1458) Add Google Maps legalNotice constant
-* JS: [#1546](https://github.com/airbnb/react-native-maps/pull/1546) Fix initial region native prop
-
 ## 0.16.0 (August 9, 2017)
-* Android: [#1481](https://github.com/airbnb/react-native-maps/pull/1481) Handle Android RN 0.47 breaking change
+* Android: [#1481](https://github.com/airbnb/react-native-maps/pull/#1481) Handle Android RN 0.47 breaking change
 * iOS: [#1357](https://github.com/airbnb/react-native-maps/pull/1357) add MKTileOverlayRenderer
 * iOS: [#1369](https://github.com/airbnb/react-native-maps/pull/1369) Add onMapReady callback
 * Android/iOS/JS: [#1360](https://github.com/airbnb/react-native-maps/pull/1360) Add minZoom and maxZoom properties for android and ios
