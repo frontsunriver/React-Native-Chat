@@ -70,6 +70,7 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
   private boolean handlePanDrag = false;
   private boolean moveOnMarkerPress = true;
   private boolean cacheEnabled = false;
+  private boolean initialRegionSet = false;
 
   private static final String[] PERMISSIONS = new String[]{
       "android.permission.ACCESS_FINE_LOCATION", "android.permission.ACCESS_COARSE_LOCATION"};
@@ -360,6 +361,13 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
     onDestroy();
   }
 
+  public void setInitialRegion(ReadableMap initialRegion) {
+    if (!initialRegionSet && initialRegion != null) {
+      setRegion(initialRegion);
+      initialRegionSet = true;
+    }
+  }
+
   public void setRegion(ReadableMap region) {
     if (region == null) return;
 
@@ -562,26 +570,6 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
     }
   }
 
-  public void animateToViewingAngle(float angle, int duration) {
-    if (map != null) {
-      startMonitoringRegion();
-      CameraPosition cameraPosition = new CameraPosition.Builder(map.getCameraPosition())
-          .tilt(angle)
-          .build();
-      map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), duration, null);
-    }
-  }
-
-  public void animateToBearing(float bearing, int duration) {
-    if (map != null) {
-      startMonitoringRegion();
-      CameraPosition cameraPosition = new CameraPosition.Builder(map.getCameraPosition())
-          .bearing(bearing)
-          .build();
-      map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), duration, null);
-    }
-  }
-
   public void animateToCoordinate(LatLng coordinate, int duration) {
     if (map != null) {
       startMonitoringRegion();
@@ -753,7 +741,7 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
           eventDispatcher.dispatchEvent(new RegionChangeEvent(getId(), bounds, center, true));
         }
       }
-      
+
       timerHandler.postDelayed(this, 100);
     }
   };
