@@ -17,7 +17,6 @@
 #import "AIRMapCircle.h"
 #import <QuartzCore/QuartzCore.h>
 #import "AIRMapUrlTile.h"
-#import "AIRMapLocalTile.h"
 
 const CLLocationDegrees AIRMapDefaultSpan = 0.005;
 const NSTimeInterval AIRMapRegionChangeObserveInterval = 0.1;
@@ -63,7 +62,6 @@ const NSInteger AIRMapMaxZoomLevel = 20;
 
 - (instancetype)init
 {
-    NSLog(@"AirMap.init................");
     if ((self = [super init])) {
         _hasStartedRendering = NO;
         _reactSubviews = [NSMutableArray new];
@@ -112,9 +110,6 @@ const NSInteger AIRMapMaxZoomLevel = 20;
     } else if ([subview isKindOfClass:[AIRMapUrlTile class]]) {
         ((AIRMapUrlTile *)subview).map = self;
         [self addOverlay:(id<MKOverlay>)subview];
-    } else if ([subview isKindOfClass:[AIRMapLocalTile class]]) {
-        ((AIRMapLocalTile *)subview).map = self;
-        [self addOverlay:(id<MKOverlay>)subview];
     } else {
         NSArray<id<RCTComponent>> *childSubviews = [subview reactSubviews];
         for (int i = 0; i < childSubviews.count; i++) {
@@ -139,8 +134,6 @@ const NSInteger AIRMapMaxZoomLevel = 20;
     } else if ([subview isKindOfClass:[AIRMapCircle class]]) {
         [self removeOverlay:(id <MKOverlay>) subview];
     } else if ([subview isKindOfClass:[AIRMapUrlTile class]]) {
-        [self removeOverlay:(id <MKOverlay>) subview];
-    } else if ([subview isKindOfClass:[AIRMapLocalTile class]]) {
         [self removeOverlay:(id <MKOverlay>) subview];
     } else {
         NSArray<id<RCTComponent>> *childSubviews = [subview reactSubviews];

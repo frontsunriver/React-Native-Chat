@@ -136,14 +136,8 @@ declare namespace MapView {
         lineDashPattern?: number[];
     }
 
-    interface MapUrlTileProps {
+    interface MapUrlTitleProps {
         urlTemplate: string;
-        zIndex?: number;
-    }
-
-    interface MapLocalTileProps {
-        pathTemplate: string;
-        tileSize: number;
         zIndex?: number;
     }
 
@@ -157,8 +151,7 @@ declare namespace MapView {
     export class Polyline extends React.Component<MapPolylineProps, any> {}
     export class Polygon extends React.Component<MapPolygonProps, any> {}
     export class Circle extends React.Component<MapCircleProps, any> {}
-    export class UrlTile extends React.Component<MapUrlTileProps, any> {}
-    export class LocalTile extends React.Component<MapLocalTileProps, any> {}
+    export class UrlTile extends React.Component<MapUrlTitleProps, any> {}
     export class Callout extends React.Component<MapCalloutProps, any> {}
 }
 
