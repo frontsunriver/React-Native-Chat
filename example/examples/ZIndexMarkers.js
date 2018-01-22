@@ -6,7 +6,7 @@ import {
   View,
 } from 'react-native';
 
-import MapView, { Marker, ProviderPropType } from 'react-native-maps';
+import MapView from 'react-native-maps';
 
 const { width, height } = Dimensions.get('window');
 
@@ -41,7 +41,7 @@ class ZIndexMarkers extends React.Component {
 
   render() {
     const markers = this.state.markerInfo.map((markerInfo) =>
-      <Marker
+      <MapView.Marker
         coordinate={markerInfo}
         key={markerInfo.id}
         pinColor={markerInfo.isSpecial ? '#c5a620' : null}
@@ -73,7 +73,7 @@ class ZIndexMarkers extends React.Component {
 }
 
 ZIndexMarkers.propTypes = {
-  provider: ProviderPropType,
+  provider: MapView.ProviderPropType,
 };
 
 const styles = StyleSheet.create({
@@ -97,4 +97,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ZIndexMarkers;
+module.exports = ZIndexMarkers;

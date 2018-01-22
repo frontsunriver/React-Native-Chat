@@ -8,7 +8,7 @@ import {
   Image,
 } from 'react-native';
 
-import MapView, { Marker, ProviderPropType } from 'react-native-maps';
+import MapView from 'react-native-maps';
 import flagBlueImg from './assets/flag-blue.png';
 import flagPinkImg from './assets/flag-pink.png';
 
@@ -55,7 +55,7 @@ class MarkerTypes extends React.Component {
             longitudeDelta: LONGITUDE_DELTA,
           }}
         >
-          <Marker
+          <MapView.Marker
             coordinate={{
               latitude: LATITUDE + SPACE,
               longitude: LONGITUDE + SPACE,
@@ -64,7 +64,7 @@ class MarkerTypes extends React.Component {
             anchor={{ x: 0.69, y: 1 }}
             image={flagBlueImg}
           />
-          <Marker
+          <MapView.Marker
             coordinate={{
               latitude: LATITUDE - SPACE,
               longitude: LONGITUDE - SPACE,
@@ -100,7 +100,7 @@ class MarkerTypes extends React.Component {
 }
 
 MarkerTypes.propTypes = {
-  provider: ProviderPropType,
+  provider: MapView.ProviderPropType,
 };
 
 const styles = StyleSheet.create({
@@ -135,4 +135,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MarkerTypes;
+module.exports = MarkerTypes;

@@ -2,24 +2,24 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { View } from 'react-native';
-import { Polygon, Polyline, Marker } from 'react-native-maps';
+import MapView from 'react-native-maps';
 
 class XMarksTheSpot extends React.Component {
   render() {
     return (
       <View>
-        <Polygon
+        <MapView.Polygon
           coordinates={this.props.coordinates}
           strokeColor="rgba(0, 0, 0, 1)"
           strokeWidth={3}
         />
-        <Polyline
+        <MapView.Polyline
           coordinates={[this.props.coordinates[0], this.props.coordinates[2]]}
         />
-        <Polyline
+        <MapView.Polyline
           coordinates={[this.props.coordinates[1], this.props.coordinates[3]]}
         />
-        <Marker
+        <MapView.Marker
           coordinate={this.props.center}
         />
       </View>

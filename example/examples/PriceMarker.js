@@ -76,4 +76,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PriceMarker;
+module.exports = PriceMarker;

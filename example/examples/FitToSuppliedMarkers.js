@@ -5,7 +5,7 @@ import {
   Dimensions,
 } from 'react-native';
 
-import MapView, { Marker, ProviderPropType } from 'react-native-maps';
+import MapView from 'react-native-maps';
 
 const { width, height } = Dimensions.get('window');
 
@@ -123,23 +123,23 @@ class FocusOnMarkers extends React.Component {
             longitudeDelta: LONGITUDE_DELTA,
           }}
         >
-          <Marker
+          <MapView.Marker
             identifier="Marker1"
             coordinate={this.state.a}
           />
-          <Marker
+          <MapView.Marker
             identifier="Marker2"
             coordinate={this.state.b}
           />
-          <Marker
+          <MapView.Marker
             identifier="Marker3"
             coordinate={this.state.c}
           />
-          <Marker
+          <MapView.Marker
             identifier="Marker4"
             coordinate={this.state.d}
           />
-          <Marker
+          <MapView.Marker
             identifier="Marker5"
             coordinate={this.state.e}
           />
@@ -150,7 +150,7 @@ class FocusOnMarkers extends React.Component {
 }
 
 FocusOnMarkers.propTypes = {
-  provider: ProviderPropType,
+  provider: MapView.ProviderPropType,
 };
 
 const styles = StyleSheet.create({
@@ -164,4 +164,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FocusOnMarkers;
+module.exports = FocusOnMarkers;

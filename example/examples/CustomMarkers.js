@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import MapView, { Marker, ProviderPropType } from 'react-native-maps';
+import MapView from 'react-native-maps';
 import flagPinkImg from './assets/flag-pink.png';
 
 const { width, height } = Dimensions.get('window');
@@ -58,7 +58,7 @@ class CustomMarkers extends React.Component {
           onPress={this.onMapPress}
         >
           {this.state.markers.map(marker => (
-            <Marker
+            <MapView.Marker
               title={marker.key}
               image={flagPinkImg}
               key={marker.key}
@@ -80,7 +80,7 @@ class CustomMarkers extends React.Component {
 }
 
 CustomMarkers.propTypes = {
-  provider: ProviderPropType,
+  provider: MapView.ProviderPropType,
 };
 
 const styles = StyleSheet.create({
@@ -115,4 +115,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CustomMarkers;
+module.exports = CustomMarkers;

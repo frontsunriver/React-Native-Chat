@@ -1,4 +1,4 @@
-# `<Polyline />` Component API
+# `<MapView.Polyline />` Component API
 
 ## Props
 
@@ -37,10 +37,8 @@ Gradient polylines can be created by using the `strokeColors` prop. `strokeColor
 Example:
 
 ```js
-import MapView, { Polyline } from 'react-native-maps';
-
 <MapView>
-	<Polyline
+	<MapView.Polyline
 		coordinates={[
 			{ latitude: 37.8025259, longitude: -122.4351431 },
 			{ latitude: 37.7896386, longitude: -122.421646 },

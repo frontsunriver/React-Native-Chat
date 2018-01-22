@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import MapView, { MAP_TYPES, ProviderPropType } from 'react-native-maps';
+import MapView, { MAP_TYPES } from 'react-native-maps';
 
 const { width, height } = Dimensions.get('window');
 
@@ -129,7 +129,7 @@ class DisplayLatLng extends React.Component {
 }
 
 DisplayLatLng.propTypes = {
-  provider: ProviderPropType,
+  provider: MapView.ProviderPropType,
 };
 
 const styles = StyleSheet.create({
@@ -168,4 +168,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DisplayLatLng;
+module.exports = DisplayLatLng;

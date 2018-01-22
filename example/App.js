@@ -191,4 +191,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+module.exports = App;

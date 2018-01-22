@@ -7,7 +7,7 @@ import {
   Text,
 } from 'react-native';
 
-import MapView, { Marker } from 'react-native-maps';
+import MapView from 'react-native-maps';
 
 const { width, height } = Dimensions.get('window');
 
@@ -70,7 +70,7 @@ class FitToCoordinates extends React.Component {
           }}
         >
           {MARKERS.map((marker, i) => (
-            <Marker
+            <MapView.Marker
               key={i}
               coordinate={marker}
             />
@@ -129,4 +129,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FitToCoordinates;
+module.exports = FitToCoordinates;

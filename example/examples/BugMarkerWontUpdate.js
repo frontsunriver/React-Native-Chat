@@ -6,7 +6,7 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
-import MapView, { ProviderPropType } from 'react-native-maps';
+import MapView from 'react-native-maps';
 import MyLocationMapMarker from './MyLocationMapMarker';
 
 const { width, height } = Dimensions.get('window');
@@ -93,7 +93,7 @@ class BugMarkerWontUpdate extends React.Component {
 }
 
 BugMarkerWontUpdate.propTypes = {
-  provider: ProviderPropType,
+  provider: MapView.ProviderPropType,
 };
 
 const styles = StyleSheet.create({
@@ -131,4 +131,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BugMarkerWontUpdate;
+module.exports = BugMarkerWontUpdate;

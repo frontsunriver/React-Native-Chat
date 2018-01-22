@@ -1,4 +1,4 @@
-# `<Overlay />` Component API
+# `<MapView.Overlay />` Component API
 
 ## Props
 

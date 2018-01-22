@@ -50,4 +50,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LiteMapView;
+module.exports = LiteMapView;

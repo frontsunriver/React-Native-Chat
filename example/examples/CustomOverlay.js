@@ -5,7 +5,7 @@ import {
   Dimensions,
 } from 'react-native';
 
-import MapView, { ProviderPropType } from 'react-native-maps';
+import MapView from 'react-native-maps';
 import XMarksTheSpot from './CustomOverlayXMarksTheSpot';
 
 const { width, height } = Dimensions.get('window');
@@ -68,7 +68,7 @@ class CustomOverlay extends React.Component {
 }
 
 CustomOverlay.propTypes = {
-  provider: ProviderPropType,
+  provider: MapView.ProviderPropType,
 };
 
 const styles = StyleSheet.create({
@@ -82,4 +82,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CustomOverlay;
+module.exports = CustomOverlay;

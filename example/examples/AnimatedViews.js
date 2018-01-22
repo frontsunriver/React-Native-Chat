@@ -6,12 +6,7 @@ import {
   Animated,
 } from 'react-native';
 
-import {
-  ProviderPropType,
-  Animated as AnimatedMap,
-  AnimatedRegion,
-  Marker,
-} from 'react-native-maps';
+import MapView from 'react-native-maps';
 import PanController from './PanController';
 import PriceMarker from './AnimatedPriceMarker';
 
@@ -196,7 +191,7 @@ class AnimatedViews extends React.Component {
       scale,
       translateY,
       markers,
-      region: new AnimatedRegion({
+      region: new MapView.AnimatedRegion({
         latitude: LATITUDE,
         longitude: LONGITUDE,
         latitudeDelta: LATITUDE_DELTA,
@@ -329,7 +324,7 @@ class AnimatedViews extends React.Component {
           onStartShouldSetPanResponder={this.onStartShouldSetPanResponder}
           onMoveShouldSetPanResponder={this.onMoveShouldSetPanResponder}
         >
-          <AnimatedMap
+          <MapView.Animated
             provider={this.props.provider}
             style={styles.map}
             region={region}
@@ -343,7 +338,7 @@ class AnimatedViews extends React.Component {
               } = animations[i];
 
               return (
-                <Marker
+                <MapView.Marker
                   key={marker.id}
                   coordinate={marker.coordinate}
                 >
@@ -357,10 +352,10 @@ class AnimatedViews extends React.Component {
                     amount={marker.amount}
                     selected={selected}
                   />
-                </Marker>
+                </MapView.Marker>
               );
             })}
-          </AnimatedMap>
+          </MapView.Animated>
           <View style={styles.itemContainer}>
             {markers.map((marker, i) => {
               const {
@@ -392,7 +387,7 @@ class AnimatedViews extends React.Component {
 }
 
 AnimatedViews.propTypes = {
-  provider: ProviderPropType,
+  provider: MapView.ProviderPropType,
 };
 
 const styles = StyleSheet.create({
@@ -423,4 +418,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AnimatedViews;
+module.exports = AnimatedViews;

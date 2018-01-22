@@ -6,12 +6,7 @@ import {
   Dimensions,
 } from 'react-native';
 
-import MapView, {
-  MAP_TYPES,
-  PROVIDER_DEFAULT,
-  LocalTile,
-  ProviderPropType,
-} from 'react-native-maps';
+import MapView, { MAP_TYPES, PROVIDER_DEFAULT } from 'react-native-maps';
 
 const { width, height } = Dimensions.get('window');
 
@@ -51,7 +46,7 @@ class CustomTiles extends React.Component {
           style={styles.map}
           initialRegion={region}
         >
-          <LocalTile
+          <MapView.LocalTile
             pathTemplate="/path/to/locally/saved/tiles/{z}/{x}/{y}.png"
             tileSize={256}
             zIndex={-1}
@@ -68,7 +63,7 @@ class CustomTiles extends React.Component {
 }
 
 CustomTiles.propTypes = {
-  provider: ProviderPropType,
+  provider: MapView.ProviderPropType,
 };
 
 const styles = StyleSheet.create({
@@ -112,4 +107,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CustomTiles;
+module.exports = CustomTiles;

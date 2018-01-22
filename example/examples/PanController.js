@@ -413,4 +413,4 @@ class PanController extends React.Component{
   }
 };
 
-export default PanController;
+module.exports = PanController;

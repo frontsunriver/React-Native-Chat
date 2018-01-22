@@ -6,7 +6,7 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
-import MapView, { Marker, ProviderPropType } from 'react-native-maps';
+import MapView from 'react-native-maps';
 import PriceMarker from './PriceMarker';
 
 const { width, height } = Dimensions.get('window');
@@ -52,9 +52,9 @@ class ViewsAsMarkers extends React.Component {
           style={styles.map}
           initialRegion={this.state.region}
         >
-          <Marker coordinate={this.state.coordinate}>
+          <MapView.Marker coordinate={this.state.coordinate}>
             <PriceMarker amount={this.state.amount} />
-          </Marker>
+          </MapView.Marker>
         </MapView>
         <View style={styles.buttonContainer}>
           <TouchableOpacity
@@ -76,7 +76,7 @@ class ViewsAsMarkers extends React.Component {
 }
 
 ViewsAsMarkers.propTypes = {
-  provider: ProviderPropType,
+  provider: MapView.ProviderPropType,
 };
 
 const styles = StyleSheet.create({
@@ -111,4 +111,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ViewsAsMarkers;
+module.exports = ViewsAsMarkers;

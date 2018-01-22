@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import MapView, { Marker, ProviderPropType } from 'react-native-maps';
+import MapView from 'react-native-maps';
 
 const { width, height } = Dimensions.get('window');
 
@@ -60,7 +60,7 @@ class DefaultMarkers extends React.Component {
           onPress={(e) => this.onMapPress(e)}
         >
           {this.state.markers.map(marker => (
-            <Marker
+            <MapView.Marker
               key={marker.key}
               coordinate={marker.coordinate}
               pinColor={marker.color}
@@ -81,7 +81,7 @@ class DefaultMarkers extends React.Component {
 }
 
 DefaultMarkers.propTypes = {
-  provider: ProviderPropType,
+  provider: MapView.ProviderPropType,
 };
 
 const styles = StyleSheet.create({
@@ -116,4 +116,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DefaultMarkers;
+module.exports = DefaultMarkers;

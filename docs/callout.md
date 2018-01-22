@@ -1,4 +1,4 @@
-# `<Callout />` Component API
+# `<MapView.Callout />` Component API
 
 ## Props
 
