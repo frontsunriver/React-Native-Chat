@@ -5,6 +5,8 @@
 //  Created by Gil Birman on 9/1/16.
 //
 
+#ifdef HAVE_GOOGLE_MAPS
+
 
 #import "AIRGoogleMapManager.h"
 #import <React/RCTViewManager.h>
@@ -77,6 +79,29 @@ RCT_EXPORT_VIEW_PROPERTY(mapType, GMSMapViewType)
 RCT_EXPORT_VIEW_PROPERTY(minZoomLevel, CGFloat)
 RCT_EXPORT_VIEW_PROPERTY(maxZoomLevel, CGFloat)
 RCT_EXPORT_VIEW_PROPERTY(kmlSrc, NSString)
+
+RCT_EXPORT_METHOD(animateToNavigation:(nonnull NSNumber *)reactTag
+                  withRegion:(MKCoordinateRegion)region
+                  withBearing:(CGFloat)bearing
+                  withAngle:(double)angle
+                  withDuration:(CGFloat)duration)
+{
+  [self.bridge.uiManager addUIBlock:^(__unused RCTUIManager *uiManager, NSDictionary<NSNumber *, UIView *> *viewRegistry) {
+    id view = viewRegistry[reactTag];
+    if (![view isKindOfClass:[AIRGoogleMap class]]) {
+      RCTLogError(@"Invalid view returned from registry, expecting AIRGoogleMap, got: %@", view);
+    } else {
+      [CATransaction begin];
+      [CATransaction setAnimationDuration:duration/1000];
+      AIRGoogleMap *mapView = (AIRGoogleMap *)view;
+      GMSCameraPosition *camera = [AIRGoogleMap makeGMSCameraPositionFromMap:mapView andMKCoordinateRegion:region];
+      [mapView animateToCameraPosition:camera];
+      [mapView animateToViewingAngle:angle];
+      [mapView animateToBearing:bearing];
+      [CATransaction commit];
+    }
+  }];
+}
 
 RCT_EXPORT_METHOD(animateToRegion:(nonnull NSNumber *)reactTag
                   withRegion:(MKCoordinateRegion)region
@@ -175,7 +200,6 @@ RCT_EXPORT_METHOD(fitToElements:(nonnull NSNumber *)reactTag
 
 RCT_EXPORT_METHOD(fitToSuppliedMarkers:(nonnull NSNumber *)reactTag
                   markers:(nonnull NSArray *)markers
-                  edgePadding:(nonnull NSDictionary *)edgePadding
                   animated:(BOOL)animated)
 {
   [self.bridge.uiManager addUIBlock:^(__unused RCTUIManager *uiManager, NSDictionary<NSNumber *, UIView *> *viewRegistry) {
@@ -198,13 +222,7 @@ RCT_EXPORT_METHOD(fitToSuppliedMarkers:(nonnull NSNumber *)reactTag
       for (AIRGoogleMapMarker *marker in filteredMarkers)
         bounds = [bounds includingCoordinate:marker.realMarker.position];
 
-      // Set Map viewport
-      CGFloat top = [RCTConvert CGFloat:edgePadding[@"top"]];
-      CGFloat right = [RCTConvert CGFloat:edgePadding[@"right"]];
-      CGFloat bottom = [RCTConvert CGFloat:edgePadding[@"bottom"]];
-      CGFloat left = [RCTConvert CGFloat:edgePadding[@"left"]];
-
-      [mapView animateWithCameraUpdate:[GMSCameraUpdate fitBounds:bounds withPadding:55.0f withEdgeInsets:UIEdgeInsetsMake(top, left, bottom, right)]];
+      [mapView animateWithCameraUpdate:[GMSCameraUpdate fitBounds:bounds withPadding:55.0f]];
     }
   }];
 }
@@ -457,3 +475,5 @@ RCT_EXPORT_METHOD(setMapBoundaries:(nonnull NSNumber *)reactTag
     [googleMapView didTapPOIWithPlaceID:placeID name:name location:location];
 }
 @end
+
+#endif

@@ -215,12 +215,13 @@ declare module "react-native-maps" {
     }
 
     export default class MapView extends React.Component<MapViewProps, any> {
+        animateToNavigation(location: LatLng, bearing: number, angle: number, duration?: number): void;
         animateToRegion(region: Region, duration?: number): void;
         animateToCoordinate(latLng: LatLng, duration?: number): void;
         animateToBearing(bearing: number, duration?: number): void;
         animateToViewingAngle(angle: number, duration?: number): void;
         fitToElements(animated: boolean): void;
-        fitToSuppliedMarkers(markers: string[], options?: { edgePadding?: EdgePadding, animated?: boolean }): void;
+        fitToSuppliedMarkers(markers: string[], animated: boolean): void;
         fitToCoordinates(coordinates?: LatLng[], options?: { edgePadding?: EdgePadding, animated?: boolean }): void;
         setMapBoundaries(northEast: LatLng, southWest: LatLng): void;
         takeSnapshot(options?: SnapshotOptions): Promise<string>;
