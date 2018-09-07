@@ -37,8 +37,7 @@ public class AirMapManager extends ViewGroupManager<AirMapView> {
   private static final int FIT_TO_SUPPLIED_MARKERS = 6;
   private static final int FIT_TO_COORDINATES = 7;
   private static final int SET_MAP_BOUNDARIES = 8;
-  private static final int ANIMATE_TO_NAVIGATION = 9; 
-  private static final int SET_INDOOR_ACTIVE_LEVEL_INDEX = 10;
+  private static final int ANIMATE_TO_NAVIGATION = 9;
 
 
   private final Map<String, Integer> MAP_TYPES = MapBuilder.of(
@@ -314,10 +313,6 @@ public class AirMapManager extends ViewGroupManager<AirMapView> {
       case SET_MAP_BOUNDARIES:
         view.setMapBoundaries(args.getMap(0), args.getMap(1));
         break;
-
-      case SET_INDOOR_ACTIVE_LEVEL_INDEX:
-        view.setIndoorActiveLevelIndex(args.getInt(0));
-        break;
     }
   }
 
@@ -344,11 +339,6 @@ public class AirMapManager extends ViewGroupManager<AirMapView> {
         "onPoiClick", MapBuilder.of("registrationName", "onPoiClick")
     ));
 
-    map.putAll(MapBuilder.of(
-        "onIndoorLevelActivated", MapBuilder.of("registrationName", "onIndoorLevelActivated"),
-        "onIndoorBuildingFocused", MapBuilder.of("registrationName", "onIndoorBuildingFocused")
-    ));
-
     return map;
   }
   
@@ -367,8 +357,7 @@ public class AirMapManager extends ViewGroupManager<AirMapView> {
     );
 
     map.putAll(MapBuilder.of(
-      "setMapBoundaries", SET_MAP_BOUNDARIES,
-      "setIndoorActiveLevelIndex", SET_INDOOR_ACTIVE_LEVEL_INDEX
+      "setMapBoundaries", SET_MAP_BOUNDARIES
     ));
 
     return map;
