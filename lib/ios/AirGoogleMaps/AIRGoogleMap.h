@@ -5,8 +5,6 @@
 //  Created by Gil Birman on 9/1/16.
 //
 
-#ifdef HAVE_GOOGLE_MAPS
-
 #import <UIKit/UIKit.h>
 #import <React/RCTComponent.h>
 #import <React/RCTBridge.h>
@@ -67,5 +65,3 @@
 + (GMSCameraPosition*)makeGMSCameraPositionFromMap:(GMSMapView *)map andMKCoordinateRegion:(MKCoordinateRegion)region;
 
 @end
-
-#endif

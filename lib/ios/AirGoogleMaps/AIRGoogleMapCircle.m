@@ -3,8 +3,6 @@
 //
 //  Created by Nick Italiano on 10/24/16.
 //
-
-#ifdef HAVE_GOOGLE_MAPS
 #import <UIKit/UIKit.h>
 #import "AIRGoogleMapCircle.h"
 #import <GoogleMaps/GoogleMaps.h>
@@ -57,5 +55,3 @@
 }
 
 @end
-
-#endif

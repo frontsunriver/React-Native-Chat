@@ -439,13 +439,13 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
   }
 
   public void setShowsMyLocationButton(boolean showMyLocationButton) {
-    if (hasPermissions() || !showMyLocationButton) {
+    if (hasPermissions()) {
       map.getUiSettings().setMyLocationButtonEnabled(showMyLocationButton);
     }
   }
 
   public void setToolbarEnabled(boolean toolbarEnabled) {
-    if (hasPermissions() || !toolbarEnabled) {
+    if (hasPermissions()) {
       map.getUiSettings().setMapToolbarEnabled(toolbarEnabled);
     }
   }
@@ -612,16 +612,6 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
     }
   }
 
-  public void animateToNavigation(LatLng location, float bearing, float angle, int duration) {
-    if (map == null) return;
-    CameraPosition cameraPosition = new CameraPosition.Builder(map.getCameraPosition())
-        .bearing(bearing)
-        .tilt(angle)
-        .target(location)
-        .build();
-    map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), duration, null);
-  }
-
   public void animateToRegion(LatLngBounds bounds, int duration) {
     if (map == null) return;
     map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 0), duration, null);
@@ -675,7 +665,7 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
     }
   }
 
-  public void fitToSuppliedMarkers(ReadableArray markerIDsArray, boolean animated) {
+  public void fitToSuppliedMarkers(ReadableArray markerIDsArray, ReadableMap edgePadding, boolean animated) {
     if (map == null) return;
 
     LatLngBounds.Builder builder = new LatLngBounds.Builder();
@@ -703,6 +693,12 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
     if (addedPosition) {
       LatLngBounds bounds = builder.build();
       CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, baseMapPadding);
+      
+      if (edgePadding != null) {
+        map.setPadding(edgePadding.getInt("left"), edgePadding.getInt("top"),
+          edgePadding.getInt("right"), edgePadding.getInt("bottom"));
+      }   
+      
       if (animated) {
         map.animateCamera(cu);
       } else {
