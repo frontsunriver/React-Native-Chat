@@ -142,14 +142,12 @@ public class AirMapModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void pointForCoordinate(final int tag, ReadableMap coordinate, final Promise promise) {
-    final ReactApplicationContext context = getReactApplicationContext();
-    final double density = (double) context.getResources().getDisplayMetrics().density;
-
     final LatLng coord = new LatLng(
             coordinate.hasKey("latitude") ? coordinate.getDouble("latitude") : 0.0,
             coordinate.hasKey("longitude") ? coordinate.getDouble("longitude") : 0.0
     );
 
+    final ReactApplicationContext context = getReactApplicationContext();
     UIManagerModule uiManager = context.getNativeModule(UIManagerModule.class);
     uiManager.addUIBlock(new UIBlock()
     {
@@ -169,8 +167,8 @@ public class AirMapModule extends ReactContextBaseJavaModule {
         Point pt = view.map.getProjection().toScreenLocation(coord);
 
         WritableMap ptJson = new WritableNativeMap();
-        ptJson.putDouble("x", (double)pt.x / density);
-        ptJson.putDouble("y", (double)pt.y / density);
+        ptJson.putDouble("x", pt.x);
+        ptJson.putDouble("y", pt.y);
 
         promise.resolve(ptJson);
       }
@@ -179,14 +177,12 @@ public class AirMapModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void coordinateForPoint(final int tag, ReadableMap point, final Promise promise) {
-    final ReactApplicationContext context = getReactApplicationContext();
-    final double density = (double) context.getResources().getDisplayMetrics().density;
-
     final Point pt = new Point(
-            point.hasKey("x") ? (int)(point.getDouble("x") * density) : 0,
-            point.hasKey("y") ? (int)(point.getDouble("y") * density) : 0
+            point.hasKey("x") ? point.getInt("x") : 0,
+            point.hasKey("y") ? point.getInt("y") : 0
     );
 
+    final ReactApplicationContext context = getReactApplicationContext();
     UIManagerModule uiManager = context.getNativeModule(UIManagerModule.class);
     uiManager.addUIBlock(new UIBlock()
     {
