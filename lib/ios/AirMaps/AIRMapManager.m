@@ -37,9 +37,7 @@ static NSString *const RCTMapViewKey = @"MapView";
 
 @end
 
-@implementation AIRMapManager{
-   BOOL _hasObserver;
-}
+@implementation AIRMapManager
   
 RCT_EXPORT_MODULE()
 
@@ -706,12 +704,11 @@ static int kDragCenterContext;
         if (mapView.onMarkerDragEnd) mapView.onMarkerDragEnd(event);
         if (marker.onDragEnd) marker.onDragEnd(event);
 
-       if(_hasObserver) [view removeObserver:self forKeyPath:@"center"];
-        _hasObserver = NO;
+        [view removeObserver:self forKeyPath:@"center"];
     } else if (newState == MKAnnotationViewDragStateStarting) {
         // MapKit doesn't emit continuous drag events. To get around this, we are going to use KVO.
         [view addObserver:self forKeyPath:@"center" options:NSKeyValueObservingOptionNew context:&kDragCenterContext];
-        _hasObserver = YES;
+
         if (mapView.onMarkerDragStart) mapView.onMarkerDragStart(event);
         if (marker.onDragStart) marker.onDragStart(event);
     }
