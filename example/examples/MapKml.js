@@ -28,7 +28,7 @@ class MapKml extends React.Component {
   }
 
   onKmlReady() {
-    this.map.fitToElements({ animated: true });
+    this.map.fitToElements(true);
   }
 
   render() {
