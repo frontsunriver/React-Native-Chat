@@ -14,6 +14,7 @@
 | `liteMode` | `Boolean` | `false` | Enable lite mode. **Note**: Android only.
 | `mapType` | `String` | `"standard"` | The map type to be displayed. <br/><br/> - standard: standard road map (default)<br/> - none: no map **Note** Not available on MapKit<br/> - satellite: satellite view<br/> - hybrid: satellite view with roads and points of interest overlayed<br/> - terrain: topographic view<br/> - mutedStandard: more subtle, makes markers/lines pop more (iOS 11.0+ only)
 | `customMapStyle` | `Array` |  | Adds custom styling to the map component. See [README](https://github.com/react-native-maps/react-native-maps#customizing-the-map-style) for more information.
+| `userInterfaceStyle` | 'light' \| 'dark'  |  | Sets the map to the style selected.  Default is whatever the system settings is. **Note:** iOS Maps only (aka MapKit).
 | `showsUserLocation` | `Boolean` | `false` | If `true` the app will ask for the user's location. **NOTE**: You need to add `NSLocationWhenInUseUsageDescription` key in Info.plist to enable geolocation, otherwise it is going to *fail silently*! You will also need to add an explanation for why you need the users location against `NSLocationWhenInUseUsageDescription` in Info.plist. Otherwise Apple may reject your app submission.
 | `userLocationPriority` | 'balanced'\|'high'\|'low'\|'passive' | 'high' | Set power priority of user location tracking. See [Google APIs documentation](https://developers.google.com/android/reference/com/google/android/gms/location/LocationRequest.html). **Note:** Android only.
 | `userLocationUpdateInterval` | `Number` | 5000 | Interval of user location updates in milliseconds. See [Google APIs documentation](https://developers.google.com/android/reference/com/google/android/gms/location/LocationRequest.html). **Note:** Android only.
@@ -92,7 +93,7 @@ To access event data, you will need to use `e.nativeEvent`. For example, `onPres
 | `getMapBoundaries` | | `Promise<{northEast: LatLng, southWest: LatLng}>`
 | `setMapBoundaries` | `northEast: LatLng`, `southWest: LatLng` | The boundary is defined by the map's center coordinates, not the device's viewport itself. **Note:** Google Maps only.
 | `setIndoorActiveLevelIndex` | `levelIndex: Number` |
-| `fitToElements` | `animated: Boolean` |
+| `fitToElements` | `options: { edgePadding: EdgePadding, animated: Boolean }` | **Note** edgePadding is Google Maps only
 | `fitToSuppliedMarkers` | `markerIDs: String[], options: { edgePadding: EdgePadding, animated: Boolean }` | If you need to use this in `ComponentDidMount`, make sure you put it in a timeout or it will cause performance problems. **Note** edgePadding is Google Maps only
 | `fitToCoordinates` | `coordinates: Array<LatLng>, options: { edgePadding: EdgePadding, animated: Boolean }` | If called in `ComponentDidMount` in android, it will cause an exception. It is recommended to call it from the MapView `onLayout` event.
 | `addressForCoordinate` | `coordinate: LatLng` | Converts a map coordinate to a address (`Address`). Returns a `Promise<Address>`.
